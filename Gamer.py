@@ -46,7 +46,10 @@ class Gamer:
 
     # 카드 받기
     def get_card(self, deck):
-        rand_num = random.randint(0, 12)        # 카드를 랜덤으로 선택하기위해.. 일단 13장 카드 기준으로했고 카드 개수에 따라 수정해야
+        while True:
+            rand_num = random.randint(0, 12)        # 카드를 랜덤으로 선택하기위해.. 일단 13장 카드 기준으로했고 카드 개수에 따라 수정해야
+            if deck[rand_num][1] > 0:       # deck에 해당 카드가 없으면 다시 뽑기
+                break
         deck[rand_num][1] -= 1                  # 뽑은 카드 한장을 덱에서 제외
         rand_card = deck[rand_num]              # 뽑은 카드 기억
         card = [rand_card[3], rand_card[0]]     # 카드의 모양과 숫자 기억
