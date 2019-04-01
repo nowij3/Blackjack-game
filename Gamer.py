@@ -147,7 +147,18 @@ class Gamer:
             비교후 21보다 큰 경우 10을 빼는방식 (11, 1)점으로 계산하도록 함"""
             self.hand_sum -= 10
 
+            
+    # 다른 플레이어가 카드를 받았을 때 나의 hit/stand 여부와 상관없이 카운팅 계산에 반영하는 함수
+    def others_card(self, o_card) :
+        # o_card == [모양, 숫자]
+        # mycountlist == (e.g.)Zen[[숫자, 값], ... ]
+        
+        for i in range(12) :
+            # o_card의 숫자에 해당하는 카드 카운팅 적용값 찾고, 카운팅 변수에 더하기
+            if (o_card[1] == mycountlist[i][0]) :
+                counting += mycountlist[i][1]
 
+            
 # properties
 
     @property
