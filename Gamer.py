@@ -39,6 +39,11 @@ class Gamer:
     # 베팅칩만 초기화
     def new_hand(self):
         # self.get_chip()   # 칩 받는 부분 구현 필요
+        self.hand = []      
+        self.hand_num = 0
+        self.hand_sum = 0
+        self.play_status = 'st_hit'
+        
         self.deal()
 
     # 카드 받기
