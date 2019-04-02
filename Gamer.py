@@ -172,7 +172,7 @@ class Gamer:
         for i in range(12):
             # o_card의 숫자에 해당하는 카드 카운팅 적용값 찾고, 카운팅 변수에 더하기
             if (o_card[1] == self.count_list[i][0]):
-                self.counting += self.count_list[i][1]
+                counting += self.count_list[i][1]   # 여기 counting을 각각의 플레이어에게 전달해야하지않나여
 
     # 합이 21을 초과하는지 검사하고 초과하면 play_status 변경
     def is_bust(self):
