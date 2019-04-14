@@ -72,7 +72,7 @@ class Gamer:
                 break
         deck[rand_num][1] -= 1  # 뽑은 카드 한장을 덱에서 제외
         rand_card = deck[rand_num]  # 뽑은 카드 기억
-        card = [rand_card[3], rand_card[0]]  # 카드의 모양과 숫자 기억
+        card = [rand_card[0], rand_card[1]]  # 카드의 모양과 숫자 기억
         return card  # Suit, Denomination
 
     # 딜
