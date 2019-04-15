@@ -6,9 +6,6 @@
 
 import Deck as deck
 import random
-from module import *        # 이건 무슨뜻이조
-import CountingList
-
 
 ##############################################################################################
 # chip_choice가 현재 balance보다 많은경우 제재 필요
@@ -16,6 +13,13 @@ import CountingList
 # name은 ( 'Hi-Lo', 'KO', 'Hi-Opt2', 'Zen', 'Halves' ) 대소문자, 하이픈주의
 # 카드에서 문제생기면 리스트 시작을 2가아니라 'A'로 잡아서일 가능성... 원소비교(?)로 한것같긴한데 혹시모르니 메모
 ##############################################################################################
+
+#############################################################
+# new_hand안에 self.blackjack = false했는데 ㅇㅋ?
+# is_bettable 혹시 has_money로 해도 괜찮은가염 아님 haschip이라든가 bettable 파이참이랑 깉헙ㅇ ㅣ없는단어라고 머라함ㅠㅠ
+# is_blackjack을 deal함수 내에서 호출하는게아니라 메인에서 deal한 다음에 호출하는게 맞을것같은..?
+# 생각해보니 blackjack이 상태인건 좀 이상한것같은데 그냥 is_blackjack에서 true false리턴하는게 
+#############################################################
 
 
 class Gamer:
@@ -30,8 +34,7 @@ class Gamer:
         self._counting = 0  # 카운팅 합산
         self._play_status = 'st_hit'  # 현재 게임 상태 [st_hit, st_stand, st_bust]
         self._money_status = True  # 현재 재산 상태 [ True, False (베팅가능, 불가능) ]
-
-#        self.count_list = self.select_count_list(name)      # 알고리즘에 따른 카운팅리스트 mycountlist얘기했는데 그냥 count_list로바꿈여
+        self._blackjack = False
 
     # 게임 재시작. 게임 전체 초기화
     def new_game(self):
@@ -49,9 +52,9 @@ class Gamer:
         self.hand_num = 0
         self.hand_sum = 0
         self.play_status = 'st_hit'
+        self.blackjack = False
 
         self.deal()
-
 
     # 카드 받기
     def get_card(self, deck):
@@ -153,6 +156,8 @@ class Gamer:
             비교후 21보다 큰 경우 10을 빼는방식 (11, 1)점으로 계산하도록 함"""
             self.hand_sum -= 10
 
+        self.is_blackjack()
+
     # 다른 플레이어가 카드를 받았을 때 나의 hit/stand 여부와 상관없이 카운팅 계산에 반영하는 함수
     def others_card(self, o_card):
         # o_card == [모양, 숫자]
@@ -160,7 +165,7 @@ class Gamer:
 
         for i in range(12):
             # o_card의 숫자에 해당하는 카드 카운팅 적용값 찾고, 카운팅 변수에 더하기
-            if (o_card[1] == self.count_list[i][0]):
+            if o_card[1] == self.count_list[i][0]:
                 self.counting += self.count_list[i][1]   # 여기 counting을 각각의 플레이어에게 전달해야하지않나여
 
     # 합이 21을 초과하는지 검사하고 초과하면 play_status 변경
@@ -168,7 +173,25 @@ class Gamer:
         if self.hand_sum > 21:
             self.play_status = 'st_bust'
 
-    # properties
+    # 처음 두장의 합이 21인 경우 (BlackJack인 경우)
+    def is_blackjack(self):
+        if self.hand_num == 2 and self.hand_sum == 21:
+            self.blackjack = True
+
+    # 잔고 확인
+    def is_bettable(self):
+        if self.balance < 100:
+            self.money_status = False
+            return False
+        return True
+
+    # 게임 가능 여부 확인 -
+    def is_playable(self):
+        if self.is_bettable() and self.play_status == 'st_stand':
+            return True
+        return False
+
+# properties
 
     @property
     def chip_choice(self):
@@ -233,3 +256,11 @@ class Gamer:
     @money_status.setter
     def money_status(self, new_money_status):
         self._money_status = new_money_status
+
+    @property
+    def blackjack(self):
+        return self._blackjack
+
+    @blackjack.setter
+    def blackjack(self, new_blackjack):
+        self._blackjack = new_blackjack
