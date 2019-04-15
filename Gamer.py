@@ -26,7 +26,7 @@ import CountingList
 class Gamer:
     INIT_MONEY = 10000  # 시작금
 
-    def __init__(self, name):
+    def __init__(self):
         self._chip_choice = None  # 선택한 코인
         self._balance = self.INIT_MONEY  # 가진 금액
         self._hand = []  # 가지고 있는 카드
@@ -36,7 +36,7 @@ class Gamer:
         self._play_status = 'st_hit'  # 현재 게임 상태 [st_hit, st_stand, st_bust]
         self._money_status = True  # 현재 재산 상태 [ True, False (베팅가능, 불가능) ]
 
-        self.count_list = self.select_count_list(name)      # 알고리즘에 따른 카운팅리스트 mycountlist얘기했는데 그냥 count_list로바꿈여
+#        self.count_list = self.select_count_list(name)      # 알고리즘에 따른 카운팅리스트 mycountlist얘기했는데 그냥 count_list로바꿈여
 
     # 게임 재시작. 게임 전체 초기화
     def new_game(self):
@@ -56,12 +56,6 @@ class Gamer:
         self.play_status = 'st_hit'
 
         self.deal()
-
-    # 이름에 따른 카운팅 리스트 반환
-    def select_count_list(self, name):
-        c_list_instance = CountingList.CountingList()
-        return {'Hi-Lo': c_list_instance.get_Hi_Lo(), 'KO': c_list_instance.get_Ko(), 'Hi-Opt2': c_list_instance.get_Hi_Opt2(),
-                'Zen': c_list_instance.get_Zen(), 'Halves': c_list_instance.get_Halves()}[name]
 
 
     # 카드 받기
