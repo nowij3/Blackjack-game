@@ -12,11 +12,6 @@ import CountingList
 
 ##############################################################################################
 # chip_choice가 현재 balance보다 많은경우 제재 필요
-# countinglist __init__에 indent빠짐
-# my_count_list로 얘기한거 count_list로 함
-# 만약 딜러나 유저의 경우에는 어떻게...? 라고생각하고있었는데 이카운팅 자체가 플레이어한테만 필요하지않은가...
-# 이거 그냥 player(self, name)해도 될것같은데...........ㅎ.............ㅠ....
-# 근데 또 유저 헬퍼기능 만드는거 생각하면..........................유저도 필요하긴하니...........문제는 딜러...
 # 헬퍼기능 넣을때 유저는 어떤 카운팅 사용하는지
 # name은 ( 'Hi-Lo', 'KO', 'Hi-Opt2', 'Zen', 'Halves' ) 대소문자, 하이픈주의
 # 카드에서 문제생기면 리스트 시작을 2가아니라 'A'로 잡아서일 가능성... 원소비교(?)로 한것같긴한데 혹시모르니 메모
@@ -26,7 +21,7 @@ import CountingList
 class Gamer:
     INIT_MONEY = 10000  # 시작금
 
-    def __init__(self, name):
+    def __init__(self):
         self._chip_choice = None  # 선택한 코인
         self._balance = self.INIT_MONEY  # 가진 금액
         self._hand = []  # 가지고 있는 카드
@@ -36,7 +31,7 @@ class Gamer:
         self._play_status = 'st_hit'  # 현재 게임 상태 [st_hit, st_stand, st_bust]
         self._money_status = True  # 현재 재산 상태 [ True, False (베팅가능, 불가능) ]
 
-        self.count_list = self.select_count_list(name)      # 알고리즘에 따른 카운팅리스트 mycountlist얘기했는데 그냥 count_list로바꿈여
+#        self.count_list = self.select_count_list(name)      # 알고리즘에 따른 카운팅리스트 mycountlist얘기했는데 그냥 count_list로바꿈여
 
     # 게임 재시작. 게임 전체 초기화
     def new_game(self):
@@ -56,12 +51,6 @@ class Gamer:
         self.play_status = 'st_hit'
 
         self.deal()
-
-    # 이름에 따른 카운팅 리스트 반환
-    def select_count_list(self, name):
-        c_list_instance = CountingList.CountingList()
-        return {'Hi-Lo': c_list_instance.get_Hi_Lo(), 'KO': c_list_instance.get_Ko(), 'Hi-Opt2': c_list_instance.get_Hi_Opt2(),
-                'Zen': c_list_instance.get_Zen(), 'Halves': c_list_instance.get_Halves()}[name]
 
 
     # 카드 받기
