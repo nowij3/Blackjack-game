@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-import random
-from Gamer import Gamer
+from Gamer import *
 import CountingList
+import Deck as deck
 
 class CountingPlayer(Gamer):
     def __init__(self, name):
@@ -11,12 +11,14 @@ class CountingPlayer(Gamer):
         self.name = name
         
         self.count_list = self.select_count_list(self.name)
+
         
-         # 이름에 따른 카운팅 리스트 반환
+    # 이름에 따른 카운팅 리스트 반환
     def select_count_list(self, name):
         c_list_instance = CountingList.CountingList()
         return {'Hi-Lo': c_list_instance.get_Hi_Lo(), 'KO': c_list_instance.get_Ko(), 'Hi-Opt2': c_list_instance.get_Hi_Opt2(),
                 'Zen': c_list_instance.get_Zen(), 'Halves': c_list_instance.get_Halves()}[name]
+
 
         
     # 카운팅 알고리즘 적용
@@ -30,7 +32,37 @@ class CountingPlayer(Gamer):
                 self.hand_count += self.count_list[i][1]
                 break
 
+
     # 카운팅 알고리즘을 적용한 값 반환
     def get_hand_count(self) :
         return self.hand_count
 
+    def get_true_count(self) :
+        self.true_count = deck.get_hand_count() / (deck.get_original_deck() - deck.get_used_deck())
+        return true_count
+
+
+
+    # 카운팅 값 기반으로 Hit/Stand 여부 결정
+    def make_decision(self) :
+        
+        if self.hand_sum <= 11 :
+            self.play_status = "st_hit"
+            super().hit()
+            return
+        
+        elif self.hand_sum > 21 :
+            self.play_status = "st_bust"
+            return
+        
+        elif self.hand_sum == 21 :
+            self.blackjack = True
+            
+        else :
+            if get_true_count() > 0 :
+                self.play_status = "st_hit"
+                super().hit()
+                return
+            else :
+                super().stand()
+                return
