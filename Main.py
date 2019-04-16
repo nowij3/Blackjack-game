@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import Gamer
-import CountingList
 import Deck as deck
 import Dealer
 import CountingPlayer
