@@ -34,7 +34,7 @@ class CountingPlayer(Gamer):
         return [['A', '0'], ['2', '0'], ['3', '0'], ['4', '0'], ['5', '0'], ['6', '0'], ['7', '0'], ['8', '0'], 
                 ['9', '0'], ['10', '0'], ['J', '0'], ['Q', '0'], ['K', '0']]
     
-        # return         {'Hi-Lo': c_list_instance.get_Hi_Lo(), 'KO': c_list_instance.get_Ko(), 'Hi-Opt2': c_list_instance.get_Hi_Opt2(
+        # return         {'Hi-Lo': c_list_instance.get_Hi_Lo(), 'KO': c_list_instance.get_Ko(), 'Hi-Opt2': c_list_instance.get_Hi_Opt2(),        'Zen': c_list_instance.get_Zen(), 'Halves': c_list_instance.get_Halves()}[name]
 
         
     # 카운팅 알고리즘 적용
