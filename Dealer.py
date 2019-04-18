@@ -1,9 +1,16 @@
-import Gamer
+from Gamer import Gamer
 import Deck as deck
 
 
 class Dealer(Gamer):
-
+    
+    def __init__(self):
+        self._hand = []  # 가지고 있는 카드
+        self._hand_num = 0  # 가지고 있는 카드 개수
+        self._hand_sum = 0  # 가지고 있는 카드의 숫자 합
+        self._play_status = 'st_hit'  # 현재 게임 상태 [st_hit, st_stand, st_bust]
+        self._blackjack = False
+    
     def open_deal_card(self):
         # 카드 합 계산
         for i in range(2):
