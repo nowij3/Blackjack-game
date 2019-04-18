@@ -16,9 +16,25 @@ class CountingPlayer(Gamer):
     # 이름에 따른 카운팅 리스트 반환
     def select_count_list(self, name):
         c_list_instance = CountingList.CountingList()
-        return {'Hi-Lo': c_list_instance.get_Hi_Lo(), 'KO': c_list_instance.get_Ko(), 'Hi-Opt2': c_list_instance.get_Hi_Opt2(),
-                'Zen': c_list_instance.get_Zen(), 'Halves': c_list_instance.get_Halves()}[name]
 
+        if name == 'Hi-Lo':
+            return c_list_instance.get_Hi_Lo()
+        elif name == 'KO':
+            return c_list_instance.get_Ko()
+        elif name == 'Hi-Opt2':
+            return c_list_instance.get_Hi_Opt2()
+        elif name == 'Zen':
+            return c_list_instance.get_Zen()
+        elif name == 'Halves':
+            return c_list_instance.get_Halves()
+        
+        if name != 'Dealer':
+            print("Not a predetermined name")
+            
+        return [['A', '0'], ['2', '0'], ['3', '0'], ['4', '0'], ['5', '0'], ['6', '0'], ['7', '0'], ['8', '0'], 
+                ['9', '0'], ['10', '0'], ['J', '0'], ['Q', '0'], ['K', '0']]
+    
+        # return         {'Hi-Lo': c_list_instance.get_Hi_Lo(), 'KO': c_list_instance.get_Ko(), 'Hi-Opt2': c_list_instance.get_Hi_Opt2(
 
         
     # 카운팅 알고리즘 적용
