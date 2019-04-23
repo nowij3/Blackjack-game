@@ -11,6 +11,7 @@ class CountingPlayer(Gamer):
         self.name = name
         
         self.count_list = self.select_count_list(self.name)
+        self.true_count = 0
 
         
     # 이름에 따른 카운팅 리스트 반환
@@ -53,6 +54,7 @@ class CountingPlayer(Gamer):
     def get_hand_count(self) :
         return self.hand_count
 
+    # 트루 카운트 반환
     def get_true_count(self) :
         self.true_count = deck.get_hand_count() / (deck.get_original_deck() - deck.get_used_deck())
         return true_count
