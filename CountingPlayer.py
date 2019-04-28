@@ -74,7 +74,8 @@ class CountingPlayer(Gamer):
             return
         
         elif self.hand_sum == 21 :
-            self.blackjack = True
+            super().stand()
+            return
             
         else :
             if get_true_count() > 0 :
