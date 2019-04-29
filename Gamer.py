@@ -4,8 +4,8 @@
 게이머클래스
 """
 
-import Deck as deck
-import random
+from Deck import Deck
+from DeckHandler import DeckHandler as handler
 
 ##############################################################################################
 # chip_choice가 현재 balance보다 많은경우 제재 필요
@@ -13,10 +13,6 @@ import random
 # name은 ( 'Hi-Lo', 'KO', 'Hi-Opt2', 'Zen', 'Halves' ) 대소문자, 하이픈주의
 # 카드에서 문제생기면 리스트 시작을 2가아니라 'A'로 잡아서일 가능성... 원소비교(?)로 한것같긴한데 혹시모르니 메모
 ##############################################################################################
-
-#############################################################
-# deck, playing_deck 구별
-#############################################################
 
 
 class Gamer:
@@ -44,30 +40,15 @@ class Gamer:
 
         self.deal()
 
-    # 카드 받기
-    def get_card(self, playing_deck):
-        ################################
-        # deck reset 적용할때 수정
-        ################################
-        while True:
-            rand_num = random.randint(0, 13)  # 카드 랜덤 선택 (13장 카드 기준)
-            if playing_deck[rand_num][1] > 0:  # deck에 해당 카드가 없으면 다시 뽑기
-                break
-
-        playing_deck[rand_num][1] -= 1  # 뽑은 카드 한장을 덱에서 제외
-        rand_card = playing_deck[rand_num]  # 뽑은 카드 기억
-        card = [rand_card[0], rand_card[1]]  # 카드의 모양과 숫자 기억
-        return card  # Suit, Denomination
-
     # 딜
-    def deal(self, playing_deck):
+    def deal(self):
         if self.money_status:
             self.balance -= self.chip_choice
 
             # 카드 두 장 뒤집기
-            self.hand[self.hand_num] = self.get_card(playing_deck)
+            self.hand[self.hand_num] = handler.get_card()
             self.hand_num += 1
-            self.hand[self.hand_num] = self.get_card(playing_deck)
+            self.hand[self.hand_num] = handler.get_card()
             self.hand_num += 1
 
         return self.hand
@@ -90,7 +71,7 @@ class Gamer:
     # Hit. 카드 추가로 받기
     def hit(self):
         if self._play_status == "st_hit":
-            self._hand[self._hand_num] = self.get_card()
+            self._hand[self._hand_num] = handler.get_card()
             self._hand_num += 1
             self.open_card()
 
@@ -113,7 +94,7 @@ class Gamer:
     def open_deal_card(self):
         for i in range(2):
             # setImage
-            self.hand_sum += deck[i][2]
+            self.hand_sum += Deck.deck[i][2]
 
         if self.hand_sum > 21:
             """ 카드가 두장일 경우 21을 넘는 경우의 수는 A가 두장으로 22일때 뿐이므로 별도로 decide_ace_point 호출하지않고
@@ -134,12 +115,9 @@ class Gamer:
             if 'A' in check:
                 num_of_A += 1
 
-        ########################################################################################################
-        ############# 여기 len(Deck) 수정 #######################################################################
-        ########################################################################################################
-        for i in range(len(DECK)):  # deck에서 숫자에 해당하는 값을 찾아서 더함
-            if str(self.hand[-1][1]) == deck[i][0]:  # deck에는 숫자-개수-값-모양
-                self.hand_sum += deck[i][2]
+        for i in range(len(Deck.deck)):  # deck에서 숫자에 해당하는 값을 찾아서 더함
+            if str(self.hand[-1][1]) == Deck.deck[i][0]:  # deck에는 숫자-개수-값-모양
+                self.hand_sum += Deck.deck[i][2]
 
         if num_of_A > 0:  # A를 가지고있는 경우
             self.hand_sum = self.decide_ace_point(num_of_A)
