@@ -3,7 +3,7 @@ import Deck as deck
 
 
 class Dealer(Gamer):
-
+    # 수정해야댐
     def open_deal_card(self):
         # 카드 합 계산
         self.hand_sum += deck[0][2]
