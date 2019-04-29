@@ -94,7 +94,7 @@ class Gamer:
     def open_deal_card(self):
         for i in range(2):
             # setImage
-            self.hand_sum += Deck.deck[i][2]
+            self.hand_sum += Deck.deck[i][3]
 
         if self.hand_sum > 21:
             """ 카드가 두장일 경우 21을 넘는 경우의 수는 A가 두장으로 22일때 뿐이므로 별도로 decide_ace_point 호출하지않고
@@ -116,8 +116,8 @@ class Gamer:
                 num_of_A += 1
 
         for i in range(len(Deck.deck)):  # deck에서 숫자에 해당하는 값을 찾아서 더함
-            if str(self.hand[-1][1]) == Deck.deck[i][0]:  # deck에는 숫자-개수-값-모양
-                self.hand_sum += Deck.deck[i][2]
+            if str(self.hand[-1][1]) == Deck.deck[i][1]:  # deck에는 모양-숫자-개수-값
+                self.hand_sum += Deck.deck[i][3]
 
         if num_of_A > 0:  # A를 가지고있는 경우
             self.hand_sum = self.decide_ace_point(num_of_A)
