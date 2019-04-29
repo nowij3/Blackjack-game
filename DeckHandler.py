@@ -4,10 +4,9 @@ import random
 class DeckHandler:
 
     def __init__(self):
-        self._deck=4 #deck의 개수
-        self._n_deck=4 #사용한 deck 수
-        self._sum=0
-        self._n_cards=208 #deck의 카드 수
+        self.reset()
+
+    def get_card(self):
 
         while True:
             rand_num=random.randint(0,13)
@@ -27,18 +26,17 @@ class DeckHandler:
         return card  # Suit, Denomination
 
 
-###########################
-# remaining card
-###########################
-            n_deck=self._n_deck
+
+    def get_remaining_card(self):
+          
+        n_deck=self._n_deck
 
         return n_deck
             
 
               
-     def reset(self):
+    def reset(self):
          #초기화하는 함수
-         self._deck=4
-         self._n_deck=0
-         self._sum=0
-         self._n_cards=208
+        self._n_deck=4 #deck의 수 초기값(0.5씩 차감=사용한 deck의 수)
+        self._sum=0
+        self._n_cards=208 #deck의 카드 수
