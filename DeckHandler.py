@@ -21,6 +21,9 @@ class DeckHandler:
         if self._sum>=26:
             self._n_deck-=0.5
             self._sum=0
+            n_deck=self._n_deck
+
+        return n_deck
             
               
      def reset(self):
