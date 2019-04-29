@@ -57,7 +57,7 @@ class CountingPlayer(Gamer):
         for i in range(2):
             # setImage
             self.counting += self.count_list[i][1]  # 카운팅 점수 계산
-            self.hand_sum += deck[i][2]
+            self.hand_sum += deck[i][3]
 
         if self.hand_sum > 21:
             """ 카드가 두장일 경우 21을 넘는 경우의 수는 A가 두장으로 22일때 뿐이므로 별도로 decide_ace_point 호출하지않고
