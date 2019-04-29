@@ -3,15 +3,20 @@ import Deck as deck
 
 
 class Dealer(Gamer):
-    # 수정해야댐
-    ''' 
-        처음 한장을 공개하고, 다른플레이어들이 결정을 모두 한 이후에 마지막으로 딜러가 카드를 공개함
-        그래서 지금 당장 카드를 한장밖에 공개안한상태라 17이 될수가없음
-        두장째 공개한 이후에 play를 해야되는뎀
-    '''
+    # 처음 카드 한 장 공개
     def open_deal_card(self):
         # 카드 합 계산
-        self.hand_sum += deck[0][2]
+        for i in range(12):
+            if self.hand[0][1] == deck[i][2]:
+                self.hand_sum += deck[i][2]
+                break
+
+    # 다른 플레이어들의 카드 결정이 모두 끝난 후 딜러의 두번째 카드 공개
+    def open_second_card(self):
+        for i in range(12):
+            if self.hand[1][1] == deck[i][2]:
+                self.hand_sum += deck[i][2]
+                break
 
         # Ace가 두 장일 경우 합계
         if self.hand_sum > 21:
