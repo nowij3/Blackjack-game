@@ -5,7 +5,7 @@ class DeckHandler:
 
     def __init__(self):
         self._deck=4 #deck의 개수
-        self._n_deck=0 #사용한 deck 수
+        self._n_deck=4 #사용한 deck 수
         self._sum=0
         self._n_cards=208 #deck의 카드 수
 
@@ -21,6 +21,7 @@ class DeckHandler:
         if self._sum>=26:
             self._n_deck-=0.5
             self._sum=0
+            
               
      def reset(self):
          #초기화하는 함수
