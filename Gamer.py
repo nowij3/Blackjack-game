@@ -26,7 +26,7 @@ class Gamer:
     INIT_MONEY = 10000  # 시작금
 
     def __init__(self):
-        self._chip_choice = None  # 선택한 코인
+        self._chip_choice = 0  # 선택한 코인
         self._balance = self.INIT_MONEY  # 가진 금액
         self._hand = []  # 가지고 있는 카드
         self._hand_num = 0  # 가지고 있는 카드 개수
