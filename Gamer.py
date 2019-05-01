@@ -5,13 +5,12 @@
 """
 
 from Deck import Deck
-from DeckHandler import DeckHandler as handler
+from DeckHandler import DeckHandler
 
 ##############################################################################################
 # chip_choice가 현재 balance보다 많은경우 제재 필요
 # 헬퍼기능 넣을때 유저는 어떤 카운팅 사용하는지
 # name은 ( 'Hi-Lo', 'KO', 'Hi-Opt2', 'Zen', 'Halves' ) 대소문자, 하이픈주의
-# 카드에서 문제생기면 리스트 시작을 2가아니라 'A'로 잡아서일 가능성... 원소비교(?)로 한것같긴한데 혹시모르니 메모
 ##############################################################################################
 
 
@@ -24,11 +23,16 @@ class Gamer:
         self._hand_sum = 0  # 가지고 있는 카드의 숫자 합
         self._play_status = 'st_hit'  # 현재 게임 상태 [st_hit, st_stand, st_bust]
         self._blackjack = False
+        self.handler = DeckHandler()
+        if __name__ == '__main__':
+            print("클래스 생성")
 
     # 게임 재시작. 게임 전체 초기화
     def new_game(self):
         # 전체변수 재설정
         self.new_hand()
+        if __name__ == '__main__':
+            print("called new game")
 
     def new_hand(self):
         # self.get_chip()   # 칩 받는 부분 구현 필요
@@ -40,17 +44,27 @@ class Gamer:
 
         self.deal()
 
+        if __name__ == '__main__':
+            print("called new_hand")
+
     # 딜
     def deal(self):
-        if self.money_status:
-            self.balance -= self.chip_choice
+        if __name__ == '__main__':
+            print("called deal")
 
-            # 카드 두 장 뒤집기
-            self.hand[self.hand_num] = handler.get_card()
-            self.hand_num += 1
-            self.hand[self.hand_num] = handler.get_card()
-            self.hand_num += 1
+        # if self.money_status:
+        #     self.balance -= self.chip_choice
 
+        # 카드 두 장 뒤집기
+        self.hand.append(self.handler.get_card())
+        self.hand_num += 1
+        self.hand.append(self.handler.get_card())
+        self.hand_num += 1
+
+        self.open_card()
+
+        if __name__ == '__main__':
+            print("now cards = ", self.hand, "// numbers: ", self.hand_num, "// total: ", self.hand_sum)
         return self.hand
 
     # 카드 공개
@@ -70,31 +84,52 @@ class Gamer:
 
     # Hit. 카드 추가로 받기
     def hit(self):
-        if self._play_status == "st_hit":
-            self._hand[self._hand_num] = handler.get_card()
-            self._hand_num += 1
+        if __name__ == '__main__':
+            print("called hit")
+
+        if self.play_status == "st_hit":
+            self.hand.append(self.handler.get_card())
+            self.hand_num += 1
             self.open_card()
+
+            if __name__ == '__main__':
+                print("now cards = ", self.hand, "// numbers: ", self.hand_num, "// total: ", self.hand_sum)
 
     # Stand. 카드 더이상 받지 않음
     def stand(self):
         self._play_status = "st_stand"
+        if __name__ == '__main__':
+            print("called stand")
 
     # Ace 카드 점수 결정
     ''' deck에서 A값을 11로 설정하고 합이 21을 넘을경우 10을빼서 1로 만드는방법으로'''
     def decide_ace_point(self, num_of_ace):
+        if __name__ == '__main__':
+            print('called decide_ace_point')
+            print("decide before : now cards = ", self.hand, "// numbers: ", self.hand_num, "// total: ", self.hand_sum)
+
         if self.hand_sum > 21:
             for i in range(num_of_ace):
                 self.hand_sum -= 10
                 if self.hand_sum <= 21:
                     break
+        if __name__ == '__main__':
+            print("decide after : now cards = ", self.hand, "// numbers: ", self.hand_num, "// total: ", self.hand_sum)
 
         return self.hand_sum
 
     # 딜에서 카드 받은 경우
     def open_deal_card(self):
+        if __name__ == '__main__':
+            print("called open_deal_Card")
+
         for i in range(2):
             # setImage
-            self.hand_sum += Deck.deck[i][3]
+            for j in range(13):
+                if self.hand[i][1] == Deck.deck[j][1]:          # 모양, 이름, 값, 개수
+                    # if __name__ == '__main__':
+                    #     print("self.hand[", i, "][1] = Deck.deck[", j, "][1]")
+                    self.hand_sum += Deck.deck[j][2]
 
         if self.hand_sum > 21:
             """ 카드가 두장일 경우 21을 넘는 경우의 수는 A가 두장으로 22일때 뿐이므로 별도로 decide_ace_point 호출하지않고
@@ -102,8 +137,12 @@ class Gamer:
             self.hand_sum -= 10
 
         self.is_blackjack()
+        if __name__ == '__main__':
+            print("now cards = ", self.hand, "// numbers: ", self.hand_num, "// total: ", self.hand_sum)
 
     def open_hit_card(self):
+        if __name__ == '__main__':
+            print("called open_hit_card")
         num_of_A = 0
 
         # setImage
@@ -115,57 +154,42 @@ class Gamer:
             if 'A' in check:
                 num_of_A += 1
 
-        for i in range(len(Deck.deck)):  # deck에서 숫자에 해당하는 값을 찾아서 더함
-            if str(self.hand[-1][1]) == Deck.deck[i][1]:  # deck에는 모양-숫자-개수-값
-                self.hand_sum += Deck.deck[i][3]
+        print("last card: ", self.hand[-1][1])
+
+        for i in range(13):  # deck에서 숫자에 해당하는 값을 찾아서 더함
+            if str(self.hand[-1][1]) == Deck.deck[i][1]:  # deck에는 모양-이름-값-개수
+                self.hand_sum += Deck.deck[i][2]
 
         if num_of_A > 0:  # A를 가지고있는 경우
             self.hand_sum = self.decide_ace_point(num_of_A)
 
         self.is_bust()  # bust 확인
+        if __name__ == '__main__':
+            print("now cards = ", self.hand, "// numbers: ", self.hand_num, "// total: ", self.hand_sum)
 
     # 합이 21을 초과하는지 검사하고 초과하면 play_status 변경
     def is_bust(self):
+        if __name__ == '__main__':
+            print('called is_bust')
+
         if self.hand_sum > 21:
             self.play_status = 'st_bust'
+            print("busted")
 
     # 처음 두장의 합이 21인 경우 (BlackJack인 경우)
     def is_blackjack(self):
         if self.hand_num == 2 and self.hand_sum == 21:
             self.blackjack = True
+            if __name__ == '__main__':
+                print("BLACKJACK")
             return True
+        if __name__ == '__main__':
+            print("not BLACKJACK")
         return False
 
-    # 잔고 확인
-    def has_money(self):
-        if self.balance < 100:
-            self.money_status = False
-            return False
-        return True
 
-    # 게임 가능 여부 확인 -
-    def is_playable(self):
-        if self.has_money() and self.play_status == 'st_stand':
-            return True
-        return False
 
 # properties
-
-    @property
-    def chip_choice(self):
-        return self._chip_choice
-
-    @chip_choice.setter
-    def chip_choice(self, new_chip_choice):
-        self._chip_choice = new_chip_choice
-
-    @property
-    def balance(self):
-        return self._balance
-
-    @balance.setter
-    def balance(self, new_balance):
-        self._balance = new_balance
 
     @property
     def hand(self):
@@ -192,14 +216,6 @@ class Gamer:
         self._hand_sum = new_hand_sum
 
     @property
-    def counting(self):
-        return self._counting
-
-    @counting.setter
-    def counting(self, new_counting):
-        self._counting = new_counting
-
-    @property
     def play_status(self):
         return self._play_status
 
@@ -208,17 +224,16 @@ class Gamer:
         self._play_status = new_play_status
 
     @property
-    def money_status(self):
-        return self._money_status
-
-    @money_status.setter
-    def money_status(self, new_money_status):
-        self._money_status = new_money_status
-
-    @property
     def blackjack(self):
         return self._blackjack
 
     @blackjack.setter
     def blackjack(self, new_blackjack):
         self._blackjack = new_blackjack
+
+
+if __name__ == '__main__':
+    gamer = Gamer()
+    gamer.deal()
+    gamer.hit()
+    gamer.stand()
