@@ -11,7 +11,7 @@ class User(Gamer):
         self._chip_choice = None  # 선택한 코인
         self._balance = self.INIT_MONEY  # 가진 금액
         self._money_status = True
-        super().new_hand()
+        self.new_hand()
 
 # properties
 
