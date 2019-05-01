@@ -154,8 +154,6 @@ class Gamer:
             if 'A' in check:
                 num_of_A += 1
 
-        print("last card: ", self.hand[-1][1])
-
         for i in range(13):  # deck에서 숫자에 해당하는 값을 찾아서 더함
             if str(self.hand[-1][1]) == Deck.deck[i][1]:  # deck에는 모양-이름-값-개수
                 self.hand_sum += Deck.deck[i][2]
