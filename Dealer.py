@@ -1,21 +1,21 @@
 from Gamer import Gamer
-import Deck as deck
+from Deck import Deck
 
 
 class Dealer(Gamer):
     # 처음 카드 한 장 공개
     def open_deal_card(self):
         # 카드 합 계산
-        for i in range(12):
-            if self.hand[0][1] == deck[i][3]:
-                self.hand_sum += deck[i][3]
+        for i in range(13):
+            if self.hand[0][1] == Deck.deck[i][3]:
+                self.hand_sum += Deck.deck[i][3]
                 break
 
     # 다른 플레이어들의 카드 결정이 모두 끝난 후 딜러의 두번째 카드 공개
     def open_second_card(self):
-        for i in range(12):
-            if self.hand[1][1] == deck[i][3]:
-                self.hand_sum += deck[i][3]
+        for i in range(13):
+            if self.hand[1][1] == Deck.deck[i][3]:
+                self.hand_sum += Deck.deck[i][3]
                 break
 
         # Ace가 두 장일 경우 합계
