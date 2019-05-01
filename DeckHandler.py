@@ -1,5 +1,6 @@
-import Deck as deck
+from Deck import Deck
 import random
+
 
 class DeckHandler:
 
@@ -10,10 +11,10 @@ class DeckHandler:
 
         while True:
             rand_num=random.randint(0,13)
-            if deck[rand_num][1]>0:
+            if Deck.deck[rand_num][3] > 0:
                 break
-        deck[rand_num][1]-=1
-        rand_card = deck[rand_num]  # 뽑은 카드 기억
+        Deck.deck[rand_num][3] -= 1
+        rand_card = Deck.deck[rand_num]  # 뽑은 카드 기억
         card = [rand_card[0], rand_card[1]]  # 카드의 모양과 숫자 기억
         
         self._sum+=1

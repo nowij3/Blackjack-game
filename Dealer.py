@@ -33,3 +33,7 @@ class Dealer(Gamer):
             return True
         return False
 
+if __name__ == '__main__':
+    dealer = Dealer()
+    dealer.deal()
+    print(dealer.hand)
