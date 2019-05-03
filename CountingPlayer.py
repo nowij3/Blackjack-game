@@ -97,24 +97,8 @@ class CountingPlayer(Gamer):
             if o_card[1] == self.count_list[i][0]:
                 self.counting += self.count_list[i][1]
 
-    # 카운팅 알고리즘 적용
-    def card_count(self):
-        for i in range(self.hand_num):
-            for j in range(12):
-
-                # count_list == [숫자, 카운팅적용값]
-                # hand == [숫자, 갯수, 값, 모양]
-
-                if self.hand[i][0] == self.count_list[j][0]:
-                    self.counting += self.count_list[i][1]
-                    break
-
-    # 카운팅 알고리즘을 적용한 값 반환
-    def get_hand_count(self):
-        return self.hand_count
-
     def get_true_count(self):
-        true_count = self.counting() / (deck.get_original_deck() - deck.get_used_deck())
+        true_count = self.counting / self.handler.get_remaining_card()
         return true_count
 
     # 카운팅 값 기반으로 Hit/Stand 여부 결정
@@ -207,4 +191,5 @@ if __name__ == "__main__":
     print('hand = ', player.hand)
     print('count = ', player.counting)
     print(player.hand_num)
+    print(player.get_true_count())
 
