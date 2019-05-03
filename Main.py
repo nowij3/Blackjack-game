@@ -28,6 +28,9 @@ def calculate_chip() :
 
 # 블랙잭인 경우 베팅한 금액의 2.5배, 그 외엔 2배 반환
 def prize_chip(player) :
+
+    print("called prize_chip")
+    
     if player.blackjack == true :
         return 2.5 * player.chip_choice
     else :
@@ -35,8 +38,26 @@ def prize_chip(player) :
 
     
 # 재산에 상금 반영하기
-def get_prize(player) :
-    player.balance += prize_chip()
+def get_prize(winner_list) :
+
+    print("called get_prize")
+    
+    for i in range(len(winner_list)) :
+        if winner_list[i].name == 'dealer' :
+            continue
+        else :
+            winner_list[i].balance += prize_chip(winner_list[i])
+
+# hit 상태인 플레이어가 남아있는지 확인
+def hit_anyone() :
+    
+    print ("called hit_anyone")
+
+    if not dealer.is_playable and not player_list[0].is_playable and not player_list[1].is_playable and not player_list[2].is_playable :
+        return False
+    else :
+        return True
+    
 
 # 난이도 설정
 def set_level() :
@@ -76,11 +97,11 @@ def check_blackjack() :
 
     for i in range(0, 3) :
         if player_list[i].is_blackjack() :
-            winner = player_list[i]
+            winner_list.append(player_list[i])
             return True
 
     if dealer.is_blackjack() :
-        winner = dealer
+        winner_list.append(dealer)
         return True
 
     # 아무도 블랙잭이 아니면
@@ -108,21 +129,21 @@ def find_winner(winner) :
                 winner = tmp
                 return
             
-    # 모두가 파산인 경우
-    winner = dealer
-    return
+        # 모두가 파산인 경우
+        else :
+            winner_list.append(dealer)
+            return
 
-# 다른 플레이어에게 내 카드 정보 주기
+# 다른 플레이어에게 내 카드 정보 주기, CountingPlayer들만 적용됨
 def give_my_card_info(i, card) :
 
     print("called give_my_card_info")
 
-    for j in range(0, 3) :
-        if j == i :
-            continue
-        else :
-            # player_list[i]를 제외한 나머지 플레이어들
-            player_list[j].others_card(card)
+    # 자기 자신은 포함하지 않기 위해 사용하는 if문
+    if i != 0 :
+        player_list[0].others_card(card)
+    if i != 2 :
+        player_list[2].others_card(card)
     
 # 게임 시작
 def play_start() :
@@ -135,8 +156,8 @@ def play_start() :
     play_deal()
     play_continue()
 
-# 라운드 시작 (딜)
-def play_deal() :
+# 라운드 시작 (딜) ***딜 할 때 give_my_card_info 안되어있음
+def play_deal() :  
     
     # (GUI에서 deck에 8장 이하만 남으면 덱을 섞기)
 
@@ -153,37 +174,56 @@ def play_deal() :
     for i in range (0, 3) :
         player_list[i].deal()
 
-    dealer.open_card()
+    dealer.open_deal_card()
+    give_my_card_info(3, dealer.hand[-1])
+    
     for i in range (0, 3) :
         player_list[i].open_deal_card()
+        give_my_card_info(i, player_list[i].hand[-2])
+        give_my_card_info(i, player_list[i].hand[-1])
 
 
-# 딜 이후 게임 진행 (딜러의 게임 참여 여부에 대한 고려 필요)
+# 딜 이후 게임 진행 
 def play_continue() :
 
     print("called play_continue")
 
-    game_status = True
-    while (game_status) :
-        # 딜 카드에서 블랙잭이 있는 경우
+    # 딜 카드에서 블랙잭이 있는 경우
+    if check_blackjack() :
+        play_end()
+        
+    else :
+        for i in range (0, 3) :
+            if player_list[i].is_playable :
+                player_list[i].hit()
+                give_my_card_info(i, player_list[i].hand[-1])
+            else :
+                # hit한 플레이어가 아무도 없다면
+                play_end()
+                return
+                
+        # 딜러의 딜에서 받은 뒤집히지 않은 카드 오픈
+        dealer.open_second_card()
+        give_my_card_info(3, dealer.hand[-1])
+        
         if check_blackjack() :
             play_end()
+            return
+                        
+    while hit_anyone() :
+        
+        dealer.play()
+        
+        for i in range (0, 3) :
+            if player_list[i].is_playable :
+                player_list[i].hit()
+                give_my_card_info(i, player_list[i].hand[-1])
+                
+        if check_blackjack() :
             break
-        else :
-            # 딜러의 딜에서 받은 뒤집히지 않은 카드 오픈
-            dealer.open_deal_card()
-            if check_blackjack :
-                play_end()
-                break
-
-            else :
-                for i in range (0, 3) :
-                    if player_list[i].is_playable :
-                        my_card = player_list[i].hit()
-                        give_mycard_info(i, my_card)
-                    else :
-                        # hit한 플레이어가 아무도 없다면
-                        game_status = False  
+        
+            
+    play_end()
 
 # 한 라운드 종료
 def play_end() :
@@ -199,13 +239,13 @@ def play_end() :
         player_list[i].play_status = "st_stand"
         
     # if check_blackjack == False :
-    find_winner(winner)
+    find_winner(winner_list)
 
-    print("winner : ", winner)
+    print("winner : ", winner_list)
     
     # 상금 받기
-    if winner != dealer and winner != None :
-        get_prize(winner)
+    if not winner_list :
+        get_prize(winner_list)
     
 # 메인 테스트 함수
 def show_your_hand() :
@@ -226,6 +266,6 @@ deck_handler = DeckHandler.DeckHandler()
 total_chip = 0
 dealer = Dealer.Dealer()
 player_list = []
-winner = None
+winner_list = []
 
 play_start()
