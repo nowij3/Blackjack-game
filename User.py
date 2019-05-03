@@ -13,6 +13,20 @@ class User(Gamer):
         self._money_status = True
         self.new_hand()
 
+    # 잔고 확인
+    def has_money(self):
+        if self.balance < 100:
+            self.money_status = False
+            return False
+        return True
+
+    # 게임 가능 여부 확인
+    def is_playable(self):
+        if self.has_money() and self.play_status == 'st_stand':
+            return True
+        return False
+
+
 # properties
 
     @property
@@ -30,3 +44,11 @@ class User(Gamer):
     @balance.setter
     def balance(self, new_balance):
         self._balance = new_balance
+
+    @property
+    def money_status(self):
+        return self._money_status
+
+    @money_status.setter
+    def money_status(self, new_money_status):
+        self._money_status = new_money_status

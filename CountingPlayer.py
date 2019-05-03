@@ -43,7 +43,6 @@ class CountingPlayer(Gamer):
         if self.hand_num > 2:
             self.open_hit_card()
 
-
         # 처음 Deal로 카드를 두장 받은상태
         elif self.hand_num == 2:
             self.open_deal_card()
@@ -151,20 +150,41 @@ class CountingPlayer(Gamer):
                 super().stand()
                 return
 
+    # 잔고 확인
+    def has_money(self):
+        if self.balance < 100:
+            self.money_status = False
+            return False
+        return True
+
+    # 게임 가능 여부 확인
+    def is_playable(self):
+        if self.has_money() and self.play_status == 'st_stand':
+            return True
+        return False
+
 # properties
 
-        @property
-        def chip_choice(self):
-            return self._chip_choice
+    @property
+    def chip_choice(self):
+        return self._chip_choice
 
-        @chip_choice.setter
-        def chip_choice(self, new_chip_choice):
-            self._chip_choice = new_chip_choice
+    @chip_choice.setter
+    def chip_choice(self, new_chip_choice):
+        self._chip_choice = new_chip_choice
 
-        @property
-        def balance(self):
-            return self._balance
+    @property
+    def balance(self):
+        return self._balance
 
-        @balance.setter
-        def balance(self, new_balance):
-            self._balance = new_balance
+    @balance.setter
+    def balance(self, new_balance):
+        self._balance = new_balance
+
+    @property
+    def money_status(self):
+        return self._money_status
+
+    @money_status.setter
+    def money_status(self, new_money_status):
+        self._money_status = new_money_status
