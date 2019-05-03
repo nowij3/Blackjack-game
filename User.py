@@ -7,6 +7,7 @@ class User(Gamer):
         self._chip_choice = 0  # 선택한 코인
         self._balance = self.INIT_MONEY  # 가진 금액
         self._money_status = True
+        self._play_status = 'st_hit'
 
     def new_game(self):
         self._chip_choice = 0  # 선택한 코인
@@ -53,3 +54,11 @@ class User(Gamer):
     @money_status.setter
     def money_status(self, new_money_status):
         self._money_status = new_money_status
+
+    @property
+    def play_status(self):
+        return self._play_status
+
+    @play_status.setter
+    def play_status(self, new_play_status):
+        self._play_status = new_play_status
