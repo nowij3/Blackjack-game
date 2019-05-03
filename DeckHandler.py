@@ -2,10 +2,6 @@ from Deck import Deck
 import random
 
 
-class DeckHandler:from Deck import Deck
-import random
-
-
 class DeckHandler:
 
     def __init__(self):
