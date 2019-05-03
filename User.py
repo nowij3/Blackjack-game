@@ -1,14 +1,15 @@
-import Gamer
+from Gamer import Gamer
 
 
 class User(Gamer):
     def __init__(self):
-        self._chip_choice = None  # 선택한 코인
+        super().__init__()
+        self._chip_choice = 0  # 선택한 코인
         self._balance = self.INIT_MONEY  # 가진 금액
         self._money_status = True
 
     def new_game(self):
-        self._chip_choice = None  # 선택한 코인
+        self._chip_choice = 0  # 선택한 코인
         self._balance = self.INIT_MONEY  # 가진 금액
         self._money_status = True
         self.new_hand()

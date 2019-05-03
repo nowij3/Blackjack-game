@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
-import Gamer
+
 import Deck as deck
 import Dealer
 import CountingPlayer
+import User
 
 
 # 유저가 베팅할 칩 선택 (GUI로 인풋받기)
@@ -52,7 +53,7 @@ def make_players(name1, name2) :
     # player_list[2] = 카운팅 플레이어2
     # 항상 고정
     player_list.append(CountingPlayer.CountingPlayer(name1))
-    player_list.append(Gamer.Gamer())
+    player_list.append(User.User())
     player_list.append(CountingPlayer.CountingPlayer(name2))
 
 
@@ -101,9 +102,9 @@ def play_deal() :
 
 
     # deal
-    dealer.deal(deck)
+    dealer.deal()
     for i in range (0, 3) :
-        player_list[i].deal(deck)
+        player_list[i].deal()
 
     dealer.open_card()
     for i in range (0, 3) :
