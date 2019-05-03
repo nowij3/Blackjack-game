@@ -113,10 +113,17 @@ class CountingPlayer(Gamer):
             self.play_status = "st_bust"
             return
 
-        elif self.hand_sum == 21:
+        elif self.hand_num == 2 and self.hand_sum == 21:
             self.blackjack = True
 
+        elif self.hand_sum == 21:
+            print('합은21인데블랙잭이아님ㅇㅅㅇ')
+            self.play_status = 'st_stand'
+
         else:
+            #################################################################
+            # 여기가 아직 수정이 안되었읍니다
+            #################################################################
             if self.get_true_count() > 0:
                 self.play_status = "st_hit"
                 self.hit()
