@@ -2,6 +2,10 @@ from Deck import Deck
 import random
 
 
+class DeckHandler:from Deck import Deck
+import random
+
+
 class DeckHandler:
 
     def __init__(self):
@@ -41,3 +45,5 @@ class DeckHandler:
         self._n_deck=4 #deck의 수 초기값(0.5씩 차감=사용한 deck의 수)
         self._sum=0
         self._n_cards=208 #deck의 카드 수
+        for i in range(52):
+            Deck.deck[i][3]=4 #deck의 모든 카드의 개수를 4로 초기화
