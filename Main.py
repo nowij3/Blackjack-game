@@ -179,11 +179,11 @@ def play_deal() :
     for i in range (0, 3) :
         player_list[i].deal()
 
-    dealer.open_deal_card()
+    # dealer.open_deal_card()
     give_my_card_info(3, dealer.hand[-1])
     
     for i in range (0, 3) :
-        player_list[i].open_deal_card()
+        # player_list[i].open_deal_card()
         give_my_card_info(i, player_list[i].hand[-2])
         give_my_card_info(i, player_list[i].hand[-1])
 
