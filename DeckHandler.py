@@ -10,7 +10,7 @@ class DeckHandler:
     def get_card(self):
 
         while True:
-            rand_num=random.randint(0,13)
+            rand_num=random.randint(0,51)
             if Deck.deck[rand_num][3] > 0:
                 break
         Deck.deck[rand_num][3] -= 1
