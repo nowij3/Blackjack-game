@@ -156,7 +156,7 @@ def play_start() :
     play_deal()
     play_continue()
 
-# 라운드 시작 (딜) ***딜 할 때 give_my_card_info 안되어있음
+# 라운드 시작 (딜)
 def play_deal() :  
     
     # (GUI에서 deck에 8장 이하만 남으면 덱을 섞기)
@@ -182,6 +182,8 @@ def play_deal() :
         give_my_card_info(i, player_list[i].hand[-2])
         give_my_card_info(i, player_list[i].hand[-1])
 
+    print("*play_deal*")
+    show_your_hand()
 
 # 딜 이후 게임 진행 
 def play_continue() :
@@ -190,7 +192,7 @@ def play_continue() :
 
     # 딜 카드에서 블랙잭이 있는 경우
     if check_blackjack() :
-        play_end()
+        play_round_end()
         
     else :
         for i in range (0, 3) :
@@ -199,15 +201,18 @@ def play_continue() :
                 give_my_card_info(i, player_list[i].hand[-1])
             else :
                 # hit한 플레이어가 아무도 없다면
-                play_end()
+                play_round_end()
                 return
                 
         # 딜러의 딜에서 받은 뒤집히지 않은 카드 오픈
         dealer.open_second_card()
         give_my_card_info(3, dealer.hand[-1])
+
+        print("*play_hit*")
+        show_your_hand()
         
         if check_blackjack() :
-            play_end()
+            play_round_end()
             return
                         
     while hit_anyone() :
@@ -218,17 +223,20 @@ def play_continue() :
             if player_list[i].is_playable :
                 player_list[i].hit()
                 give_my_card_info(i, player_list[i].hand[-1])
+
+        print("*play_hit*")
+        show_your_hand()
                 
         if check_blackjack() :
             break
         
             
-    play_end()
+    play_round_end()
 
 # 한 라운드 종료
-def play_end() :
+def play_round_end() :
 
-    print("called play_end")
+    print("called play_round_end")
 
     # 테스트
     show_your_hand()
@@ -241,21 +249,32 @@ def play_end() :
     # if check_blackjack == False :
     find_winner(winner_list)
 
-    print("winner : ", winner_list)
+    print("winner : ", winner_list.name)
     
     # 상금 받기
     if not winner_list :
         get_prize(winner_list)
+
+# 메인 게임 종료
+def play_game_end() :
+
+    print("called play_game_end")
+    
+    # 모든 플레이어의 재산이 파산 상태일 때
+    if not player_list[0].hasmoney and not player_list[1].hasmoney and not player_list[2].hasmoney :
+        
+        # GUI에서 new game 제외한 모든 버튼 선택 못 하게 구현 필요
+        print("press new game")
     
 # 메인 테스트 함수
 def show_your_hand() :
     
     print("called show_your_hand")
     
-    print("dealer : ", dealer.hand)
-    print(player_list[0].name," : ",player_list[0].hand)
-    print("user : ",player_list[1].hand)
-    print(player_list[2].name," : ",player_list[2].hand)
+    print("dealer : ", dealer.hand , ", hand_num : ", dealer.hand_num, ", hand_sum : ", dealer.hand_sum)
+    print(player_list[0].name," : ",player_list[0].hand, ", hand_num : ", player_list[0].hand_num, "hand_sum : ", player_list[0].hand_sum)
+    print("user : ",player_list[1].hand, ", hand_num : ", player_list[1].hand_num, "hand_sum : ", player_list[1].hand_sum)
+    print(player_list[2].name," : ",player_list[2].hand, ", hand_num : ", player_list[2].hand_num, "hand_sum : ", player_list[2].hand_sum)
     
 
 ########
