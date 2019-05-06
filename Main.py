@@ -113,11 +113,15 @@ def find_winner(winner) :
     print("called find_winner")
     
     if winner == None :
-        if check_blackjack() == False :
+        
+        # 아무도 블랙잭이 아닌 경우
+        if not check_blackjack() :
+            
             if dealer.hand_sum < 21 :
                 tmp = dealer
             else :
                 tmp = None
+
             
             for i in range(0, 3) :
                 if player_list[i].hand_sum < 21 :
@@ -125,14 +129,17 @@ def find_winner(winner) :
                         tmp = player_list[i]
                     elif tmp.hand_sum < player_list[i].hand_sum :
                         tmp = player_list[i]
+                    else :
+                        print("문제있음:(");
+                        
             if tmp != None :
                 winner = tmp
                 return
             
-        # 모두가 파산인 경우
-        else :
-            winner_list.append(dealer)
-            return
+            # 모두가 파산인 경우
+            else :
+                winner_list.append(dealer)
+                return
 
 # 다른 플레이어에게 내 카드 정보 주기, CountingPlayer들만 적용됨
 def give_my_card_info(i, card) :
@@ -249,7 +256,8 @@ def play_round_end() :
     # if check_blackjack == False :
     find_winner(winner_list)
 
-    print("winner : ", winner_list.name)
+    for i in range(len(winner_list)) :
+        print("winner : ", winner_list[i].name)
     
     # 상금 받기
     if not winner_list :
@@ -272,9 +280,9 @@ def show_your_hand() :
     print("called show_your_hand")
     
     print("dealer : ", dealer.hand , ", hand_num : ", dealer.hand_num, ", hand_sum : ", dealer.hand_sum)
-    print(player_list[0].name," : ",player_list[0].hand, ", hand_num : ", player_list[0].hand_num, "hand_sum : ", player_list[0].hand_sum)
+    print(player_list[0].name," : ",player_list[0].hand, ", hand_num : ", player_list[0].hand_num, ", hand_sum : ", player_list[0].hand_sum)
     print("user : ",player_list[1].hand, ", hand_num : ", player_list[1].hand_num, "hand_sum : ", player_list[1].hand_sum)
-    print(player_list[2].name," : ",player_list[2].hand, ", hand_num : ", player_list[2].hand_num, "hand_sum : ", player_list[2].hand_sum)
+    print(player_list[2].name," : ",player_list[2].hand, ", hand_num : ", player_list[2].hand_num, ", hand_sum : ", player_list[2].hand_sum)
     
 
 ########
