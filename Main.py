@@ -273,7 +273,7 @@ def show_your_hand() :
     
     print("dealer : ", dealer.hand , ", hand_num : ", dealer.hand_num, ", hand_sum : ", dealer.hand_sum)
     print(player_list[0].name," : ",player_list[0].hand, ", hand_num : ", player_list[0].hand_num, "hand_sum : ", player_list[0].hand_sum)
-    print("user : ",player_list[1].hand, ", hand_num : ", player_list[1].hand_num, "hand_sum : ", player_list[1].hand_sum))
+    print("user : ",player_list[1].hand, ", hand_num : ", player_list[1].hand_num, "hand_sum : ", player_list[1].hand_sum)
     print(player_list[2].name," : ",player_list[2].hand, ", hand_num : ", player_list[2].hand_num, "hand_sum : ", player_list[2].hand_sum)
     
 
