@@ -106,11 +106,37 @@ def check_blackjack() :
     return False
 
 # 아무도 블랙잭이 아닌 경우 21에 가장 가까운 플레이어(우승자) 찾기
-def find_winner(winner) :
+def find_winner() :
 
     print("called find_winner")
 
-    winner_list.append(dealer)
+    # 파산 상태가 아닌 플레이어들 목록
+    not_bust_list = []
+
+    # 딜러가 파산하지 않은 상태면
+    if not dealer.is_bust : 
+            not_bust_list.append(dealer)
+
+    # 플레이어 중 하나라도 파산하지 않은 상태면 
+    for i in range(3) :
+        if not player_list[i].is_bust :
+                not_bust_list.append(dealer)
+
+    # not_bust_list 가 비어있다면
+    if not not_bust_list :
+            # 모두 파산인 경우 딜러가 우승자
+            winner_list.append(dealer)
+    else :
+            # 임시 우승자
+            tmp_winner = not_bust_list[0]
+
+            # 파산하지 않은 플레이어가 여러 명이면
+            if len(not_bust_list) > 1 :
+                    for i in range(1, len(not_bust_list)) :
+                            # 가장 hand_sum이 큰 플레이어가 우승
+                            if tmp_winner.hand_sum < not_bust_list[i].hand_sum :
+                                    tmp_winner = not_bust_list[i]
+            winner_list.append(tmp_winner)	
     
 
 # 다른 플레이어에게 내 카드 정보 주기, CountingPlayer들만 적용됨
@@ -231,7 +257,7 @@ def play_round_end() :
         player_list[i].play_status = "st_stand"
         
     #if not check_blackjack :
-    find_winner(winner_list)
+    find_winner()
 
     print("winner : ", winner_list[0].name)
     

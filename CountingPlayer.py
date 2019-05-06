@@ -104,25 +104,27 @@ class CountingPlayer(Gamer):
         true_count = self.counting / self.handler.get_remaining_card()
         return true_count
 
-    # 카운팅 값 기반으로 Hit/Stand 여부 결정
+    # 카운팅 값 기반으로 Hit/Stand 여부 결정, Hit한 경우에만 return True
     def make_decision(self):
 
         if self.hand_sum <= 11:
             self.play_status = "st_hit"
             self.hit()
-            return
+            return True
 
         elif self.hand_sum > 21:
             self.play_status = "st_bust"
-            return
+            return False
 
         elif self.hand_num == 2 and self.hand_sum == 21:
             self.blackjack = True
             self.stand()
+            return False
 
         elif self.hand_sum == 21:
             print('합은21인데블랙잭이아님ㅇㅅㅇ')
             self.stand()
+            return False
 
         else:
             #################################################################
@@ -131,10 +133,10 @@ class CountingPlayer(Gamer):
             if self.get_true_count() > 0 and self.play_status == 'st_hit':
                 # self.play_status = "st_hit"
                 self.hit()
-                return
+                return True
             else:
                 self.stand()
-                return
+                return False
 
     # 잔고 확인
     def has_money(self):
