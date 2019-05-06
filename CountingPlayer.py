@@ -118,6 +118,7 @@ class CountingPlayer(Gamer):
 
         elif self.hand_num == 2 and self.hand_sum == 21:
             self.blackjack = True
+            self.stand()
 
         elif self.hand_sum == 21:
             print('합은21인데블랙잭이아님ㅇㅅㅇ')

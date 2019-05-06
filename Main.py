@@ -256,6 +256,7 @@ def show_your_hand() :
     print("called show_your_hand")
     
     print("dealer : ", dealer.hand , ", hand_num : ", dealer.hand_num, ", hand_sum : ", dealer.hand_sum)
+
     print(player_list[0].name," : ",player_list[0].hand, ", hand_num : ", player_list[0].hand_num, ", hand_sum : ", player_list[0].hand_sum)
     print("user : ",player_list[1].hand, ", hand_num : ", player_list[1].hand_num, "hand_sum : ", player_list[1].hand_sum)
     print(player_list[2].name," : ",player_list[2].hand, ", hand_num : ", player_list[2].hand_num, ", hand_sum : ", player_list[2].hand_sum)
@@ -271,4 +272,25 @@ dealer = Dealer.Dealer()
 player_list = []
 winner_list = []
 
-play_start()
+# play_start()
+set_level("easy")
+
+dealer.deal()
+print(dealer.hand)
+print(dealer.hand_sum, '\n\n')
+for i in range (0, 3) :
+    player_list[i].deal()
+    print(player_list[i].hand)
+    print(player_list[i].hand_sum, '\n\n')
+
+dealer.open_deal_card()
+dealer.open_second_card()
+give_my_card_info(3, dealer.hand[-1])
+
+for i in range(0, 3):
+    player_list[i].open_deal_card()
+    give_my_card_info(i, player_list[i].hand[-2])
+    give_my_card_info(i, player_list[i].hand[-1])
+
+print("*play_deal*")
+show_your_hand()

@@ -128,8 +128,8 @@ class Gamer:
             # setImage
             for j in range(13):
                 if self.hand[i][1] == Deck.deck[j][1]:          # 모양, 이름, 값, 개수
-                    # if __name__ == '__main__':
-                    #     print("self.hand[", i, "][1] = Deck.deck[", j, "][1]")
+                    if __name__ == '__main__':
+                        print("self.hand[", i, "][1] = Deck.deck[", j, "][1]")
                     self.hand_sum += Deck.deck[j][2]
 
         if self.hand_sum > 21:
@@ -157,6 +157,8 @@ class Gamer:
 
         for i in range(13):  # deck에서 숫자에 해당하는 값을 찾아서 더함
             if str(self.hand[-1][1]) == Deck.deck[i][1]:  # deck에는 모양-이름-값-개수
+                if __name__ == '__main__':
+                    print("self.hand[", i, "][1] = Deck.deck[", i, "][1]")
                 self.hand_sum += Deck.deck[i][2]
 
         if num_of_A > 0:  # A를 가지고있는 경우
