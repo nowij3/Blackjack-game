@@ -104,17 +104,17 @@ class Gamer:
     # Ace 카드 점수 결정
     ''' deck에서 A값을 11로 설정하고 합이 21을 넘을경우 10을빼서 1로 만드는방법으로'''
     def decide_ace_point(self, num_of_ace):
-        if __name__ == '__main__':
-            print('called decide_ace_point')
-            print("decide before : now cards = ", self.hand, "// numbers: ", self.hand_num, "// total: ", self.hand_sum)
+        # if __name__ == '__main__':
+        #     print('called decide_ace_point')
+            # print("decide before : now cards = ", self.hand, "// numbers: ", self.hand_num, "// total: ", self.hand_sum)
 
         if self.hand_sum > 21:
             for i in range(num_of_ace):
                 self.hand_sum -= 10
                 if self.hand_sum <= 21:
                     break
-        if __name__ == '__main__':
-            print("decide after : now cards = ", self.hand, "// numbers: ", self.hand_num, "// total: ", self.hand_sum)
+        # if __name__ == '__main__':
+        #     print("decide after : now cards = ", self.hand, "// numbers: ", self.hand_num, "// total: ", self.hand_sum)
 
         return self.hand_sum
 
@@ -162,8 +162,8 @@ class Gamer:
             self.hand_sum = self.decide_ace_point(num_of_A)
 
         self.is_bust()  # bust 확인
-        if __name__ == '__main__':
-            print("now cards = ", self.hand, "// numbers: ", self.hand_num, "// total: ", self.hand_sum)
+        # if __name__ == '__main__':
+        print("now cards = ", self.hand, "// numbers: ", self.hand_num, "// total: ", self.hand_sum)
 
     # 합이 21을 초과하는지 검사하고 초과하면 play_status 변경
     def is_bust(self):
@@ -233,5 +233,22 @@ class Gamer:
 if __name__ == '__main__':
     gamer = Gamer()
     gamer.deal()
+    print('hand:', gamer.hand)
+    print('sum:', gamer.hand_sum)
     gamer.hit()
-    gamer.stand()
+    print('hand:', gamer.hand)
+    print('sum:', gamer.hand_sum)
+    gamer.hit()
+    print('hand:', gamer.hand)
+    print('sum:', gamer.hand_sum)
+    gamer.hit()
+    print('hand:', gamer.hand)
+    print('sum:', gamer.hand_sum)
+    gamer.hit()
+    print('hand:', gamer.hand)
+    print('sum:', gamer.hand_sum)
+    # gamer.hit()
+    # print('sum:', gamer.hand_sum)
+    #
+    # gamer.stand()
+    # print('sum:', gamer.hand_sum)

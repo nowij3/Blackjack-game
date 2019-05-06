@@ -32,9 +32,17 @@ p2.place(x=120, y=150, width=70, height=30)
 p3.place(x=500, y=150, width=70, height=30)
 
 def chip_pressed(value):
-    
-    num_entry.insert("end", value)  
+
+    if not num_entry.get() == '':
+        v = int(value)
+        v += int(num_entry.get())
+        # value += int(num_entry.get())
+        num_entry.delete(0,'end')
+        num_entry.insert("end", str(v))
+    else:
+        num_entry.insert("end", value)
     print(value,"pressed")
+    # print(int(num_entry.get()))
 
 
 entry_value=tkinter.StringVar(window, value='')

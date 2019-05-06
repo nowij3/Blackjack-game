@@ -15,6 +15,7 @@ class CountingPlayer(Gamer):
         self._money_status = True
         self._play_status = 'st_hit'
 
+
     # 이름에 따른 카운팅 리스트 반환
     def select_count_list(self, name):
         c_list_instance = CountingList.CountingList()
@@ -80,8 +81,9 @@ class CountingPlayer(Gamer):
                 num_of_A += 1
 
         for i in range(13):  # deck에서 숫자에 해당하는 값을 찾아서 더함
-            if self.hand[-1][1] == Deck.deck[i][0]:  # deck에는 모양-이름-값-개수
+            if self.hand[-1][1] == Deck.deck[i][1]:  # deck에는 모양-이름-값-개수
                 self.hand_sum += Deck.deck[i][2]
+
 
         if num_of_A > 0:  # A를 가지고있는 경우
             self.hand_sum = self.decide_ace_point(num_of_A)
@@ -146,6 +148,8 @@ class CountingPlayer(Gamer):
             return True
         return False
 
+    # 카운팅 플레이어 베팅
+
 # properties
 
     @property
@@ -190,14 +194,38 @@ class CountingPlayer(Gamer):
 
 
 if __name__ == "__main__":
-    player = CountingPlayer('Hi-Lo')
+    player = CountingPlayer('KO')
     print(player.count_list)
     player.deal()
     print('hand = ', player.hand)
-    print('count = ', player.counting)
+    print('handsum = ', player.hand_sum)
+   # print('count = ', player.counting)
+   #  for i in range(10):
+   #      player.hit()
+   #      print('hand = ', player.hand)
+   #      print('handsum = ', player.hand_sum,'\n')
+    # print('count = ', player.counting)
+    # print(player.hand_num)
+    # print(player.get_true_count())
+
     player.hit()
     print('hand = ', player.hand)
-    print('count = ', player.counting)
-    print(player.hand_num)
-    print(player.get_true_count())
+    print('handsum = ', player.hand_sum)
 
+    player.hit()
+    print('hand = ', player.hand)
+    print('handsum = ', player.hand_sum)
+
+    player.hit()
+    print('hand = ', player.hand)
+    print('handsum = ', player.hand_sum)
+
+    print('\n\n')
+ # print(Deck.deck)
+
+    # print('hand =', player.hand)
+    # player1 = CountingPlayer()
+    # player2 = CountingPlayer()
+    #
+    # player1.deal()
+    # player2.deal()

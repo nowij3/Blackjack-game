@@ -3,6 +3,11 @@ from Deck import Deck
 
 
 class Dealer(Gamer):
+
+    def __init__(self):
+        super().__init__()
+        self.name = 'Dealer'
+
     # 처음 카드 한 장 공개
     def open_deal_card(self):
         # 카드 합 계산
@@ -39,6 +44,7 @@ class Dealer(Gamer):
             return True
         return False
 
+
 if __name__ == '__main__':
     dealer = Dealer()
 
@@ -47,4 +53,5 @@ if __name__ == '__main__':
     print(dealer.hand)
     dealer.play()
     print(dealer.hand)
+    print('sum:', dealer.hand_sum)
     print(dealer.play_status)

@@ -8,6 +8,7 @@ class User(Gamer):
         self._balance = self.INIT_MONEY  # 가진 금액
         self._money_status = True
         self._play_status = 'st_hit'
+        self.name = 'User'
 
     def new_game(self):
         self._chip_choice = 0  # 선택한 코인
