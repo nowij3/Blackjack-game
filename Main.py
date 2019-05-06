@@ -332,16 +332,20 @@ set_level("easy")
 # give_my_card_info(3, dealer.hand[-1])
 '''
 
-dealer.deal()
-print(dealer.hand)
-print(dealer.hand_sum, '\n\n')
-for i in range (0, 3) :
-    player_list[i].deal()
-    print(player_list[i].hand)
-    print(player_list[i].hand_sum, '\n\n')
+# dealer.deal()
+# print(dealer.hand)
+# print(dealer.hand_sum, '\n\n')
+# for i in range (0, 3) :
+#     player_list[i].deal()
+#     print(player_list[i].hand)
+#     print(player_list[i].hand_sum, '\n\n')
 
 print("*******************play_deal****************************")
 play_deal()
+play_hit()
 dealer.open_second_card()
 print("*****************showing hand****************************")
 show_your_hand()
+find_winner()
+print('winner : ', winner_list[0].name)
+
