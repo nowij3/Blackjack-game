@@ -174,6 +174,8 @@ class Gamer:
         if self.hand_sum > 21:
             self.play_status = 'st_bust'
             print("busted")
+            return True
+        return False
 
     # 처음 두장의 합이 21인 경우 (BlackJack인 경우)
     def is_blackjack(self):
