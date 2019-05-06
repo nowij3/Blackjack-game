@@ -87,13 +87,12 @@ class Gamer:
         if __name__ == '__main__':
             print("called hit")
 
-        if self.play_status == "st_hit":
-            self.hand.append(self.handler.get_card())
-            self.hand_num += 1
-            self.open_card()
+        self.hand.append(self.handler.get_card())
+        self.hand_num += 1
+        self.open_card()
 
-            if __name__ == '__main__':
-                print("now cards = ", self.hand, "// numbers: ", self.hand_num, "// total: ", self.hand_sum)
+        if __name__ == '__main__':
+            print("now cards = ", self.hand, "// numbers: ", self.hand_num, "// total: ", self.hand_sum)
 
     # Stand. 카드 더이상 받지 않음
     def stand(self):
@@ -107,6 +106,18 @@ class Gamer:
         # if __name__ == '__main__':
         #     print('called decide_ace_point')
             # print("decide before : now cards = ", self.hand, "// numbers: ", self.hand_num, "// total: ", self.hand_sum)
+
+        self.hand_sum = 0
+        #####################################
+        # sum 부분 더하기 처음부터 다시
+        #################################
+        for i in range(len(self.hand)):
+            for j in range(13):
+                if str(self.hand[i][1]) == Deck.deck[j][1]:  # deck에는 모양-이름-값-개수
+                    if __name__ == '__main__':
+                        print("self.hand[", i, "][1] = Deck.deck[", j, "][1]")
+                    self.hand_sum += Deck.deck[j][2]
+
         if self.hand_sum > 21:
             for i in range(num_of_ace):
                 print('number of A, i loop', i)
@@ -156,9 +167,9 @@ class Gamer:
                 num_of_A += 1
 
         for i in range(13):  # deck에서 숫자에 해당하는 값을 찾아서 더함
-            if str(self.hand[-1][1]) == Deck.deck[i][1]:  # deck에는 모양-이름-값-개수
-                if __name__ == '__main__':
-                    print("self.hand[", i, "][1] = Deck.deck[", i, "][1]")
+            if self.hand[-1][1] == Deck.deck[i][1]:  # deck에는 모양-이름-값-개수
+                # if __name__ == '__main__':
+                #     print("self.hand[", i, "][1] = Deck.deck[", i, "][1]")
                 self.hand_sum += Deck.deck[i][2]
 
         if num_of_A > 0:  # A를 가지고있는 경우

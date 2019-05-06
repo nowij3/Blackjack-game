@@ -15,7 +15,6 @@ class CountingPlayer(Gamer):
         self._money_status = True
         self._play_status = 'st_hit'
 
-
     # 이름에 따른 카운팅 리스트 반환
     def select_count_list(self, name):
         c_list_instance = CountingList.CountingList()
