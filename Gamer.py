@@ -107,11 +107,12 @@ class Gamer:
         # if __name__ == '__main__':
         #     print('called decide_ace_point')
             # print("decide before : now cards = ", self.hand, "// numbers: ", self.hand_num, "// total: ", self.hand_sum)
-
         if self.hand_sum > 21:
             for i in range(num_of_ace):
+                print('number of A, i loop', i)
                 self.hand_sum -= 10
                 if self.hand_sum <= 21:
+                    self.play_status = 'st_hit'
                     break
         # if __name__ == '__main__':
         #     print("decide after : now cards = ", self.hand, "// numbers: ", self.hand_num, "// total: ", self.hand_sum)
@@ -162,8 +163,8 @@ class Gamer:
             self.hand_sum = self.decide_ace_point(num_of_A)
 
         self.is_bust()  # bust 확인
-        # if __name__ == '__main__':
-        print("now cards = ", self.hand, "// numbers: ", self.hand_num, "// total: ", self.hand_sum)
+        if __name__ == '__main__':
+            print("now cards = ", self.hand, "// numbers: ", self.hand_num, "// total: ", self.hand_sum, "// status : ", self.play_status)
 
     # 합이 21을 초과하는지 검사하고 초과하면 play_status 변경
     def is_bust(self):
@@ -178,6 +179,7 @@ class Gamer:
     def is_blackjack(self):
         if self.hand_num == 2 and self.hand_sum == 21:
             self.blackjack = True
+            self.stand()
             if __name__ == '__main__':
                 print("BLACKJACK")
             return True
@@ -233,22 +235,7 @@ class Gamer:
 if __name__ == '__main__':
     gamer = Gamer()
     gamer.deal()
-    print('hand:', gamer.hand)
-    print('sum:', gamer.hand_sum)
-    gamer.hit()
-    print('hand:', gamer.hand)
-    print('sum:', gamer.hand_sum)
-    gamer.hit()
-    print('hand:', gamer.hand)
-    print('sum:', gamer.hand_sum)
-    gamer.hit()
-    print('hand:', gamer.hand)
-    print('sum:', gamer.hand_sum)
-    gamer.hit()
-    print('hand:', gamer.hand)
-    print('sum:', gamer.hand_sum)
-    # gamer.hit()
-    # print('sum:', gamer.hand_sum)
-    #
-    # gamer.stand()
-    # print('sum:', gamer.hand_sum)
+    for i in range(10):
+        if gamer.play_status == 'st_hit':
+            gamer.hit()
+            break
