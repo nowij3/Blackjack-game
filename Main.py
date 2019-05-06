@@ -26,7 +26,7 @@ def calculate_chip() :
     return total_chip
 
 
-# 블랙잭인 경우 베팅한 금액의 2.5배, 그 외엔 2배 반환
+# 블랙잭인 경우 베팅한 금액의 2.5배, 그 외엔 2배 반환 *** 카드2장 블랙잭에 대한 구별 필요
 def prize_chip(player) :
 
     print("called prize_chip")
@@ -179,11 +179,11 @@ def play_deal() :
     for i in range (0, 3) :
         player_list[i].deal()
 
-    # dealer.open_deal_card()
+    dealer.open_deal_card()
     give_my_card_info(3, dealer.hand[-1])
     
     for i in range (0, 3) :
-        #player_list[i].open_deal_card()
+        player_list[i].open_deal_card()
         give_my_card_info(i, player_list[i].hand[-2])
         give_my_card_info(i, player_list[i].hand[-1])
 
@@ -195,50 +195,68 @@ def play_continue() :
 
     print("called play_continue")
 
-    # 딜 카드에서 블랙잭이 있는 경우
+    # 딜 카드에서 플레이어에게 블랙잭이 있는 경우
     if check_blackjack() :
-        play_round_end()
-        
-    else :
-        for i in range (0, 3) :
-            if player_list[i].is_playable :
-                player_list[i].hit()
-                give_my_card_info(i, player_list[i].hand[-1])
-            else :
-                # hit한 플레이어가 아무도 없다면
-                play_round_end()
-                return
-                
+
         # 딜러의 딜에서 받은 뒤집히지 않은 카드 오픈
         dealer.open_second_card()
         give_my_card_info(3, dealer.hand[-1])
+        play_round_end()
+        return
 
-        play_hit()
 
-# 히트
+    # 플레이어가 hit한 경우에만 카드 정보 주기
+    if player_list[0].make_decision() :
+        give_my_card_info(0, player_list[0].hand[-1])
+
+    # 유저 선택
+    if input("hit/stand 여부 : ") == "hit" :
+        player_list[1].hit()
+        give_my_card_info(1, player_list[1].hand[-1])
+    else :
+        player_list[1].play_status = "st_stand"
+
+
+    if player_list[2].make_decision() :
+        give_my_card_info(2, player_list[2].hand[-1])
+
+
+    # hit한 플레이어가 아무도 없다면 (딜러 제외)
+    if not player_list[0].is_playable and not player_list[1].is_playable and not player_list[2].is_playable :
+
+        # 딜러의 딜에서 받은 뒤집히지 않은 카드 오픈
+        dealer.open_second_card()
+        give_my_card_info(3, dealer.hand[-1])
+        play_round_end()
+        return
+
+    # hit한 플레이어가 있는 경우
+    # 딜러의 딜에서 받은 뒤집히지 않은 카드 오픈
+    dealer.open_second_card()
+    give_my_card_info(3, dealer.hand[-1])
+
+    play_hit()
+
+# 히트 **여기 수정!
 def play_hit() :
-    print(" play_hit ")
+    print("play_hit")
     show_your_hand()
         
     if check_blackjack() :
         play_round_end()
         return
 
-    # while hit_anyone() :               
-    for j in range(2) :
+    # while hit_anyone() :
         
-        dealer.play()
-        
-        for i in range (0, 3) :
-            if player_list[i].is_playable :
-                player_list[i].hit()
-                give_my_card_info(i, player_list[i].hand[-1])
+    for i in range (0, 3) :
+        if player_list[i].is_playable :
+            player_list[i].hit()
+            give_my_card_info(i, player_list[i].hand[-1])
 
-        print("*play_hit*")
-        show_your_hand()
+    while dealer.make_decision() :
+        give_my_card_info(3, dealer.hand[-1])
                 
-        if check_blackjack() :
-            break
+    # if check_blackjack() : break
         
             
     play_round_end()
@@ -282,11 +300,10 @@ def show_your_hand() :
     print("called show_your_hand")
     
     print("dealer : ", dealer.hand , ", hand_num : ", dealer.hand_num, ", hand_sum : ", dealer.hand_sum)
-
     print(player_list[0].name," : ",player_list[0].hand, ", hand_num : ", player_list[0].hand_num, ", hand_sum : ", player_list[0].hand_sum)
     print("user : ",player_list[1].hand, ", hand_num : ", player_list[1].hand_num, "hand_sum : ", player_list[1].hand_sum)
     print(player_list[2].name," : ",player_list[2].hand, ", hand_num : ", player_list[2].hand_num, ", hand_sum : ", player_list[2].hand_sum)
-
+    
 
 ########
 # Main #
