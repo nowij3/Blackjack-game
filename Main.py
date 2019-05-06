@@ -179,11 +179,11 @@ def play_deal() :
     for i in range (0, 3) :
         player_list[i].deal()
 
-    dealer.open_deal_card()
+    # dealer.open_deal_card()
     give_my_card_info(3, dealer.hand[-1])
     
     for i in range (0, 3) :
-        player_list[i].open_deal_card()
+        # player_list[i].open_deal_card()
         give_my_card_info(i, player_list[i].hand[-2])
         give_my_card_info(i, player_list[i].hand[-1])
 
@@ -317,23 +317,28 @@ winner_list = []
 
 # play_start()
 set_level("easy")
+'''
+# dealer.deal()
+# 
+# for i in range (0, 3) :
+#     player_list[i].deal()
+#     print("player[", i, "] hand = ", player_list[i].hand)
+#     print("player[", i, "] hand sum = ", player_list[i].hand_sum, '\n\n')
+# 
+# dealer.open_second_card()
+# print("dealer hand = ", dealer.hand)
+# print("dealer hand sum = ", dealer.hand_sum)
+# 
+# give_my_card_info(3, dealer.hand[-1])
+'''
 
-dealer.deal()
-print(dealer.hand)
-print(dealer.hand_sum, '\n\n')
-for i in range (0, 3) :
-    player_list[i].deal()
-    print(player_list[i].hand)
-    print(player_list[i].hand_sum, '\n\n')
+# for i in range(0, 3):
+#     player_list[i].hit()
+#     give_my_card_info(i, player_list[i].hand[-2])
+#     give_my_card_info(i, player_list[i].hand[-1])
 
-dealer.open_deal_card()
+print("*******************play_deal****************************")
+play_deal()
 dealer.open_second_card()
-give_my_card_info(3, dealer.hand[-1])
-
-for i in range(0, 3):
-    player_list[i].open_deal_card()
-    give_my_card_info(i, player_list[i].hand[-2])
-    give_my_card_info(i, player_list[i].hand[-1])
-
-print("*play_deal*")
+print("*****************showing hand****************************")
 show_your_hand()

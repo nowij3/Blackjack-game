@@ -250,7 +250,7 @@ class Gamer:
 if __name__ == '__main__':
     gamer = Gamer()
     gamer.deal()
-    for i in range(10):
+    for i in range(5):
         if gamer.play_status == 'st_hit':
             gamer.hit()
             break
