@@ -33,10 +33,12 @@ class Dealer(Gamer):
             self.hand_sum -= 10
 
     # hit until sum reach 17
-    def play(self):
+    def  make_decision(self):
         while self.hand_sum < 17:
             self.hit()
+            return True
         self.play_status = 'st_stand'
+        return False
 
     # 게임 가능 여부 확인 -
     def is_playable(self):
