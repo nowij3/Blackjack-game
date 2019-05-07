@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-import Deck as deck
 import DeckHandler
-import Gamer
 import Dealer
 import User
 import CountingPlayer
@@ -256,9 +254,11 @@ def play_deal() :
             player_list[i].deal()
 
     # dealer.open_deal_card()
-    give_my_card_info(3, dealer.hand[-1])
+    give_my_card_info(3, dealer.hand[0])
     
     for i in range (0, 3) :
+        
+        # 카드를 받았으면
         if player_list[i].hand :
             give_my_card_info(i, player_list[i].hand[0])
             give_my_card_info(i, player_list[i].hand[1])
