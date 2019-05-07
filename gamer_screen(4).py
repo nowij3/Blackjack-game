@@ -27,7 +27,7 @@ class Blackjack:
                 self.a1=tkinter.Button(self.window, text="Deal", command=self.Deal)
                 self.a2=tkinter.Button(self.window, text="Hit", command=self.Hit)
                 self.a3=tkinter.Button(self.window, text="Stand", command=self.Stand)
-                self.a4=tkinter.Button(self.window, text="New Hand", command=self.NewHand)
+                self.a4=tkinter.Button(self.window, text="New Hand", bg="white", command=self.NewHand)
                 self.a5=tkinter.Button(self.window, text="1000", command=lambda:chip_pressed('1000'))
                 self.a6=tkinter.Button(self.window, text="500", command=lambda:chip_pressed('500'))
                 self.a7=tkinter.Button(self.window, text="200", command=lambda:chip_pressed('200'))
@@ -40,10 +40,10 @@ class Blackjack:
                 self.l3=tkinter.Button(self.window, text="Hard", command=self.Hard)
 
 
-                self.a1.place(x=150, y=300, width=90, height=50)
-                self.a2.place(x=300, y=300, width=90, height=50)
-                self.a3.place(x=450, y=300, width=90, height=50)
-                self.a4.place(x=20, y=50, width=80, height=30)
+                self.a1.place(x=150, y=330, width=90, height=45)
+                self.a2.place(x=300, y=330, width=90, height=45)
+                self.a3.place(x=450, y=330, width=90, height=45)
+                self.a4.place(x=540, y=10, width=80, height=30)
                 self.a5.place(x=20, y=90, width=50, height=50)
                 self.a6.place(x=20, y=150, width=50, height=50)
                 self.a7.place(x=20, y=210, width=50, height=50)
@@ -51,9 +51,9 @@ class Blackjack:
                 self.p1.place(x=300, y=25, width=70, height=30)
                 self.p2.place(x=120, y=150, width=70, height=30)
                 self.p3.place(x=500, y=150, width=70, height=30)
-                self.l1.place(x=20, y=10, width=70, height=30)
-                self.l2.place(x=100, y=10, width=70, height=30)
-                self.l3.place(x=180, y=10, width=70, height=30)
+                self.l1.place(x=300, y=10, width=70, height=30)
+                self.l2.place(x=380, y=10, width=70, height=30)
+                self.l3.place(x=460, y=10, width=70, height=30)
 
                 def chip_pressed(value):
 
