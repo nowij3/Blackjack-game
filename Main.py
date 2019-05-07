@@ -29,12 +29,17 @@ def calculate_chip() :
 
 # 블랙잭인 경우 베팅한 금액의 2.5배, 그 외엔 2배 반환
 def prize_chip(player) :
-    
+
+    # 딜러와 비긴 경우
+    if player.hand_sum == dealer.hand_sum :
+        return 1 * player.chip_choice
+
+
     if player.blackjack :
-        print(player.name, "recives ", int(2.5 * player.chip_choice))
+        print(player.name, "recieves ", int(2.5 * player.chip_choice))
         return 2.5 * player.chip_choice
     else :
-        print(player.name, "recives ", 2 * player.chip_choice)
+        print(player.name, "recieves ", 2 * player.chip_choice)
         return 2 * player.chip_choice
 
     
@@ -132,36 +137,42 @@ def find_winner() :
     if not dealer.is_bust() : 
         not_bust_list.append(dealer)
 
-    # 플레이어 중 하나라도 파산하지 않은 상태면 
-    for i in range(3) :
-        if not player_list[i].is_bust() :
-                not_bust_list.append(player_list[i])
+        # 플레이어 중 하나라도 파산하지 않은 상태면 
+        for i in range(3) :
+            if not player_list[i].is_bust() :
+                    not_bust_list.append(player_list[i])
 
-    # not_bust_list 가 비어있다면
-    if not not_bust_list :
-            # 모두 파산인 경우 딜러가 우승자
-            winner_list.append(dealer)
-    else :
-            # 임시 우승자
-            tmp_winner = not_bust_list[0]
+        # not_bust_list 가 비어있다면
+        if not not_bust_list :
+                # 모두 파산인 경우 딜러가 우승자
+                winner_list.append(dealer)
+        else :
+                # 임시 우승자
+                tmp_winner = not_bust_list[0]
 
-            # 파산하지 않은 플레이어가 여러 명이면
-            if len(not_bust_list) > 1 :
-                    
-                    for i in range(1, len(not_bust_list)) :
-                        # 가장 hand_sum이 큰 플레이어가 우승
-                        if tmp_winner.hand_sum < not_bust_list[i].hand_sum :
-                                tmp_winner = not_bust_list[i]
-                                    
+                # 파산하지 않은 플레이어가 여러 명이면
+                if len(not_bust_list) > 1 :
+                        
+                        for i in range(1, len(not_bust_list)) :
+                            # 가장 hand_sum이 큰 플레이어가 우승
+                            if tmp_winner.hand_sum < not_bust_list[i].hand_sum :
+                                    tmp_winner = not_bust_list[i]
+                                        
+                        winner_list.append(tmp_winner)
+
+                        # 우승자가 여러명인지 확인
+                        for i in range(1, len(not_bust_list)) :
+                            if tmp_winner.name != not_bust_list[i].name :
+                                if tmp_winner.hand_sum == not_bust_list[i].hand_sum :
+                                    winner_list.append(not_bust_list[i])
+                else :                   
                     winner_list.append(tmp_winner)
-
-                    # 우승자가 여러명인지 확인
-                    for i in range(1, len(not_bust_list)) :
-                        if tmp_winner.name != not_bust_list[i].name :
-                            if tmp_winner.hand_sum == not_bust_list[i].hand_sum :
-                                winner_list.append(not_bust_list[i])
-            else :                   
-                winner_list.append(tmp_winner)
+                    
+    # 딜러가 파산하면 파산하지 않은 플레이어들 모두 우승
+    else :
+        for i in range(3) :
+            if not player_list[i].is_bust() :
+                winner_list.append(player_list[i])
     
 # 다른 플레이어에게 내 카드 정보 주기, CountingPlayer들만 적용됨
 def give_my_card_info(i, card) :
@@ -248,9 +259,9 @@ def play_deal() :
     give_my_card_info(3, dealer.hand[-1])
     
     for i in range (0, 3) :
-        # player_list[i].open_deal_card()
-        give_my_card_info(i, player_list[i].hand[-2])
-        give_my_card_info(i, player_list[i].hand[-1])
+        if player_list[i].hand :
+            give_my_card_info(i, player_list[i].hand[0])
+            give_my_card_info(i, player_list[i].hand[1])
 
     print("\n*play_deal*\n")
     current_information()
@@ -315,7 +326,7 @@ def play_round_end() :
         find_winner()
 
     for i in range(len(winner_list)) :
-        print("\nwinner : ", winner_list[i].name)
+        print("winner : ", winner_list[i].name)
     
     # 상금 받기
     get_prize(winner_list)
