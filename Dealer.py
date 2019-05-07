@@ -48,7 +48,7 @@ class Dealer(Gamer):
 
     # 게임 가능 여부 확인 -
     def is_playable(self):
-        if self.play_status == 'st_stand':
+        if self.play_status == 'st_hit':
             return True
         return False
 
@@ -56,11 +56,16 @@ class Dealer(Gamer):
 if __name__ == '__main__':
     dealer = Dealer()
 
-    dealer.deal()
-    dealer.open_second_card()
-    print(dealer.hand)
-    while dealer.make_decision():
-        print("loop: ", dealer.hand)
-    print('\n\n', dealer.hand)
-    print('sum:', dealer.hand_sum)
-    print(dealer.play_status)
+    for i in range(10):
+        dealer.new_hand()
+        dealer.deal()
+        dealer.open_second_card()
+        print(dealer.hand)
+        print(dealer.hand_sum)
+        while dealer.make_decision():
+            print("loop: ", dealer.hand)
+            print(dealer.hand_sum)
+        print(dealer.hand)
+        print('sum:', dealer.hand_sum)
+        print(dealer.play_status)
+        print("-------------------------------------------------------------------------------")

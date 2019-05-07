@@ -44,6 +44,24 @@ class CountingPlayer(Gamer):
         return [['A', '0'], ['2', '0'], ['3', '0'], ['4', '0'], ['5', '0'], ['6', '0'], ['7', '0'], ['8', '0'],
                 ['9', '0'], ['10', '0'], ['J', '0'], ['Q', '0'], ['K', '0']]
 
+    # 베팅금액 설정
+    def decide_betting(self):
+        if self.get_true_count() < 0:
+            self.chip_choice = 100
+        elif 0 <= self.get_true_count() < 1:
+            self.chip_choice = 200
+        elif 1 <= self.get_true_count() < 3:
+            self.chip_choice = 400
+        elif 3 <= self.get_true_count() < 5:
+            self.chip_choice = 500
+        elif 5 <= self.get_true_count() < 7:
+            self.chip_choice = 600
+        elif 7 <= self.get_true_count() < 8:
+            self.chip_choice = 800
+        else:
+            self.chip_choice = 1000
+
+
     # 딜에서 카드 받은 경우 - 딜러클래스 별도구현 용이하게 따로만듦 >> polymorphism.. 사실 딜러클래스에서는 그냥 반복만 안하면되는...
     def open_deal_card(self):
         for i in range(2):
@@ -108,7 +126,7 @@ class CountingPlayer(Gamer):
                 self.counting += self.count_list[i][1]
 
     def get_true_count(self):
-        true_count = self.counting / self.handler.get_remaining_card()
+        true_count = round(self.counting / self.handler.get_remaining_card(), 2)
         return true_count
 
     # 카운팅 값 기반으로 Hit/Stand 여부 결정, Hit한 경우에만 return True
@@ -154,7 +172,7 @@ class CountingPlayer(Gamer):
 
     # 게임 가능 여부 확인
     def is_playable(self):
-        if self.has_money() and self.play_status == 'st_stand':
+        if self.has_money() and self.play_status == 'st_hit':
             return True
         return False
 
@@ -206,31 +224,19 @@ class CountingPlayer(Gamer):
 if __name__ == "__main__":
     player = CountingPlayer('KO')
     print(player.count_list)
-    player.deal()
-    print('hand = ', player.hand)
-    print('handsum = ', player.hand_sum)
-   # print('count = ', player.counting)
-   #  for i in range(10):
-   #      player.hit()
-   #      print('hand = ', player.hand)
-   #      print('handsum = ', player.hand_sum,'\n')
-    # print('count = ', player.counting)
-    # print(player.hand_num)
-    # print(player.get_true_count())
     for i in range(10):
-        if player.play_status == 'st_hit':
+        print(player.get_true_count())
+        player.new_hand()
+        player.decide_betting()
+        print("CHOICE==================", player.chip_choice)
+        player.deal()
+        while player.is_playable():
             player.hit()
         print('hand = ', player.hand)
-        print('handsum = ', player.hand_sum, '\n')
+        print('handsum = ', player.hand_sum)
+        print("counting = ", player.counting)
+        print("true count = ", player.get_true_count())
 
-
-
-    print('\n\n')
- # print(Deck.deck)
-
-    # print('hand =', player.hand)
-    # player1 = CountingPlayer()
-    # player2 = CountingPlayer()
-    #
-    # player1.deal()
-    # player2.deal()
+        print(player.play_status)
+        print(i, "round end")
+        print("===============================================================")
