@@ -26,12 +26,12 @@ def calculate_chip() :
     return total_chip
 
 
-# 블랙잭인 경우 베팅한 금액의 2.5배, 그 외엔 2배 반환 *** 카드2장 블랙잭에 대한 구별 필요
+# 블랙잭인 경우 베팅한 금액의 2.5배, 그 외엔 2배 반환
 def prize_chip(player) :
 
     print("called prize_chip")
     
-    if player.blackjack == true :
+    if player.blackjack :
         return 2.5 * player.chip_choice
     else :
         return 2 * player.chip_choice
@@ -43,7 +43,7 @@ def get_prize(winner_list) :
     print("called get_prize")
     
     for i in range(len(winner_list)) :
-        if winner_list[i].name == 'dealer' :
+        if winner_list[i].name == 'Dealer' :
             continue
         else :
             winner_list[i].balance += prize_chip(winner_list[i])
@@ -96,49 +96,64 @@ def check_blackjack() :
     for i in range(0, 3) :
         if player_list[i].is_blackjack() :
             winner_list.append(player_list[i])
-            return True
 
     if dealer.is_blackjack() :
         winner_list.append(dealer)
         return True
 
+    # 딜러 제외 플레이어 중 블랙잭이 있으면
+    if winner_list :
+        return True
+
     # 아무도 블랙잭이 아니면
-    return False
+    else :
+        return False
 
 # 아무도 블랙잭이 아닌 경우 21에 가장 가까운 플레이어(우승자) 찾기
 def find_winner() :
 
     print("called find_winner")
 
-    # 파산 상태가 아닌 플레이어들 목록
-    not_bust_list = []
+    if not check_blackjack() :
+        
+        # 파산 상태가 아닌 플레이어들 목록
+        not_bust_list = []
 
-    # 딜러가 파산하지 않은 상태면
-    if not dealer.is_bust : 
+        # 딜러가 파산하지 않은 상태면
+        if not dealer.is_bust() : 
             not_bust_list.append(dealer)
 
-    # 플레이어 중 하나라도 파산하지 않은 상태면 
-    for i in range(3) :
-        if not player_list[i].is_bust :
-                not_bust_list.append(dealer)
+        # 플레이어 중 하나라도 파산하지 않은 상태면 
+        for i in range(3) :
+            if not player_list[i].is_bust() :
+                    not_bust_list.append(player_list[i])
 
-    # not_bust_list 가 비어있다면
-    if not not_bust_list :
-            # 모두 파산인 경우 딜러가 우승자
-            winner_list.append(dealer)
-    else :
-            # 임시 우승자
-            tmp_winner = not_bust_list[0]
+        # not_bust_list 가 비어있다면
+        if not not_bust_list :
+                # 모두 파산인 경우 딜러가 우승자
+                winner_list.append(dealer)
+        else :
+                # 임시 우승자
+                tmp_winner = not_bust_list[0]
 
-            # 파산하지 않은 플레이어가 여러 명이면
-            if len(not_bust_list) > 1 :
-                    for i in range(1, len(not_bust_list)) :
+                # 파산하지 않은 플레이어가 여러 명이면
+                if len(not_bust_list) > 1 :
+                    
+                        for i in range(1, len(not_bust_list)) :
                             # 가장 hand_sum이 큰 플레이어가 우승
                             if tmp_winner.hand_sum < not_bust_list[i].hand_sum :
                                     tmp_winner = not_bust_list[i]
-            winner_list.append(tmp_winner)	
-    
+                                    
+                        winner_list.append(tmp_winner)
 
+                        # 우승자가 여러명인지 확인
+                        for i in range(1, len(not_bust_list)) :
+                            if tmp_winner.name != not_bust_list[i].name :
+                                if tmp_winner.hand_sum == not_bust_list[i].hand_sum :
+                                    winner_list.append(not_bust_list[i])
+                else :                   
+                    winner_list.append(tmp_winner)
+    
 # 다른 플레이어에게 내 카드 정보 주기, CountingPlayer들만 적용됨
 def give_my_card_info(i, card) :
 
@@ -275,15 +290,16 @@ def play_round_end() :
     dealer.play_status = "st_stand"
     for i in range(0, 3) :
         player_list[i].play_status = "st_stand"
-        
-    #if not check_blackjack :
-    find_winner()
 
-    print("winner : ", winner_list[0].name)
+    # winner 리스트가 비었으면
+    if not winner_list :
+        find_winner()
+
+    for i in range(len(winner_list)) :
+        print("winner : ", winner_list[i].name)
     
     # 상금 받기
-    if not winner_list :
-        get_prize(winner_list)
+    get_prize(winner_list)
 
 # 메인 게임 종료
 def play_game_end() :
