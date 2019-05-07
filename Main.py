@@ -253,6 +253,8 @@ def play_hit() :
             player_list[i].hit()
             give_my_card_info(i, player_list[i].hand[-1])
 
+    dealer.open_second_card()
+
     while dealer.make_decision() :
         give_my_card_info(3, dealer.hand[-1])
                 
@@ -335,6 +337,10 @@ set_level("easy")
 # dealer.deal()
 # print(dealer.hand)
 # print(dealer.hand_sum, '\n\n')
+# dealer.open_second_card()
+# print(dealer.hand)
+# print(dealer.hand_sum, '\n\n')
+#
 # for i in range (0, 3) :
 #     player_list[i].deal()
 #     print(player_list[i].hand)
@@ -343,9 +349,5 @@ set_level("easy")
 print("*******************play_deal****************************")
 play_deal()
 play_hit()
-dealer.open_second_card()
-print("*****************showing hand****************************")
-show_your_hand()
-find_winner()
-print('winner : ', winner_list[0].name)
+
 
