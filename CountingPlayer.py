@@ -13,7 +13,15 @@ class CountingPlayer(Gamer):
         self.name = name
         self.count_list = self.select_count_list(name)
         self._money_status = True
-        self._play_status = 'st_hit'
+
+    def new_game(self, name):
+        self.chip_choice = 0
+        self.balance = self.INIT_MONEY
+        self.counting = 0
+        self.name = name
+        self.count_list = self.select_count_list(name)
+        self.money_status = True
+        self.new_hand()
 
     # 이름에 따른 카운팅 리스트 반환
     def select_count_list(self, name):
