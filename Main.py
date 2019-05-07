@@ -218,6 +218,8 @@ def play_new_hand() :
 # 라운드 시작
 def play_start() :
 
+    del winner_list[:]
+
     for i in range(0, 3) :        
         #유저 제외한 플레이어들에게 베팅칩 입력받기
         if i != 1 :
@@ -254,7 +256,7 @@ def play_deal() :
             player_list[i].deal()
 
     # dealer.open_deal_card()
-    give_my_card_info(3, dealer.hand[0])
+    give_my_card_info(3, dealer.hand[-1])
     
     for i in range (0, 3) :
         
@@ -305,16 +307,17 @@ def play_hit() :
                     print("select again")
                 
         if player_list[0].is_playable() :
-            player_list[0].make_decision()
-            give_my_card_info(0, player_list[0].hand[-1])
+            # hit 한 경우에만 카드 정보 나눠주기
+            if player_list[0].make_decision() :
+                give_my_card_info(0, player_list[0].hand[-1])
 
         if player_list[1].is_playable() :
             player_list[1].hit()
             give_my_card_info(1, player_list[1].hand[-1])
 
         if player_list[2].is_playable() :
-            player_list[2].make_decision()
-            give_my_card_info(2, player_list[2].hand[-1])
+            if player_list[2].make_decision() :
+                give_my_card_info(2, player_list[2].hand[-1])
         
         current_information()
 
@@ -371,7 +374,6 @@ def final_information() :
 ########
 
 deck_handler = DeckHandler.DeckHandler()
-total_chip = 0
 dealer = Dealer.Dealer()
 player_list = []
 winner_list = []
