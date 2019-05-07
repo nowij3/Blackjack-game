@@ -39,8 +39,10 @@ class Dealer(Gamer):
             if self.hand_sum > 21:
                 self.play_status = 'st_bust'
             return True
-        self.stand()
-        return False
+        else:
+            if not self.is_bust():
+                self.stand()
+            return False
 
 
 
@@ -57,7 +59,8 @@ if __name__ == '__main__':
     dealer.deal()
     dealer.open_second_card()
     print(dealer.hand)
-    dealer.play()
-    print(dealer.hand)
+    while dealer.make_decision():
+        print("loop: ", dealer.hand)
+    print('\n\n', dealer.hand)
     print('sum:', dealer.hand_sum)
     print(dealer.play_status)
