@@ -257,9 +257,9 @@ def play_hit() :
     print("play_hit")
     show_your_hand()
         
-    if check_blackjack() :
-        play_round_end()
-        return
+    # if check_blackjack() :
+    #     play_round_end()
+    #     return
 
     # while hit_anyone() :
         
@@ -273,7 +273,7 @@ def play_hit() :
     while dealer.make_decision() :
         give_my_card_info(3, dealer.hand[-1])
                 
-    # if check_blackjack() : break
+    check_blackjack()
         
             
     play_round_end()
@@ -335,35 +335,7 @@ winner_list = []
 
 # play_start()
 set_level("easy")
-'''
-# dealer.deal()
-# 
-# for i in range (0, 3) :
-#     player_list[i].deal()
-#     print("player[", i, "] hand = ", player_list[i].hand)
-#     print("player[", i, "] hand sum = ", player_list[i].hand_sum, '\n\n')
-# 
-# dealer.open_second_card()
-# print("dealer hand = ", dealer.hand)
-# print("dealer hand sum = ", dealer.hand_sum)
-# 
-# give_my_card_info(3, dealer.hand[-1])
-'''
-
-# dealer.deal()
-# print(dealer.hand)
-# print(dealer.hand_sum, '\n\n')
-# dealer.open_second_card()
-# print(dealer.hand)
-# print(dealer.hand_sum, '\n\n')
-#
-# for i in range (0, 3) :
-#     player_list[i].deal()
-#     print(player_list[i].hand)
-#     print(player_list[i].hand_sum, '\n\n')
 
 print("*******************play_deal****************************")
 play_deal()
 play_hit()
-
-
