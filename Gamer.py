@@ -42,8 +42,6 @@ class Gamer:
         self.play_status = 'st_hit'
         self.blackjack = False
 
-        self.deal()
-
         if __name__ == '__main__':
             print("called new_hand")
 
@@ -120,7 +118,6 @@ class Gamer:
 
         if self.hand_sum > 21:
             for i in range(num_of_ace):
-                print('number of A, i loop', i)
                 self.hand_sum -= 10
                 if self.hand_sum <= 21:
                     self.play_status = 'st_hit'
@@ -185,8 +182,9 @@ class Gamer:
             print('called is_bust')
 
         if self.hand_sum > 21:
+            # print(self.hand)
             self.play_status = 'st_bust'
-            print("busted")
+            # print(self.hand_sum, " busted")
             return True
         return False
 
@@ -201,8 +199,6 @@ class Gamer:
         if __name__ == '__main__':
             print("not BLACKJACK")
         return False
-
-
 
 # properties
 
