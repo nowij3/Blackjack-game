@@ -14,12 +14,10 @@ class CountingPlayer(Gamer):
         self.count_list = self.select_count_list(name)
         self._money_status = True
 
-    def new_game(self, name):
+    def new_game(self):
         self.chip_choice = 0
         self.balance = self.INIT_MONEY
         self.counting = 0
-        self.name = name
-        self.count_list = self.select_count_list(name)
         self.money_status = True
         self.new_hand()
 
