@@ -194,7 +194,7 @@ def play_new_game() :
     deck_handler.reset()
 
     while True :
-        choice = input("level (easy, normal, hard) : ")
+        choice = input("select level (easy, normal, hard) : ")
         if choice != "easy" and choice != "normal" and choice != "hard" :
             print("select again")
         else :
