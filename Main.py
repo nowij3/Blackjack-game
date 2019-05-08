@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
-import Deck as deck
 import DeckHandler
-import Gamer
 import Dealer
 import User
 import CountingPlayer
@@ -9,16 +7,17 @@ import CountingPlayer
 
 # 유저가 베팅할 칩 선택 (GUI로 인풋받기)
 def user_betting(chip) :
+    
     player_list[1].chip_choice += chip
-    player_list[1].balance -= chip_choice
-
+    
 
 # 모든 플레이어가 베팅한 칩 계산해서 반환
 def calculate_chip() :
-    
-    # user_betting (GUI에서 유저가 칩 선택할 때까지 기다리는 것 구현 필요)
-    
-    print("called calculate_chip")
+
+    user_betting(int(input("user_betting : ")))
+
+    for i in range(0, 3) :
+        player_list[i].balance -= player_list[i].chip_choice
     
     total_chip = 0
     for i in range(0, 3) :
@@ -29,18 +28,21 @@ def calculate_chip() :
 # 블랙잭인 경우 베팅한 금액의 2.5배, 그 외엔 2배 반환
 def prize_chip(player) :
 
-    print("called prize_chip")
-    
+    # 딜러와 비긴 경우
+    if player.hand_sum == dealer.hand_sum :
+        return 1 * player.chip_choice
+
+
     if player.blackjack :
+        print(player.name, "recieves ", int(2.5 * player.chip_choice))
         return 2.5 * player.chip_choice
     else :
+        print(player.name, "recieves ", 2 * player.chip_choice)
         return 2 * player.chip_choice
 
     
 # 재산에 상금 반영하기
 def get_prize(winner_list) :
-
-    print("called get_prize")
     
     for i in range(len(winner_list)) :
         if winner_list[i].name == 'Dealer' :
@@ -50,19 +52,35 @@ def get_prize(winner_list) :
 
 # hit 상태인 플레이어가 남아있는지 확인
 def hit_anyone() :
-    
-    print ("called hit_anyone")
+    hit_flag = False
 
-    if not dealer.is_playable and not player_list[0].is_playable and not player_list[1].is_playable and not player_list[2].is_playable :
-        return False
-    else :
+    for i in range(3) :
+        if player_list[i].is_playable() :
+            hit_flag = True
+        
+    if hit_flag :
         return True
-    
+    else :
+        # 아무도 hit하지 않으면
+        return False
+
+# 모든 플레이어가 파산 상태인지 확인
+def check_all_money_status() :
+    money_flag = False
+
+    for i in range(3) :
+        if player_list[i].has_money() :
+            money_flag = True
+            
+    if money_flag :
+        return True
+    else :
+        # 모두가 파산이면
+        return False
 
 # 난이도 설정
 def set_level(my_level) :
 
-    print("called set_level")
     
     if my_level == "easy" :
         make_players("Hi-Lo", "KO")
@@ -77,8 +95,6 @@ def set_level(my_level) :
 # 게임에 참여하는 플레이어 생성
 def make_players(name1, name2) :
 
-    print("called make_players")
-
     # player_list[0] = 카운팅 플레이어1
     # player_list[1] = 유저
     # player_list[2] = 카운팅 플레이어2
@@ -90,8 +106,6 @@ def make_players(name1, name2) :
 
 # 플레이어 중 블랙잭이 있는지 확인
 def check_blackjack() :
-
-    print("called check_blackjack")
 
     for i in range(0, 3) :
         if player_list[i].is_blackjack() :
@@ -112,16 +126,14 @@ def check_blackjack() :
 # 아무도 블랙잭이 아닌 경우 21에 가장 가까운 플레이어(우승자) 찾기
 def find_winner() :
 
-    print("called find_winner")
-
-    if not check_blackjack() :
+    #if not check_blackjack() :
         
-        # 파산 상태가 아닌 플레이어들 목록
-        not_bust_list = []
+    # 파산 상태가 아닌 플레이어들 목록
+    not_bust_list = []
 
-        # 딜러가 파산하지 않은 상태면
-        if not dealer.is_bust() : 
-            not_bust_list.append(dealer)
+    # 딜러가 파산하지 않은 상태면
+    if not dealer.is_bust() : 
+        not_bust_list.append(dealer)
 
         # 플레이어 중 하나라도 파산하지 않은 상태면 
         for i in range(3) :
@@ -138,12 +150,12 @@ def find_winner() :
 
                 # 파산하지 않은 플레이어가 여러 명이면
                 if len(not_bust_list) > 1 :
-                    
+                        
                         for i in range(1, len(not_bust_list)) :
                             # 가장 hand_sum이 큰 플레이어가 우승
                             if tmp_winner.hand_sum < not_bust_list[i].hand_sum :
                                     tmp_winner = not_bust_list[i]
-                                    
+                                        
                         winner_list.append(tmp_winner)
 
                         # 우승자가 여러명인지 확인
@@ -153,11 +165,15 @@ def find_winner() :
                                     winner_list.append(not_bust_list[i])
                 else :                   
                     winner_list.append(tmp_winner)
+                    
+    # 딜러가 파산하면 파산하지 않은 플레이어들 모두 우승
+    else :
+        for i in range(3) :
+            if not player_list[i].is_bust() :
+                winner_list.append(player_list[i])
     
 # 다른 플레이어에게 내 카드 정보 주기, CountingPlayer들만 적용됨
 def give_my_card_info(i, card) :
-
-    print("called give_my_card_info")
 
     # 자기 자신은 포함하지 않기 위해 사용하는 if문
     if i != 0 :
@@ -165,131 +181,148 @@ def give_my_card_info(i, card) :
     if i != 2 :
         player_list[2].others_card(card)
     
-# 게임 시작
-def play_start() :
+# 게임 시작, 모두 초기화
+def play_new_game() :
 
-    print("called play_start")
+    print("\n***new game start***\n")
     
     deck_handler.reset()
-    set_level("easy")
-    calculate_chip()
-    play_deal()
-    play_continue()
 
-# 라운드 시작 (딜)
+    while True :
+        choice = input("level (easy, normal, hard) : ")
+        if choice != "easy" and choice != "normal" and choice != "hard" :
+            print("select again")
+        else :
+            set_level(choice)
+            break
+            
+
+    dealer.new_game()
+    for i in range(0, 3) :
+        player_list[i].new_game()
+
+    play_start()
+
+# 게임 시작, 베팅칩만 초기화
+def play_new_hand() :
+
+    print("\n***new hand start***\n")
+
+    dealer.new_hand()
+    
+    for i in range(0, 3) :
+        player_list[i].new_hand()
+        
+    play_start()
+
+# 라운드 시작
+def play_start() :
+
+    del winner_list[:]
+
+    for i in range(0, 3) :        
+        #유저 제외한 플레이어들에게 베팅칩 입력받기
+        if i != 1 :
+            player_list[i].decide_betting()
+            print("betting chip of ",player_list[i].name," : ", player_list[i].chip_choice)
+            
+    # 전체 베팅칩 출력
+    print("total betting chip : ", calculate_chip(), "\n")
+
+    # 각자의 재산 출력
+    for i in range(0, 3) :
+        print("current balance of ",player_list[i].name, ": ", player_list[i].balance)
+        
+    play_deal()
+
+
+# 딜
 def play_deal() :  
     
-    # (GUI에서 deck에 8장 이하만 남으면 덱을 섞기)
-
-    print("called play_deal")
+    # deck에 8장 이하만 남으면 덱을 초기화
+    if deck_handler.get_remaining_card() <= 0.5 :
+        deck_handler.reset()
 
     # hit 가능한 상태로 초기화
     dealer.play_status = "st_hit"
     for i in range(0, 3) :
-        player_list[i].play_status = "st_hit"
-
+        if player_list[i].has_money() :
+            player_list[i].play_status = "st_hit"
 
     # deal
     dealer.deal()
     for i in range (0, 3) :
-        player_list[i].deal()
+        if player_list[i].is_playable() :
+            player_list[i].deal()
 
     # dealer.open_deal_card()
     give_my_card_info(3, dealer.hand[-1])
     
     for i in range (0, 3) :
-        # player_list[i].open_deal_card()
-        give_my_card_info(i, player_list[i].hand[-2])
-        give_my_card_info(i, player_list[i].hand[-1])
+        
+        # 카드를 받았으면
+        if player_list[i].hand :
+            give_my_card_info(i, player_list[i].hand[0])
+            give_my_card_info(i, player_list[i].hand[1])
 
-    print("*play_deal*")
-    show_your_hand()
+    print("\n*play_deal*\n")
+    current_information()
+    play_continue()
 
 # 딜 이후 게임 진행 
 def play_continue() :
 
-    print("called play_continue")
+    if hit_anyone() :
+        play_hit()
 
-    # 딜 카드에서 플레이어에게 블랙잭이 있는 경우
-    if check_blackjack() :
-
-        # 딜러의 딜에서 받은 뒤집히지 않은 카드 오픈
-        dealer.open_second_card()
-        give_my_card_info(3, dealer.hand[-1])
-        play_round_end()
-        return
-
-
-    # 플레이어가 hit한 경우에만 카드 정보 주기
-    if player_list[0].make_decision() :
-        give_my_card_info(0, player_list[0].hand[-1])
-
-    # 유저 선택
-    if input("hit/stand 여부 : ") == "hit" :
-        player_list[1].hit()
-        give_my_card_info(1, player_list[1].hand[-1])
-    else :
-        player_list[1].play_status = "st_stand"
-
-
-    if player_list[2].make_decision() :
-        give_my_card_info(2, player_list[2].hand[-1])
-
-
-    # hit한 플레이어가 아무도 없다면 (딜러 제외)
-    if not player_list[0].is_playable and not player_list[1].is_playable and not player_list[2].is_playable :
-
-        # 딜러의 딜에서 받은 뒤집히지 않은 카드 오픈
-        dealer.open_second_card()
-        give_my_card_info(3, dealer.hand[-1])
-        play_round_end()
-        return
-
-    # hit한 플레이어가 있는 경우
+    # 모두의 hit가 끝나면
     # 딜러의 딜에서 받은 뒤집히지 않은 카드 오픈
     dealer.open_second_card()
     give_my_card_info(3, dealer.hand[-1])
-
-    play_hit()
-
-# 히트 **여기 수정!
-def play_hit() :
-    print("play_hit")
-    show_your_hand()
         
-    # if check_blackjack() :
-    #     play_round_end()
-    #     return
-
-    # while hit_anyone() :
-        
-    for i in range (0, 3) :
-        if player_list[i].is_playable :
-            player_list[i].hit()
-            give_my_card_info(i, player_list[i].hand[-1])
-
-    dealer.open_second_card()
-
     while dealer.make_decision() :
         give_my_card_info(3, dealer.hand[-1])
-                
+
+    final_information()    
     check_blackjack()
-        
-            
     play_round_end()
+
+# 히트
+def play_hit() :
+        
+    while hit_anyone() :
+        
+        # 유저 선택 받기
+        if player_list[1].is_playable() :
+            while True :
+                choice = input("hit/stand : ")
+                if  choice == "hit" :
+                    player_list[1].play_status = "st_hit"
+                    break
+
+                elif choice == "stand" :
+                    player_list[1].play_status = "st_stand"
+                    break
+                else :
+                    print("select again")
+                
+        if player_list[0].is_playable() :
+            # hit 한 경우에만 카드 정보 나눠주기
+            if player_list[0].make_decision() :
+                give_my_card_info(0, player_list[0].hand[-1])
+
+        if player_list[1].is_playable() :
+            player_list[1].hit()
+            give_my_card_info(1, player_list[1].hand[-1])
+
+        if player_list[2].is_playable() :
+            if player_list[2].make_decision() :
+                give_my_card_info(2, player_list[2].hand[-1])
+        
+        current_information()
 
 # 한 라운드 종료
 def play_round_end() :
-
-    print("called play_round_end")
-
-    # 테스트
-    show_your_hand()
-
-    # 전부 stand 처리
-    dealer.play_status = "st_stand"
-    for i in range(0, 3) :
-        player_list[i].play_status = "st_stand"
 
     # winner 리스트가 비었으면
     if not winner_list :
@@ -301,41 +334,48 @@ def play_round_end() :
     # 상금 받기
     get_prize(winner_list)
 
+    # 모두가 파산이면
+    if not check_all_money_status() :
+        play_game_end()
+    else :
+        play_new_hand()
+        
+
 # 메인 게임 종료
 def play_game_end() :
+    
+    # GUI에서 new game 제외한 모든 버튼 선택 못 하게 구현 필요
+    print("***game end***")
+    
+# 메인 테스트 함수, 딜러가 카드 한 장만 오픈했을 때
+def current_information() :
+    
+    print("\ncurrent information")
+    
+    print(dealer.name, " : ", dealer.hand[0] , ", hand_num : ", dealer.hand_num, ", hand_sum : ", dealer.hand_sum)
+    print(player_list[0].name," : ",player_list[0].hand, ", hand_num : ", player_list[0].hand_num, ", hand_sum : ", player_list[0].hand_sum, ", counting : ", player_list[0].counting, ", play_status : ", player_list[0].play_status)
+    print(player_list[1].name," : ",player_list[1].hand, ", hand_num : ", player_list[1].hand_num, "hand_sum : ", player_list[1].hand_sum, ", play_status : ", player_list[1].play_status)
+    print(player_list[2].name," : ",player_list[2].hand, ", hand_num : ", player_list[2].hand_num, ", hand_sum : ", player_list[2].hand_sum,  ", counting : ", player_list[2].counting, ", play_status : ", player_list[2].play_status)
 
-    print("called play_game_end")
     
-    # 모든 플레이어의 재산이 파산 상태일 때
-    if not player_list[0].hasmoney and not player_list[1].hasmoney and not player_list[2].hasmoney :
-        
-        # GUI에서 new game 제외한 모든 버튼 선택 못 하게 구현 필요
-        print("press new game")
+# 메인 테스트 함수, 딜러가 카드 두 장 이상 오픈했을 때
+def final_information() :
     
-# 메인 테스트 함수
-def show_your_hand() :
+    print("\nfinal information")
     
-    print("called show_your_hand")
-    
-    print("dealer : ", dealer.hand , ", hand_num : ", dealer.hand_num, ", hand_sum : ", dealer.hand_sum)
-    print(player_list[0].name," : ",player_list[0].hand, ", hand_num : ", player_list[0].hand_num, ", hand_sum : ", player_list[0].hand_sum)
-    print("user : ",player_list[1].hand, ", hand_num : ", player_list[1].hand_num, "hand_sum : ", player_list[1].hand_sum)
-    print(player_list[2].name," : ",player_list[2].hand, ", hand_num : ", player_list[2].hand_num, ", hand_sum : ", player_list[2].hand_sum)
-    
+    print(dealer.name, " : ", dealer.hand , ", hand_num : ", dealer.hand_num, ", hand_sum : ", dealer.hand_sum)
+    print(player_list[0].name," : ",player_list[0].hand, ", hand_num : ", player_list[0].hand_num, ", hand_sum : ", player_list[0].hand_sum, ", play_status : ", player_list[0].play_status)
+    print(player_list[1].name," : ",player_list[1].hand, ", hand_num : ", player_list[1].hand_num, "hand_sum : ", player_list[1].hand_sum, ", play_status : ", player_list[1].play_status)
+    print(player_list[2].name," : ",player_list[2].hand, ", hand_num : ", player_list[2].hand_num, ", hand_sum : ", player_list[2].hand_sum, ", play_status : ", player_list[2].play_status)
+
 
 ########
 # Main #
 ########
 
 deck_handler = DeckHandler.DeckHandler()
-total_chip = 0
 dealer = Dealer.Dealer()
 player_list = []
 winner_list = []
 
-# play_start()
-set_level("easy")
-
-print("*******************play_deal****************************")
-play_deal()
-play_hit()
+play_new_game()
