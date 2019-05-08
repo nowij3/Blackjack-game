@@ -13,15 +13,15 @@ class CountingPlayer(Gamer):
         self.name = name
         self.count_list = self.select_count_list(name)
         self._money_status = True
+        self.num_of_winning = 0  # 성능 비교를 위한 변수
 
-    def new_game(self, name):
+    def new_game(self):
         self.chip_choice = 0
         self.balance = self.INIT_MONEY
         self.counting = 0
-        self.name = name
-        self.count_list = self.select_count_list(name)
         self.money_status = True
         self.new_hand()
+        self.num_of_winning = 0
 
     # 이름에 따른 카운팅 리스트 반환
     def select_count_list(self, name):
@@ -147,7 +147,6 @@ class CountingPlayer(Gamer):
             return False
 
         elif self.hand_sum == 21:
-            print('합은21인데블랙잭이아님ㅇㅅㅇ')
             self.stand()
             return False
 
