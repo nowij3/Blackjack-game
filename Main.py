@@ -45,7 +45,8 @@ def prize_chip(player) :
 def get_prize(winner_list) :
 
     for i in range(len(player_list)) :
-        if player_list[i].balance > 0 :
+        # 게임에 참여한 경우에만
+        if player_list[i].has_money() :
             player_list[i].balance -= player_list[i].chip_choice
     
     for i in range(len(winner_list)) :
@@ -56,31 +57,23 @@ def get_prize(winner_list) :
 
 # hit 상태인 플레이어가 남아있는지 확인
 def hit_anyone() :
-    hit_flag = False
 
     for i in range(len(player_list)) :
         if player_list[i].is_playable() :
-            hit_flag = True
-        
-    if hit_flag :
-        return True
-    else :
-        # 아무도 hit하지 않으면
-        return False
+            return True
+
+    # 아무도 hit하지 않으면
+    return False
 
 # 모든 플레이어가 파산 상태인지 확인
 def check_all_money_status() :
-    money_flag = False
 
     for i in range(len(player_list)) :
         if player_list[i].has_money() :
-            money_flag = True
-            
-    if money_flag :
-        return True
-    else :
-        # 모두가 파산이면
-        return False
+            return True
+    
+    # 모두가 파산이면
+    return False
 
 # 난이도 설정
 def set_level(my_level) :
@@ -177,14 +170,12 @@ def find_winner() :
                 winner_list.append(player_list[i])
     
 # 다른 플레이어에게 내 카드 정보 주기, CountingPlayer들만 적용됨
-def give_my_card_info(i, card) :
+def give_my_card_info(num, card) :
 
-    # 자기 자신은 포함하지 않기 위해 사용하는 if문
+    # 유저와 자기 자신은 포함하지 않기 위해 사용하는 if문
     for i in range(len(player_list)) :
-        if i != 0 :
-            player_list[0].others_card(card)
-        if i != 2 :
-            player_list[2].others_card(card)
+        if i != 1 and i!= num:
+            player_list[i].others_card(card)
     
 # 게임 시작, 모두 초기화
 def play_new_game() :
@@ -264,12 +255,13 @@ def play_deal() :
             player_list[i].deal()
 
     # dealer.open_deal_card()
-    give_my_card_info(3, dealer.hand[-1])
+    give_my_card_info(3, dealer.hand[0])
     
     for i in range (len(player_list)) :
         
-        # 카드를 받았으면
+        # 카드를 받았으면 (이 부분 수정해야되나?)
         if player_list[i].hand :
+            # 첫 두 장 정보 주기
             give_my_card_info(i, player_list[i].hand[0])
             give_my_card_info(i, player_list[i].hand[1])
 
@@ -285,7 +277,7 @@ def play_continue() :
     # 모두의 hit가 끝나면
     # 딜러의 딜에서 받은 뒤집히지 않은 카드 오픈
     dealer.open_second_card()
-    give_my_card_info(3, dealer.hand[-1])
+    give_my_card_info(3, dealer.hand[1])
         
     while dealer.make_decision() :
         give_my_card_info(3, dealer.hand[-1])
