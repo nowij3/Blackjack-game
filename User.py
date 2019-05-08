@@ -24,7 +24,7 @@ class User(Gamer):
 
     # 게임 가능 여부 확인
     def is_playable(self):
-        if self.has_money() and self.play_status == 'st_stand':
+        if self.has_money() and self.play_status == 'st_hit':
             return True
         return False
 
