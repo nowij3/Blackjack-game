@@ -217,12 +217,7 @@ def play_new_hand() :
 
     for i in range(len(player_list)) :
         if player_list[i].has_money :
-            player_list[i].new_hand()
-            
-        # 재산 상태가 파산이면 스탠드 상태로 만들기
-        else :
-            player_list[i].play_status = "st_stand"
-            
+            player_list[i].new_hand()        
         
     play_start()
 
