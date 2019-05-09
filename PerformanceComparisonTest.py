@@ -30,6 +30,7 @@ def get_prize(winner_list) :
             continue
         else :
             winner_list[i].balance += prize_chip(winner_list[i])
+            winner_list[i].num_of_winning +=1
 
 # hit 상태인 플레이어가 남아있는지 확인
 def hit_anyone() :
@@ -295,4 +296,4 @@ dealer = Dealer.Dealer()
 player_list = []
 winner_list = []
 
-routine(15)
+routine(5)
