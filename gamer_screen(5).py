@@ -1,7 +1,7 @@
 import tkinter
 from tkinter import Image
-import Deck as deck
 import DeckHandler
+import PlayingDeck
 from CardLabel import CardLabel
 import Gamer
 import Dealer
@@ -27,7 +27,7 @@ class Blackjack:
                 self.a1=tkinter.Button(self.window, text="Deal", command=self.Deal)
                 self.a2=tkinter.Button(self.window, text="Hit", command=self.Hit)
                 self.a3=tkinter.Button(self.window, text="Stand", command=self.Stand)
-                self.a4=tkinter.Button(self.window, text="New Hand", bg="white", command=self.NewHand)
+                self.a4=tkinter.Button(self.window, text="Clear")
                 self.a5=tkinter.Button(self.window, text="1000", command=lambda:chip_pressed('1000'))
                 self.a6=tkinter.Button(self.window, text="500", command=lambda:chip_pressed('500'))
                 self.a7=tkinter.Button(self.window, text="200", command=lambda:chip_pressed('200'))
@@ -43,17 +43,17 @@ class Blackjack:
                 self.a1.place(x=150, y=330, width=90, height=45)
                 self.a2.place(x=300, y=330, width=90, height=45)
                 self.a3.place(x=450, y=330, width=90, height=45)
-                self.a4.place(x=540, y=10, width=80, height=30)
+                self.a4.place(x=20, y=10, width=80, height=30)
                 self.a5.place(x=20, y=90, width=50, height=50)
                 self.a6.place(x=20, y=150, width=50, height=50)
                 self.a7.place(x=20, y=210, width=50, height=50)
                 self.a8.place(x=20, y=320, width=50, height=30)
-                self.p1.place(x=300, y=25, width=70, height=30)
-                self.p2.place(x=120, y=150, width=70, height=30)
-                self.p3.place(x=500, y=150, width=70, height=30)
-                self.l1.place(x=300, y=10, width=70, height=30)
-                self.l2.place(x=380, y=10, width=70, height=30)
-                self.l3.place(x=460, y=10, width=70, height=30)
+                self.p1.place(x=300, y=150, width=70, height=30)
+                self.p2.place(x=120, y=250, width=70, height=30)
+                self.p3.place(x=500, y=250, width=70, height=30)
+                self.l1.place(x=380, y=10, width=70, height=30)
+                self.l2.place(x=460, y=10, width=70, height=30)
+                self.l3.place(x=540, y=10, width=70, height=30)
 
                 def chip_pressed(value):
 
@@ -85,37 +85,11 @@ class Blackjack:
                 num_entry.grid(row=0, columnspan=1)
                 num_entry.place(x=20, y=290)
      
-                CardLabel.load_images()
-                self._dealercard=[CardLabel(self.window) for i in range(1)]
-                self._playercard1=[CardLabel(self.window) for i in range(1)]
-                self._playercard2=[CardLabel(self.window) for i in range(1)]
-                self._usercard=[CardLabel(self.window) for i in range(1)]
-
-                dealerpos=0
-                for x in self._dealercard:
-                        x.grid(row=0, column=1)
-                        x.display(side='front')
-                        dealerpos+=1
-
-                playerpos_1=0
-                for y in self._playercard1:
-                        x.grid(row=1, column=1)
-                        x.display(side='front')
-                        playerpos_1+=1
-
-                playerpos_2=0
-                for z in self._playercard2:
-                        x.grid(row=1, column=2)
-                        x.display(side='front')
-                        playerpos_2+=1
-
-                userpos=0
-                for w in self._usercard:
-                        x.grid(row=2, column=1)
-                        x.display(side='front')
-                        userpos+=1
-
-             
+                self.dealer=[]
+                self.player_1=[]
+                self.player_2=[]
+                self.user=[]
+                
                 self.window.mainloop()
 
 
@@ -144,11 +118,44 @@ class Blackjack:
 
         def Deal(self):
 
-                num_entry.config(state='disabled')
-                self.dealer=self.deck.deal(2)
-                self.player1=self.deck.deal(2)
-                self.player2=self.deck.deal(2)
-                self.user=self.deck.deal(2)
+                CardLabel.load_images()
+                self._dealercard=[CardLabel(self.window) for i in range(6)]
+                self._playercard1=[CardLabel(self.window) for i in range(6)]
+                self._playercard2=[CardLabel(self.window) for i in range(6)]
+                self._usercard=[CardLabel(self.window) for i in range(6)]
+
+                dealerpos=0
+                for x in self._dealercard:
+                        x.grid(row=0, column=dealerpos)
+                        x.display(side='front')
+                        dealerpos+=1
+
+                playerpos_1=0
+                for y in self._playercard1:
+                        x.grid(row=0, column=playerpos_1)
+                        x.display(side='front')
+                        playerpos_1+=1
+
+                playerpos_2=0
+                for z in self._playercard2:
+                        x.grid(row=0, column=playerpos_2)
+                        x.display(side='front')
+                        playerpos_2+=1
+
+                userpos=0
+                for w in self._usercard:
+                        x.grid(row=0, column=userpos)
+                        x.display(side='front')
+                        userpos+=1
+
+             
+                playing_deck = PlayingDeck.PlayingDeck()
+                playing_deck.shuffle()
+                
+                self.dealer+=playingDeck.deal(2)
+                self.palyer_1+=playingDeck.deal(2)
+                self.palyer_2+=playingDeck.deal(2)
+                self.user+=playingDeck.deal(2)
 
                 self._dealercard[0].display(self, 'front', self.dealer[0]._id)
                 self._dealercard[1].display(self, 'back', self.dealer[1]._id)
@@ -161,7 +168,6 @@ class Blackjack:
 
                 self._usercard[0].display(self, 'front', self.dealer[0]._id)
                 self._usercard[1].display(self, 'back', self.dealer[1]._id)
-
                 Main.user_betting(chip)
                 Main.play_deal()
                 
@@ -169,9 +175,7 @@ class Blackjack:
 
         def Hit(self):
                 Main.play_hit()
-                Main.hit_anyone()
-                Main.check_blackjack()
-                Main.play_round_end()
+
                         
 
         def Stand(self):
