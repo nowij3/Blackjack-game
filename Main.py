@@ -15,7 +15,7 @@ def user_betting(chip) :
 def calculate_chip() :
 
     while player_list[1].is_playable() :
-        user_chip = int(input("user_betting : ")) 
+        user_chip = int(input("betting chip of User : ")) 
         if user_chip <= player_list[1].balance :
             user_betting(user_chip)
             break
