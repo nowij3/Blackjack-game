@@ -34,6 +34,7 @@ def get_prize(winner_list) :
 
 # hit 상태인 플레이어가 남아있는지 확인
 def hit_anyone() :
+    
     for i in range(len(player_list)) :
         if player_list[i].is_playable() :
             return True
@@ -173,32 +174,34 @@ def play_start() :
 
     for i in range(5) : 
         player_list[i].decide_betting()
+
+    # 카드가 부족하면 덱을 초기화
+    print("get_remaining_card : ", deck_handler.n_deck)
+    if deck_handler.n_deck <= 0.5 :
+        deck_handler.reset()
+        print("called deck_handler.reset")
+        for i in range(5) :
+            player_list[i].counting = 0
         
     play_deal()
 
 
 # 딜
-def play_deal() :  
-
-    # deck에 8장 이하만 남으면 덱을 초기화
-    if deck_handler.get_remaining_card() <= 0.5 :
-        deck_handler.reset()
-        for i in range(5) :
-            player_list[i].counting = 0
+def play_deal() :
             
     # hit 가능한 상태로 초기화
     dealer.play_status = "st_hit"
+
     for i in range(5) :
         if player_list[i].has_money() :
             player_list[i].play_status = "st_hit"
-            
+  
     # deal
     dealer.deal()
     for i in range (5) :
         if player_list[i].is_playable() :
             player_list[i].deal()
 
-    # dealer.open_deal_card()
     give_my_card_info(3, dealer.hand[0])
 
     for i in range (5) :
@@ -212,6 +215,7 @@ def play_deal() :
 
 # 딜 이후 게임 진행  ***이 지점에서 문제 발생***
 def play_continue() :
+    
     if hit_anyone() :
         play_hit()
         
@@ -224,7 +228,7 @@ def play_continue() :
     while dealer.make_decision() :
         give_my_card_info(5, dealer.hand[-1])
 
-    ## final_information()    
+    ##final_information()
     check_blackjack()
 
     play_round_end()
@@ -234,25 +238,21 @@ def play_continue() :
 def play_hit() :
   
     while hit_anyone() :
-        for i in range(5) :       
+        for i in range(5) :
             if player_list[i].is_playable() :
-
-                # ***이 지점에서 문제 발생***
                 if player_list[i].make_decision() :
                     give_my_card_info(i, player_list[i].hand[-1])
                 
-
-
 # 한 라운드 종료
 def play_round_end() :
-
+          
     # winner 리스트가 비었으면
     if not winner_list :
         find_winner()
 
-    ## print(" ")
-    ## for i in range(len(winner_list)) :
-        ## print("winner : ", winner_list[i].name)
+    ##print(" ")
+    ##for i in range(len(winner_list)) :
+        ##print("winner : ", winner_list[i].name)
     
     # 상금 받기
     get_prize(winner_list)
@@ -279,7 +279,7 @@ def routine(test_case) :
     play_new_game()
     
     for i in range(test_case) :
-        ## print("round : ", i+1)
+        print("round : ", i+1)
         play_new_hand()
 
     # 실행 횟수를 채우면
@@ -293,7 +293,8 @@ def routine(test_case) :
 
 deck_handler = DeckHandler.DeckHandler()
 dealer = Dealer.Dealer()
+
 player_list = []
 winner_list = []
 
-routine(5)
+routine(15)
