@@ -5,7 +5,7 @@ import random
 class DeckHandler:
 
     def __init__(self):
-        print("called hanler init")
+        print("called handler init")
         self._n_deck=4 # deck의 수 초기값(0.5씩 차감 = 사용한 deck의 수)
         self._n_used_cards = 0 # 사용한 카드 수
         for i in range(52):
