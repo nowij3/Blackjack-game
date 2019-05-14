@@ -176,8 +176,8 @@ def play_start() :
         player_list[i].decide_betting()
 
     # 카드가 부족하면 덱을 초기화
-    print("get_remaining_card : ", deck_handler.n_deck)
-    if deck_handler.n_deck <= 0.5 :
+    print("get_remaining_card : ", deck_handler.get_remaining_card())
+    if deck_handler.get_remaining_card() <= 0.5 :
         deck_handler.reset()
         print("called deck_handler.reset")
         for i in range(5) :
