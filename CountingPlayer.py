@@ -130,7 +130,7 @@ class CountingPlayer(Gamer):
                 self.counting += self.count_list[i][1]
 
     def get_true_count(self):
-        true_count = round(self.counting / self.handler.get_remaining_card(), 2)
+        true_count = round(self.counting / self.HANDLER.get_remaining_card(), 2)
         return true_count
 
     # 카운팅 값 기반으로 Hit/Stand 여부 결정, Hit한 경우에만 return True
@@ -158,7 +158,7 @@ class CountingPlayer(Gamer):
             #################################################################
             # 여기가 아직 수정이 안되었읍니다
             #################################################################
-            if self.get_true_count() > 0 and self.play_status == 'st_hit':
+            if self.play_status == 'st_hit' and self.hand_sum > 13 and self.get_true_count() <= 0 :
                 # self.play_status = "st_hit"
                 self.hit()
                 return True
@@ -225,21 +225,48 @@ class CountingPlayer(Gamer):
 
 
 if __name__ == "__main__":
-    player = CountingPlayer('KO')
-    print(player.count_list)
-    for i in range(10):
-        print(player.get_true_count())
-        player.new_hand()
-        player.decide_betting()
-        print("CHOICE==================", player.chip_choice)
-        player.deal()
-        while player.is_playable():
-            player.hit()
-        print('hand = ', player.hand)
-        print('handsum = ', player.hand_sum)
-        print("counting = ", player.counting)
-        print("true count = ", player.get_true_count())
+    # player = CountingPlayer('KO')
+    # print(player.count_list)
+    # for i in range(10):
+    #     print(player.get_true_count())
+    #     player.new_hand()
+    #     player.decide_betting()
+    #     print("CHOICE==================", player.chip_choice)
+    #     player.deal()
+    #     while player.is_playable():
+    #         player.hit()
+    #     print('hand = ', player.hand)
+    #     print('handsum = ', player.hand_sum)
+    #     print("counting = ", player.counting)
+    #     print("true count = ", player.get_true_count())
+    #
+    #     print(player.play_status)
+    #     print(i, "round end")
+    #     print("===============================================================")
 
-        print(player.play_status)
-        print(i, "round end")
-        print("===============================================================")
+
+    handler = DeckHandler()
+    p1 = CountingPlayer('Hi-Lo')
+    p2 = CountingPlayer('KO')
+
+    p1.deal()
+    print(p1.hand)
+    p2.deal()
+    print(p2.hand)
+   # p1.HANDLER.print_deck()
+    handler.print_deck()
+
+    print('\n\n')
+    # p2.HANDLER.print_deck()
+
+    print('\n\n')
+    handler.reset()
+    handler.print_deck()
+
+
+
+    # p1.deal()
+    # print(p1.hand)
+    # p1.HANDLER.reset()
+    # p1.HANDLER.print_deck()
+
