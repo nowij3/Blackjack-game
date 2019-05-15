@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import DeckHandler
 import Dealer
 import CountingPlayer
 
@@ -144,7 +143,7 @@ def play_new_game() :
 
     ## print("\n***NEW GAME START***")
     
-    deck_handler.reset()
+    dealer.HANDLER.reset()
 
     make_players()
         
@@ -176,10 +175,10 @@ def play_start() :
         player_list[i].decide_betting()
 
     # 카드가 부족하면 덱을 초기화
-    print("get_remaining_card : ", deck_handler.get_remaining_card())
-    if deck_handler.get_remaining_card() <= 0.5 :
-        deck_handler.reset()
-        print("called deck_handler.reset")
+    ##print("get_remaining_card : ", dealer.HANDLER.get_remaining_card())
+    if dealer.HANDLER.get_remaining_card() <= 0.5 :
+        dealer. HANDLER.reset()
+        ##print("called deck_handler.reset")
         for i in range(5) :
             player_list[i].counting = 0
         
@@ -279,8 +278,14 @@ def routine(test_case) :
     play_new_game()
     
     for i in range(test_case) :
-        print("round : ", i+1)
-        play_new_hand()
+        if not check_all_money_status() :
+            print ("round ends at", i+1)
+            play_game_end(i+1)
+            return
+        
+        else :
+            play_new_hand()
+
 
     # 실행 횟수를 채우면
     play_game_end(test_case)
@@ -291,10 +296,9 @@ def routine(test_case) :
 # Main #
 ########
 
-deck_handler = DeckHandler.DeckHandler()
 dealer = Dealer.Dealer()
 
 player_list = []
 winner_list = []
 
-routine(15)
+routine(1000)

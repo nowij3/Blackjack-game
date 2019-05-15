@@ -5,7 +5,6 @@ import random
 class DeckHandler:
 
     def __init__(self):
-        print("called handler init")
         self._n_deck=4 # deck의 수 초기값(0.5씩 차감 = 사용한 deck의 수)
         self._n_used_cards = 0 # 사용한 카드 수
         for i in range(52):
@@ -26,13 +25,13 @@ class DeckHandler:
                 break
             
             # 리스트를 전부 돌았는데도 카드가 없다면
-            if i == 51 :
-                self.reset()
+            #if i == 51 :
+                #self.reset()
                 
-                for i in range(52) :
-                    rand_num = self._num_list[i]            
-                    if Deck.deck[rand_num][3] > 0:
-                        break
+                #for i in range(52) :
+                    #rand_num = self._num_list[i]            
+                    #if Deck.deck[rand_num][3] > 0:
+                        #break
                 
 
         Deck.deck[rand_num][3] -= 1
@@ -40,13 +39,13 @@ class DeckHandler:
         card = [rand_card[0], rand_card[1]]  # 카드의 모양과 숫자 기억
 
         self._n_used_cards += 1
-        print("n_used_cards", self._n_used_cards)
+        ##print("n_used_cards", self._n_used_cards)
 
         if self._n_used_cards >= 26:
             self._n_deck -= 0.5
             self._n_used_cards = 0
             
-            print("self.n_deck :", self._n_deck)
+            ##print("self.n_deck :", self._n_deck)
             
         return card  # Suit, Denomination
 
@@ -58,7 +57,7 @@ class DeckHandler:
 
     #초기화하는 함수
     def reset(self):
-        print("called handler reset")
+        #print("called handler reset")
 
         self._n_deck=4 # deck의 수 초기값(0.5씩 차감 = 사용한 deck의 수)
         self._n_used_cards = 0 # 사용한 카드 수
