@@ -16,6 +16,7 @@ from DeckHandler import DeckHandler
 
 class Gamer:
     INIT_MONEY = 10000  # 시작금
+    HANDLER = DeckHandler()
 
     def __init__(self):
         self._hand = []  # 가지고 있는 카드
@@ -23,7 +24,6 @@ class Gamer:
         self._hand_sum = 0  # 가지고 있는 카드의 숫자 합
         self._play_status = 'st_hit'  # 현재 게임 상태 [st_hit, st_stand, st_bust]
         self._blackjack = False
-        self.handler = DeckHandler()
         if __name__ == '__main__':
             print("클래스 생성")
 
@@ -54,9 +54,9 @@ class Gamer:
         #     self.balance -= self.chip_choice
 
         # 카드 두 장 뒤집기
-        self.hand.append(self.handler.get_card())
+        self.hand.append(self.HANDLER.get_card())
         self.hand_num += 1
-        self.hand.append(self.handler.get_card())
+        self.hand.append(self.HANDLER.get_card())
         self.hand_num += 1
 
         self.open_card()
@@ -85,7 +85,7 @@ class Gamer:
         if __name__ == '__main__':
             print("called hit")
 
-        self.hand.append(self.handler.get_card())
+        self.hand.append(self.HANDLER.get_card())
         self.hand_num += 1
         self.open_card()
 
