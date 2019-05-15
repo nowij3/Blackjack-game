@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import DeckHandler
 import Dealer
 import User
 import CountingPlayer
@@ -182,7 +181,7 @@ def play_new_game() :
 
     print("\n***NEW GAME START***")
 
-    deck_handler.reset()
+    dealer.HANDLER.reset()
 
     while True :
         choice = input("select level (easy, normal, hard) : ")
@@ -239,8 +238,8 @@ def play_start() :
 def play_deal() :
 
     # deck에 8장 이하만 남으면 덱을 초기화
-    if deck_handler.get_remaining_card() <= 0.5 :
-        deck_handler.reset()
+    if dealer.HANDLER.get_remaining_card() <= 0.5 :
+        dealer.HANDLER.reset()
 
     # hit 가능한 상태로 초기화
     dealer.play_status = "st_hit"
@@ -389,7 +388,6 @@ def final_information() :
 # Main #
 ########
 
-deck_handler = DeckHandler.DeckHandler()
 dealer = Dealer.Dealer()
 player_list = []
 winner_list = []
