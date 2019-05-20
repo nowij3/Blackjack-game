@@ -123,7 +123,7 @@ class CountingPlayer(Gamer):
         # o_card == [모양, 숫자]
         # mycountlist == (e.g.)Zen[[숫자, 값], ... ]
 
-        for i in range(12):
+        for i in range(13):
             # o_card의 숫자에 해당하는 카드 카운팅 적용값 찾고, 카운팅 변수에 더하기
             if o_card[1] == self.count_list[i][0]:
                 self.counting += self.count_list[i][1]
@@ -222,50 +222,4 @@ class CountingPlayer(Gamer):
     def play_status(self, new_play_status):
         self._play_status = new_play_status
 
-
-if __name__ == "__main__":
-    # player = CountingPlayer('KO')
-    # print(player.count_list)
-    # for i in range(10):
-    #     print(player.get_true_count())
-    #     player.new_hand()
-    #     player.decide_betting()
-    #     print("CHOICE==================", player.chip_choice)
-    #     player.deal()
-    #     while player.is_playable():
-    #         player.hit()
-    #     print('hand = ', player.hand)
-    #     print('handsum = ', player.hand_sum)
-    #     print("counting = ", player.counting)
-    #     print("true count = ", player.get_true_count())
-    #
-    #     print(player.play_status)
-    #     print(i, "round end")
-    #     print("===============================================================")
-
-
-    handler = DeckHandler()
-    p1 = CountingPlayer('Hi-Lo')
-    p2 = CountingPlayer('KO')
-
-    p1.deal()
-    print(p1.hand)
-    p2.deal()
-    print(p2.hand)
-   # p1.HANDLER.print_deck()
-    handler.print_deck()
-
-    print('\n\n')
-    # p2.HANDLER.print_deck()
-
-    print('\n\n')
-    handler.reset()
-    handler.print_deck()
-
-
-
-    # p1.deal()
-    # print(p1.hand)
-    # p1.HANDLER.reset()
-    # p1.HANDLER.print_deck()
 
