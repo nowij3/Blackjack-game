@@ -65,8 +65,7 @@ class CountingPlayer(Gamer):
         if self.chip_choice > self.balance :
             self.chip_choice = self.balance
 
-
-    # 딜에서 카드 받은 경우 - 딜러클래스 별도구현 용이하게 따로만듦 >> polymorphism.. 사실 딜러클래스에서는 그냥 반복만 안하면되는...
+    # 딜에서 카드 받은 경우
     def open_deal_card(self):
         for i in range(2):
             ####################
