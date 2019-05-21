@@ -131,33 +131,36 @@ def find_winner() :
     check_blackjack()
 
     for i in range(len(player_list)) :
+        # 게임에 참여한 플레이어만
+        if player_list[i].has_money() :
 
-        # 블랙잭이 아닌 플레이어만 확인
-        if not player_list[i].is_blackjack() :
+            # 블랙잭이 아닌 플레이어만 확인
+            if not player_list[i].is_blackjack() :
 
-            # 플레이어가 파산이면 딜러 우승
-            if player_list[i].is_bust() :
-                winner_list.append(dealer)
+                # 플레이어가 파산이면 딜러 우승
+                if player_list[i].is_bust() and not dealer.is_blackjack() :
+                    winner_list.append(dealer)
 
-            # 딜러가 파산인 경우
-            elif dealer.is_bust() :
-                winner_list.append(player_list[i])
-                                   
-            # 딜러와 플레이어 둘 다 파산이 아닐 때
-            else :
-
-                # 플레이어의 카드 값이 딜러보다 높은 경우
-                if player_list[i].hand_sum > dealer.hand_sum :
+                # 딜러가 파산인 경우
+                elif dealer.is_bust() :
                     winner_list.append(player_list[i])
+                                       
+                # 딜러와 플레이어 둘 다 파산이 아닐 때
+                else :
 
-                # 비긴 경우
-                elif player_list[i].hand_sum == dealer.hand_sum :
-                    draw_list.append(player_list[i])
+                    # 플레이어의 카드 값이 딜러보다 높은 경우
+                    if player_list[i].hand_sum > dealer.hand_sum :
+                        winner_list.append(player_list[i])
+
+                    # 비긴 경우
+                    elif player_list[i].hand_sum == dealer.hand_sum :
+                        draw_list.append(player_list[i])
                 
 # 다른 플레이어에게 내 카드 정보 주기, CountingPlayer들만 적용됨
 def give_my_card_info(num, card) :
 
     # 유저와 자기 자신은 포함하지 않기 위해 사용하는 if문
+    # 유저는 player_list[1]
     for i in range(len(player_list)) :
         if i != 1 and i!= num:
             player_list[i].others_card(card)
@@ -200,6 +203,7 @@ def play_new_hand() :
 # 라운드 시작
 def play_start() :
 
+    # 우승자 리스트 비우기
     del blackjack_winner_list[:]
     del winner_list[:]
     del draw_list[:]
@@ -226,8 +230,12 @@ def play_start() :
 def play_deal() :
 
     # deck에 8장 이하만 남으면 덱을 초기화
+    # 카운팅 플레이어의 카운팅 초기화
     if dealer.HANDLER.get_remaining_card() <= 0.5 :
         dealer.HANDLER.reset()
+        for i in range(len(player_list)) :
+            if i != 1 :
+                player_list[i].counting = 0
 
     # hit 가능한 상태로 초기화
     dealer.play_status = "st_hit"
@@ -242,11 +250,10 @@ def play_deal() :
             player_list[i].deal()
 
     # dealer.open_deal_card()
-    give_my_card_info(3, dealer.hand[0])
+    give_my_card_info(len(player_list)+1, dealer.hand[0])
 
     for i in range (len(player_list)) :
-
-        # 카드를 받았으면 (이 부분 수정해야되나?)
+        # 카드를 받았으면
         if player_list[i].hand :
             # 첫 두 장 정보 주기
             give_my_card_info(i, player_list[i].hand[0])
@@ -264,13 +271,15 @@ def play_continue() :
     # 모두의 hit가 끝나면
     # 딜러의 딜에서 받은 뒤집히지 않은 카드 오픈
     dealer.open_second_card()
-    give_my_card_info(3, dealer.hand[1])
+    give_my_card_info(len(player_list)+1, dealer.hand[1])
 
+    # 딜러가 카드를 hit 할 때 마다 다른 플레이어들에게 카드 정보 주기
     while dealer.make_decision() :
-        give_my_card_info(3, dealer.hand[-1])
+        give_my_card_info(len(player_list)+1, dealer.hand[-1])
 
     final_information()
     play_round_end()
+
 
 # 히트
 def play_hit() :
@@ -309,6 +318,7 @@ def play_hit() :
                 give_my_card_info(2, player_list[2].hand[-1])
 
         current_information()
+
 
 # 한 라운드 종료
 def play_round_end() :
@@ -351,7 +361,7 @@ def current_information() :
             else :
                 print(player_list[i].name," : ",player_list[i].hand, ", hand_num : ", player_list[i].hand_num, ", hand_sum : ", player_list[i].hand_sum, ", counting : ", player_list[i].counting, ", play_status : ", player_list[i].play_status)
 
-# 메인 테스트 함수, 딜러가 카드 두 장 이상 오픈했을 때
+# 메인 테스트 함수
 def final_information() :
 
     print("\nfinal information")
