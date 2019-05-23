@@ -15,18 +15,22 @@ def show_panel() :
     window.title("BlackJack Game")
     window.geometry("640x400+100+100")
     window.resizable(True, True)
-    window=tkinter.Tk()
-    window.title("BlackJack Game")
-    window.geometry("640x400+100+100")
-    window.resizable(True, True)
+
+    entry_value=tkinter.StringVar(window, value='')
+
+    num_entry=tkinter.Entry(window, textvariable=entry_value, width=10)
+    num_entry.grid(row=0, columnspan=1)
+    num_entry.place(x=20, y=290)
 
     a1=tkinter.Button(window, text="Deal", command=button_deal)
     a2=tkinter.Button(window, text="Hit", command=button_hit)
     a3=tkinter.Button(window, text="Stand", command=button_stand)
-    a4=tkinter.Button(window, text="Clear", command=button_clear)
-    a5=tkinter.Button(window, text="1000", command=lambda:chip_pressed('1000'))
-    a6=tkinter.Button(window, text="500", command=lambda:chip_pressed('500'))
-    a7=tkinter.Button(window, text="200", command=lambda:chip_pressed('200'))
+
+    a5=tkinter.Button(window, text="1000", command=lambda:chip_pressed(num_entry,'1000'))
+    a6=tkinter.Button(window, text="500", command=lambda:chip_pressed(num_entry,'500'))
+    a7=tkinter.Button(window, text="200", command=lambda:chip_pressed(num_entry,'200'))
+    a4=tkinter.Button(window, text="Clear", command=button_clear(num_entry, a5, a6, a7))
+        
     a8=tkinter.Label(window, text="Balance :")
     a9=tkinter.Label(window, text="New Game :")
     p1=tkinter.Label(window, text="Dealer", bg="white")
@@ -52,17 +56,13 @@ def show_panel() :
     l2.place(x=460, y=10, width=70, height=30)
     l3.place(x=540, y=10, width=70, height=30)
 
-    entry_value=tkinter.StringVar(window, value='')
 
-    num_entry=tkinter.Entry(window, textvariable=entry_value, width=10)
-    num_entry.grid(row=0, columnspan=1)
-    num_entry.place(x=20, y=290)
 
     image_directory='./cardimages/'
 
     window.mainloop()
 
-def chip_pressed(value):
+def chip_pressed(num_entry, value):
     if not num_entry.get() == '':
         v = int(value)
         v += int(num_entry.get())
@@ -75,6 +75,10 @@ def chip_pressed(value):
 
         print(value,"pressed")
         return value
+    
+def button_clear(num_entry, a5, a6, a7):
+
+    num_entry(insert_0)
 
 def button_easy(self):
     self.play_new_game("easy")
@@ -94,9 +98,9 @@ def change_to_image(card):
 def button_deal(self):
     
     # 베팅칩 못누르게
-    self.a5.config(state="disabled")
-    self.a6.config(state="disabled")
-    self.a7.config(state="disabled")
+    a5.config(state="disabled")
+    a6.config(state="disabled")
+    a7.config(state="disabled")
 
     # deck에 8장 이하만 남으면 덱을 초기화
     # 카운팅 플레이어의 카운팅 초기화
@@ -165,12 +169,7 @@ def button_hit():
 
 def button_stand():
     return
-    
-def button_clear():
-    
-    a5.config(state="normal")
-    a6.config(state="normal")
-    a7.config(state="normal")
+
 
 def msgbox1():
 
