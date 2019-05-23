@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import tkinter
 from tkinter import Image
+from Deck import Deck
 import Dealer
 import User
 import CountingPlayer
@@ -22,13 +23,13 @@ def show_panel() :
     num_entry.grid(row=0, columnspan=1)
     num_entry.place(x=20, y=290)
 
-    a5=tkinter.Button(window, text="1000", command=lambda:chip_pressed(num_entry,'1000'))
-    a6=tkinter.Button(window, text="500", command=lambda:chip_pressed(num_entry,'500'))
-    a7=tkinter.Button(window, text="200", command=lambda:chip_pressed(num_entry,'200'))
-    a4=tkinter.Button(window, text="Clear", command=lambda:button_clear(num_entry, a5, a6, a7))
+    a5=tkinter.Button(window, text="1000", command=lambda:chip_pressed(num_entry,'1000', a1))
+    a6=tkinter.Button(window, text="500", command=lambda:chip_pressed(num_entry,'500', a1))
+    a7=tkinter.Button(window, text="200", command=lambda:chip_pressed(num_entry,'200', a1))
+    a4=tkinter.Button(window, text="Clear", command=lambda:button_clear(num_entry, a1, a5, a6, a7))
 
     
-    a1=tkinter.Button(window, text="Deal", command=lambda:button_deal(num_entry, a5, a6, a7))
+    a1=tkinter.Button(window, text="Deal", command=lambda:button_deal(num_entry, a2, a3, a4, a5, a6, a7, window))
     a2=tkinter.Button(window, text="Hit", command=lambda:button_hit)
     a3=tkinter.Button(window, text="Stand", command=lambda:button_stand)
         
@@ -37,9 +38,9 @@ def show_panel() :
     p1=tkinter.Label(window, text="Dealer", bg="white")
     p2=tkinter.Label(window, text="Player1", bg="white")
     p3=tkinter.Label(window, text="Player2", bg="white")
-    l1=tkinter.Button(window, text="Easy", command=lambda:button_easy(a1,a2,a3,a4,a5,a6,a7))
-    l2=tkinter.Button(window, text="Normal", command=lambda:button_normal(a1,a2,a3,a4,a5,a6,a7))
-    l3=tkinter.Button(window, text="Hard", command=lambda:button_hard(a1,a2,a3,a4,a5,a6,a7))
+    l1=tkinter.Button(window, text="Easy", command=lambda:button_easy(a4,a5,a6,a7))
+    l2=tkinter.Button(window, text="Normal", command=lambda:button_normal(a4,a5,a6,a7))
+    l3=tkinter.Button(window, text="Hard", command=lambda:button_hard(a4,a5,a6,a7))
     
     a1.place(x=150, y=330, width=90, height=45)
     a2.place(x=300, y=330, width=90, height=45)
@@ -70,7 +71,9 @@ def show_panel() :
 
     window.mainloop()
 
-def chip_pressed(num_entry, value):
+def chip_pressed(num_entry, value, a1):
+    a1.config(state='normal')
+
     if not num_entry.get() == '':
         v = int(value)
         v += int(num_entry.get())
@@ -82,52 +85,49 @@ def chip_pressed(num_entry, value):
         num_entry.insert("end", value)
 
         print(value,"pressed")
-        return value
     
-def button_clear(num_entry, a5, a6, a7):
+def button_clear(num_entry, a1, a5, a6, a7):
 
     num_entry.delete(0,'end')
+    a1.config(state='disabled')
 
 
-def button_easy(a1,a2,a3,a4,a5,a6,a7):
-    a1.config(state="normal")
-    a2.config(state="normal")
-    a3.config(state="normal")
+def button_easy(a4,a5,a6,a7):
     a4.config(state="normal")
     a5.config(state="normal")
     a6.config(state="normal")
     a7.config(state="normal")
     play_new_game("easy")
                 
-def button_normal(a1,a2,a3,a4,a5,a6,a7):
-    a1.config(state="normal")
-    a2.config(state="normal")
-    a3.config(state="normal")
+def button_normal(a4,a5,a6,a7):
     a4.config(state="normal")
     a5.config(state="normal")
     a6.config(state="normal")
     a7.config(state="normal")
     play_new_game("normal")
     
-def button_hard(a1,a2,a3,a4,a5,a6,a7):
-    a1.config(state="normal")
-    a2.config(state="normal")
-    a3.config(state="normal")
+def button_hard(a4,a5,a6,a7):
     a4.config(state="normal")
     a5.config(state="normal")
     a6.config(state="normal")
     a7.config(state="normal")
-    self.play_new_game("hard")
+    play_new_game("hard")
 
 def change_to_image(card):
     for i in range(52):
-        if card[0]==deck[i][0] and card[1]==deck[i][1]:
-            _id=deck[i][4]
-            return _id
-
-def button_deal(num_entry, a5, a6, a7):
+        if card[0]==Deck.deck[i][0] and card[1]==Deck.deck[i][1]:
+            _id=Deck.deck[i][4]
+            
+            file_name = "./cardimages/card" + str(_id) + ".gif"
+            print(file_name)
+            return file_name
+        
+def button_deal(num_entry, a2, a3, a4, a5, a6, a7, window):
     
     # 베팅칩 못누르게
+    a2.config(state="normal")
+    a3.config(state="normal")
+    a4.config(state="disabled")
     a5.config(state="disabled")
     a6.config(state="disabled")
     a7.config(state="disabled")
@@ -156,47 +156,51 @@ def button_deal(num_entry, a5, a6, a7):
         if player_list[i].is_playable() :
             player_list[i].deal()
 
-    # dealer.open_deal_card()
-    a = give_my_card_info(len(player_list)+1,dealer.hand[0])
-    a_id=change_to_image(a)
-    dealer_cards=tkinter.PhotoImage(file=show_panel.image_directory+"card{}.gif".format(a_id))
-    lb_d_c=tkinter.Label(window, image=deale_cards)
+    ##a = give_my_card_info(len(player_list)+1,dealer.hand[0])
+    ##a_id=change_to_image(dealer.hand[0])
+
+    give_my_card_info(len(player_list)+1,dealer.hand[0])
+    card=tkinter.PhotoImage(file=change_to_image(dealer.hand[0]))
+
+    lb_d_c=tkinter.Label(window, image=card)
     lb_d_c.place(x=200, y=50)
 
+    """
     for i in range (len(player_list)) :
         if player_list[i].hand :
-            b=give_my_card_info(i, player_list[0].hand[0])
-            player1_1=tkinter.PhotoImage(file=show_panel.image_directory+"card{}.gif".change_to_image(b))
+            give_my_card_info(i, player_list[0].hand[0])
+            player1_1=tkinter.PhotoImage(file=change_to_image(player_list[0].hand[0]))
             lb_p1_1=tkinter.Label(window, image=player1_1)
             lb_p1_1.place(x=150, y=100)
 
-            c=give_my_card_info(i, player_list[0].hand[1])
-            player1_2=tkinter.PhotoImage(file=show_panel.image_directory+"card{}.gif".format(change_to_image(c)))
+            give_my_card_info(i, player_list[0].hand[1])
+            player1_2=tkinter.PhotoImage(file=change_to_image(player_list[0].hand[1]))
             lb_p1_2=tkinter.Label(window, image=player1_2)
             lb_p1_2.place(x=180, y=100)
 
-            d=give_my_card_info(i, player_list[1].hand[0])
-            player2_1=tkinter.PhotoImage(file=show_panel.image_directory+"card{}.gif".format(change_to_image(d)))
+            give_my_card_info(i, player_list[1].hand[0])
+            player2_1=tkinter.PhotoImage(file=change_to_image(player_list[1].hand[0]))
             lb_p2_1=tkinter.Label(window, image=player2_1)
             lb_p2_1.place(x=300, y=250)
 
-            e=give_my_card_info(1, player_list[1].hand[1])
-            player2_2=tkinter.PhotoImage(file=show_panel.image_directory+"card{}.gif".format(change_to_image(e)))
+            give_my_card_info(i, player_list[1].hand[1])
+            player2_2=tkinter.PhotoImage(file=change_to_image(player_list[1].hand[1]))
             lb_p2_2=tkinter.Label(window, image=player2_2)
             lb_p2_2.place(x=330, y=250)
 
-            f=give_my_card_info(1, player_list[2].hand[0])
-            player3_1=tkinter.PhotoImage(file=ishow_panel.image_directory+"card{}.gif".format(change_to_image(f)))
+            give_my_card_info(i, player_list[2].hand[0])
+            player3_1=tkinter.PhotoImage(file=change_to_image(player_list[2].hand[0]))
             lb_p3_1=tkinter.Label(window, image=player3_1)
             lb_p3_1.place(x=450, y=100)
 
-            g=give_my_card_info(1, player_list[2].hand[1])
-            player3_2=tkinter.PhotoImage(file=show_panel.image_directory+"card{}.gif".format(change_to_image(g)))
+            give_my_card_info(i, player_list[2].hand[1])
+            player3_2=tkinter.PhotoImage(file=change_to_image(player_list[2].hand[1]))
             lb_p3_2=tkinter.Label(window, image=player3_2)
             lb_p3_2.place(x=480, y=100)
 
                                                 
             play_continue()
+    """
 
 def button_hit():
     return
@@ -363,17 +367,9 @@ def give_my_card_info(num, card) :
 # 게임 시작, 모두 초기화
 def play_new_game(choice) :
 
-    print("\n***NEW GAME START***")
-
     dealer.HANDLER.reset()
 
-    while True :
-        choice = input("select level (easy, normal, hard) : ")
-        if choice != "easy" and choice != "normal" and choice != "hard" :
-            print("select again")
-        else :
-            set_level(choice)
-            break
+    set_level(choice)
 
 
     dealer.new_game()
