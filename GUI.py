@@ -22,23 +22,24 @@ def show_panel() :
     num_entry.grid(row=0, columnspan=1)
     num_entry.place(x=20, y=290)
 
-    a1=tkinter.Button(window, text="Deal", command=button_deal)
-    a2=tkinter.Button(window, text="Hit", command=button_hit)
-    a3=tkinter.Button(window, text="Stand", command=button_stand)
-
     a5=tkinter.Button(window, text="1000", command=lambda:chip_pressed(num_entry,'1000'))
     a6=tkinter.Button(window, text="500", command=lambda:chip_pressed(num_entry,'500'))
     a7=tkinter.Button(window, text="200", command=lambda:chip_pressed(num_entry,'200'))
     a4=tkinter.Button(window, text="Clear", command=button_clear(num_entry, a5, a6, a7))
+
+    
+    a1=tkinter.Button(window, text="Deal", command=button_deal(num_entry, a5, a6, a7))
+    a2=tkinter.Button(window, text="Hit", command=button_hit())
+    a3=tkinter.Button(window, text="Stand", command=button_stand())
         
     a8=tkinter.Label(window, text="Balance :")
     a9=tkinter.Label(window, text="New Game :")
     p1=tkinter.Label(window, text="Dealer", bg="white")
     p2=tkinter.Label(window, text="Player1", bg="white")
     p3=tkinter.Label(window, text="Player2", bg="white")
-    l1=tkinter.Button(window, text="Easy", command=button_easy)
-    l2=tkinter.Button(window, text="Normal", command=button_normal)
-    l3=tkinter.Button(window, text="Hard", command=button_hard)
+    l1=tkinter.Button(window, text="Easy", command=button_easy())
+    l2=tkinter.Button(window, text="Normal", command=button_normal())
+    l3=tkinter.Button(window, text="Hard", command=button_hard())
 
     a1.place(x=150, y=330, width=90, height=45)
     a2.place(x=300, y=330, width=90, height=45)
@@ -55,7 +56,6 @@ def show_panel() :
     l1.place(x=380, y=10, width=70, height=30)
     l2.place(x=460, y=10, width=70, height=30)
     l3.place(x=540, y=10, width=70, height=30)
-
 
 
     image_directory='./cardimages/'
@@ -78,13 +78,14 @@ def chip_pressed(num_entry, value):
     
 def button_clear(num_entry, a5, a6, a7):
 
-    num_entry(insert_0)
+    num_entry.delete(0,'end')
+    num_entry.insert("end", str(0))
 
 def button_easy(self):
-    self.play_new_game("easy")
+    play_new_game("easy")
                 
 def button_normal(self):
-    self.play_new_game("normal")
+    play_new_game("normal")
     
 def button_hard(self):
     self.play_new_game("hard")
@@ -95,12 +96,15 @@ def change_to_image(card):
             _id=deck[i][4]
             return _id
 
-def button_deal(self):
+def button_deal(num_entry, a5, a6, a7):
     
     # 베팅칩 못누르게
     a5.config(state="disabled")
     a6.config(state="disabled")
     a7.config(state="disabled")
+
+    # 유저 chip_choice 변수에 베팅칩 반영
+    player_list[1].chip_choice = num_entry
 
     # deck에 8장 이하만 남으면 덱을 초기화
     # 카운팅 플레이어의 카운팅 초기화
@@ -165,15 +169,11 @@ def button_deal(self):
             play_continue()
 
 def button_hit():
+    
     return
 
 def button_stand():
     return
-
-
-def msgbox1():
-
-    tkinter.messagebox.showinfo("select again")
 
 
 ######################
@@ -185,19 +185,6 @@ def user_betting(chip) :
 
     player_list[1].chip_choice = chip
 
-
-# 모든 플레이어가 베팅한 칩 계산해서 반환
-def calculate_chip() :
-
-    while player_list[1].is_playable() :
-        user_chip = int(input("betting chip of User : "))
-        if user_chip <= player_list[1].balance :
-            user_betting(user_chip)
-            break
-
-        # 유저의 자산보다 더 큰 금액을 입력한 경우
-        else :
-            print("select again")
 
 # 블랙잭인 경우 베팅한 금액의 2.5배, 그 외엔 2배 반환
 def prize_chip(player) :
@@ -398,12 +385,6 @@ def play_start() :
         if i != 1 :
             player_list[i].decide_betting()
             print("betting chip of ",player_list[i].name," : ", player_list[i].chip_choice)
-
-    # 유저에게 베팅칩 입력받기
-    calculate_chip()
-
-    play_deal()
-
 
 # 딜
 def play_deal() :
