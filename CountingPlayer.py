@@ -219,7 +219,7 @@ class CountingPlayer(Gamer):
                             print(13)
                         return True
 
-                # 카드 합이 13 미만인 경우우
+                # 카드 합이 14 미만인 경우
                 else:
                     if self.get_true_count() >= 4:
                         self.stand()
