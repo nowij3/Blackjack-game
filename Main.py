@@ -102,6 +102,9 @@ def set_level(my_level) :
 # 게임에 참여하는 플레이어 생성
 def make_players(name1, name2) :
 
+    # 플레이어 리스트 초기화
+    del player_list[:]
+    
     # player_list[0] = 카운팅 플레이어1
     # player_list[1] = 유저
     # player_list[2] = 카운팅 플레이어2
