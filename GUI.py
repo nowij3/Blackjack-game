@@ -1,18 +1,20 @@
 # -*- coding: utf-8 -*-
 import tkinter
 from tkinter import Image
+from tkinter import messagebox
 from Deck import Deck
 import Dealer
 import User
 import CountingPlayer
+import time
 
 #######
 # GUI #
 #######
 
 # GUI 화면 보여주기
-def show_panel() :
-    window=tkinter.Tk()
+def show_panel(window) :
+
     window.title("BlackJack Game")
     window.geometry("640x400+100+100")
     window.resizable(True, True)
@@ -29,18 +31,18 @@ def show_panel() :
     a4=tkinter.Button(window, text="Clear", command=lambda:button_clear(num_entry, a1, a5, a6, a7))
 
     
-    a1=tkinter.Button(window, text="Deal", command=lambda:button_deal(num_entry, a2, a3, a4, a5, a6, a7, window))
-    a2=tkinter.Button(window, text="Hit", command=lambda:button_hit)
-    a3=tkinter.Button(window, text="Stand", command=lambda:button_stand)
+    a1=tkinter.Button(window, text="Deal", command=lambda:button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, window))
+    a2=tkinter.Button(window, text="Hit", command=lambda:button_hit(a2))
+    a3=tkinter.Button(window, text="Stand", command=lambda:button_stand(a1, a2, a3, a4, a5, a6, a7))
         
     a8=tkinter.Label(window, text="Balance :")
     a9=tkinter.Label(window, text="New Game :")
     p1=tkinter.Label(window, text="Dealer", bg="white")
     p2=tkinter.Label(window, text="Player1", bg="white")
     p3=tkinter.Label(window, text="Player2", bg="white")
-    l1=tkinter.Button(window, text="Easy", command=lambda:button_easy(a4,a5,a6,a7))
-    l2=tkinter.Button(window, text="Normal", command=lambda:button_normal(a4,a5,a6,a7))
-    l3=tkinter.Button(window, text="Hard", command=lambda:button_hard(a4,a5,a6,a7))
+    l1=tkinter.Button(window, text="Easy", command=lambda:button_easy(a1,a2,a3,a4,a5,a6,a7))
+    l2=tkinter.Button(window, text="Normal", command=lambda:button_normal(a1,a2,a3,a4,a5,a6,a7))
+    l3=tkinter.Button(window, text="Hard", command=lambda:button_hard(a1,a2,a3,a4,a5,a6,a7))
     
     a1.place(x=150, y=330, width=90, height=45)
     a2.place(x=300, y=330, width=90, height=45)
@@ -52,8 +54,8 @@ def show_panel() :
     a8.place(x=20, y=320, width=50, height=30)
     a9.place(x=300, y=10, width=70, height=30)
     p1.place(x=300, y=150, width=70, height=30)
-    p2.place(x=120, y=250, width=70, height=30)
-    p3.place(x=500, y=250, width=70, height=30)
+    p2.place(x=120, y=270, width=70, height=30)
+    p3.place(x=500, y=270, width=70, height=30)
     l1.place(x=380, y=10, width=70, height=30)
     l2.place(x=460, y=10, width=70, height=30)
     l3.place(x=540, y=10, width=70, height=30)
@@ -69,8 +71,6 @@ def show_panel() :
     image_directory='./cardimages/'
     
 
-    window.mainloop()
-
 def chip_pressed(num_entry, value, a1):
     a1.config(state='normal')
 
@@ -85,6 +85,7 @@ def chip_pressed(num_entry, value, a1):
         num_entry.insert("end", value)
 
         print(value,"pressed")
+        return value
     
 def button_clear(num_entry, a1, a5, a6, a7):
 
@@ -92,26 +93,26 @@ def button_clear(num_entry, a1, a5, a6, a7):
     a1.config(state='disabled')
 
 
-def button_easy(a4,a5,a6,a7):
+def button_easy(a1, a2, a3,a4,a5,a6,a7):
     a4.config(state="normal")
     a5.config(state="normal")
     a6.config(state="normal")
     a7.config(state="normal")
-    play_new_game("easy")
+    play_new_game("easy", a1, a2, a3, a4, a5, a6, a7)
                 
-def button_normal(a4,a5,a6,a7):
+def button_normal(a1,a2,a3,a4,a5,a6,a7):
     a4.config(state="normal")
     a5.config(state="normal")
     a6.config(state="normal")
     a7.config(state="normal")
-    play_new_game("normal")
+    play_new_game("normal", a1, a2, a3, a4, a5, a6, a7)
     
-def button_hard(a4,a5,a6,a7):
+def button_hard(a1,a2,a3,a4,a5,a6,a7):
     a4.config(state="normal")
     a5.config(state="normal")
     a6.config(state="normal")
     a7.config(state="normal")
-    play_new_game("hard")
+    play_new_game("hard", a1, a2, a3, a4, a5, a6, a7)
 
 def change_to_image(card):
     for i in range(52):
@@ -119,10 +120,10 @@ def change_to_image(card):
             _id=Deck.deck[i][4]
             
             file_name = "./cardimages/card" + str(_id) + ".gif"
-            print(file_name)
             return file_name
         
-def button_deal(num_entry, a2, a3, a4, a5, a6, a7, window):
+def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, window):
+
     
     # 베팅칩 못누르게
     a2.config(state="normal")
@@ -156,57 +157,78 @@ def button_deal(num_entry, a2, a3, a4, a5, a6, a7, window):
         if player_list[i].is_playable() :
             player_list[i].deal()
 
-    ##a = give_my_card_info(len(player_list)+1,dealer.hand[0])
-    ##a_id=change_to_image(dealer.hand[0])
-
     give_my_card_info(len(player_list)+1,dealer.hand[0])
     card=tkinter.PhotoImage(file=change_to_image(dealer.hand[0]))
 
     lb_d_c=tkinter.Label(window, image=card)
-    lb_d_c.place(x=200, y=50)
+    lb_d_c.place(x=220, y=40)
 
-    """
     for i in range (len(player_list)) :
         if player_list[i].hand :
             give_my_card_info(i, player_list[0].hand[0])
             player1_1=tkinter.PhotoImage(file=change_to_image(player_list[0].hand[0]))
             lb_p1_1=tkinter.Label(window, image=player1_1)
-            lb_p1_1.place(x=150, y=100)
+            lb_p1_1.place(x=100, y=150)
 
             give_my_card_info(i, player_list[0].hand[1])
             player1_2=tkinter.PhotoImage(file=change_to_image(player_list[0].hand[1]))
             lb_p1_2=tkinter.Label(window, image=player1_2)
-            lb_p1_2.place(x=180, y=100)
+            lb_p1_2.place(x=130, y=150)
 
             give_my_card_info(i, player_list[1].hand[0])
             player2_1=tkinter.PhotoImage(file=change_to_image(player_list[1].hand[0]))
             lb_p2_1=tkinter.Label(window, image=player2_1)
-            lb_p2_1.place(x=300, y=250)
+            lb_p2_1.place(x=240, y=220)
 
             give_my_card_info(i, player_list[1].hand[1])
             player2_2=tkinter.PhotoImage(file=change_to_image(player_list[1].hand[1]))
             lb_p2_2=tkinter.Label(window, image=player2_2)
-            lb_p2_2.place(x=330, y=250)
+            lb_p2_2.place(x=270, y=220)
 
             give_my_card_info(i, player_list[2].hand[0])
             player3_1=tkinter.PhotoImage(file=change_to_image(player_list[2].hand[0]))
             lb_p3_1=tkinter.Label(window, image=player3_1)
-            lb_p3_1.place(x=450, y=100)
+            lb_p3_1.place(x=420, y=150)
 
             give_my_card_info(i, player_list[2].hand[1])
             player3_2=tkinter.PhotoImage(file=change_to_image(player_list[2].hand[1]))
             lb_p3_2=tkinter.Label(window, image=player3_2)
-            lb_p3_2.place(x=480, y=100)
+            lb_p3_2.place(x=450, y=150)
 
-                                                
-            play_continue()
-    """
+    if player_list[1].hand_sum == 21 :
+        a2.config(state='disabled')
+        ### disable hit button
+    a1.config(state="disabled")
+    window.mainloop()
 
-def button_hit():
-    return
+    
+def button_hit(a2):
+    if player_list[1].hand_sum == 21 :
+        a2.config(state='disabled')
+        #### disable hit button
 
-def button_stand():
-    return
+    if player_list[1].is_playable() :
+        player_list[1].hit()
+        give_my_card_info(1, player_list[1].hand[-1])
+        uc=tkinter.PhotoImage(file=change_to_image(player_list[1].hand[-1]))
+        uc_1=tkinter.Label(window, image=uc)
+        uc_1.place(x=300, y=220)
+                              
+        #### GUI 카드 이미지
+        
+    else :#(파산인 경우)
+        a2.config(state='disabled')
+        #### disable hit button
+    window.mainloop()
+
+def button_stand(a1, a2, a3, a4, a5, a6, a7):
+    play_list[1].play_status = "st_stand"
+    play_hit()
+
+    ###stand diasable
+    a3.config(state="disabled")
+    play_round_end(a1, a2, a3, a4, a5, a6, a7)
+    
 
 
 ######################
@@ -215,7 +237,8 @@ def button_stand():
 
 # 유저가 베팅할 칩 선택 (GUI로 인풋받기)
 def user_betting(chip) :
-
+    
+    chip=chip_pressed(num_entry, value, a1)
     player_list[1].chip_choice = chip
 
 
@@ -365,7 +388,7 @@ def give_my_card_info(num, card) :
             player_list[i].others_card(card)
 
 # 게임 시작, 모두 초기화
-def play_new_game(choice) :
+def play_new_game(choice, a1, a2, a3, a4, a5, a6, a7) :
 
     dealer.HANDLER.reset()
 
@@ -376,10 +399,10 @@ def play_new_game(choice) :
     for i in range(len(player_list)) :
         player_list[i].new_game()
 
-    play_start()
+    play_start(a1, a2, a3, a4, a5, a6, a7)
 
 # 게임 시작, 베팅칩만 초기화
-def play_new_hand() :
+def play_new_hand(a1, a2, a3, a4, a5, a6, a7) :
 
     print("\n***NEW HAND START***")
 
@@ -389,10 +412,10 @@ def play_new_hand() :
         if player_list[i].has_money :
             player_list[i].new_hand()
 
-    play_start()
+    play_start(a1, a2, a3, a4, a5, a6, a7)
 
 # 라운드 시작
-def play_start() :
+def play_start(a1, a2, a3, a4, a5, a6, a7) :
 
     # 우승자 리스트 비우기
     del blackjack_winner_list[:]
@@ -410,6 +433,16 @@ def play_start() :
         if i != 1 :
             player_list[i].decide_betting()
             print("betting chip of ",player_list[i].name," : ", player_list[i].chip_choice)
+
+
+    a1.config(state="normal")
+    a2.config(state="normal")
+    a3.config(state="normal")
+    a4.config(state="normal")
+    a5.config(state="normal")
+    a6.config(state="normal")
+    a7.config(state="normal")
+    ### 모든 버튼 enable
 
 # 딜
 def play_deal() :
@@ -447,80 +480,74 @@ def play_deal() :
     current_information()
     play_continue()
 
-# 딜 이후 게임 진행
+# 히트 이후 게임 진행
 def play_continue() :
-
-    if hit_anyone() :
-        play_hit()
 
     # 모두의 hit가 끝나면
     # 딜러의 딜에서 받은 뒤집히지 않은 카드 오픈
     dealer.open_second_card()
     give_my_card_info(len(player_list)+1, dealer.hand[1])
+    card_2=tkinter.PhotoImage(file=change_to_image(dealer.hand[1]))
+    lb_d_c2=tkinter.Label(window, image=card_2)
+    lb_d_c2.place(x=230, y=50)
+    ### 카드 이미지 !변경!
 
     # 딜러가 카드를 hit 할 때 마다 다른 플레이어들에게 카드 정보 주기
     while dealer.make_decision() :
         give_my_card_info(len(player_list)+1, dealer.hand[-1])
+        card_3=tkinter.PhotoImage(file=change_to_image(dealer.hand[-1]))
+        lb_d_c3=tkinter.Label(window, image=card_3)
+        lb_d_c3.place(x=260, y=50)
+        ### 카드 이미지
 
     final_information()
-    play_round_end()
+    window.mainloop()
 
 
 # 히트
 def play_hit() :
 
-    while hit_anyone() :
-
-        if player_list[1].hand_sum == 21 :
-            player_list[1].play_status = "st_stand"
-            
-        # 유저 선택 받기
-        if player_list[1].is_playable() :
-            while True :
-                choice = input("hit/stand : ")
-                if  choice == "hit" :
-                    player_list[1].play_status = "st_hit"
-                    break
-
-                elif choice == "stand" :
-                    player_list[1].play_status = "st_stand"
-                    break
-                
-                else :
-                    print("select again")
-
+    while(hit_anyone()) :      
         if player_list[0].is_playable() :
             # hit 한 경우에만 카드 정보 나눠주기
             if player_list[0].make_decision() :
                 give_my_card_info(0, player_list[0].hand[-1])
-
-        if player_list[1].is_playable() :
-            player_list[1].hit()
-            give_my_card_info(1, player_list[1].hand[-1])
+                player1_3=tkinter.PhotoImage(file=change_to_image(player_list[0].hand[-1]))
+                p1_3=tkinter.Label(window, image=player1_3)
+                p1_3.place(x=210, y=100)
+                ### GUI 카드 이미지
 
         if player_list[2].is_playable() :
             if player_list[2].make_decision() :
                 give_my_card_info(2, player_list[2].hand[-1])
+                player3_3=tkinter.PhotoImage(file=change_to_image(player_list[2].hand[-1]))
+                p3_3=tkinter.Label(window, image=player3_3)
+                p3_3.place(x=510, y=100)
+                ### GUI 카드 이미지
 
         current_information()
+    play_continue()
+
+    window.mainloop()
 
 
 # 한 라운드 종료
-def play_round_end() :
+def play_round_end(a1, a2, a3, a4, a5, a6, a7) :
 
     print("\n***ROUND END***\n")
 
-    # 우승자 찾기
-    find_winner()
+    ### 우승자 찾기
+    w=find_winner()
+    messagebox.showinfo("Winner", "Winner is"+str(w)+"!")
 
-    # 상금 받기
+    ### 상금 받기
     get_prize()
 
     # 모두가 파산이면
     if not check_all_money_status() :
         play_game_end()
     else :
-        play_new_hand()
+        play_new_hand(a1, a2, a3, a4, a5, a6, a7)
 
 
 # 메인 게임 종료
@@ -576,5 +603,6 @@ blackjack_winner_list = []
 winner_list = []
 draw_list = []
 
-show_panel()
-
+window=tkinter.Tk()
+show_panel(window)
+window.mainloop()
