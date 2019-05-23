@@ -2,6 +2,7 @@ from Gamer import *
 import CountingList
 import Deck as deck
 
+from Dealer import Dealer
 
 class CountingPlayer(Gamer):
     def __init__(self, name):
@@ -133,30 +134,134 @@ class CountingPlayer(Gamer):
         return true_count
 
     # 카운팅 값 기반으로 Hit/Stand 여부 결정, Hit한 경우에만 return True
-    def make_decision(self):
+    def make_decision(self, dealer_card):
 
         if self.hand_sum <= 11:
             self.play_status = "st_hit"
             self.hit()
+            if __name__ == '__main__':
+                print(21)
             return True
 
         elif self.hand_sum > 21:
             self.play_status = "st_bust"
+            if __name__ == '__main__':
+                print(22)
             return False
 
         elif self.hand_num == 2 and self.hand_sum == 21:
             self.blackjack = True
             self.stand()
+            if __name__ == '__main__':
+                print(23)
             return False
 
         elif self.hand_sum == 21:
             self.stand()
+            if __name__ == '__main__':
+                print(24)
             return False
 
         else:
-            #################################################################
-            # 여기가 아직 수정이 안되었읍니다
-            #################################################################
+
+            # 딜러핸드 테스트
+            dealer_hand = -1
+
+            # 딜러 카드에 해당하는 점수 찾기
+            for i in range(13):
+                if dealer_card[1] == Deck.deck[i][1]:  # dealer_card [모양, 숫자] Deck [모양, 숫자, 값, 개수]
+                    dealer_hand = Deck.deck[i][2]
+
+            # 딜러의 공개 카드가 7 미만 -> 딜러가 카드를 더 뽑아 bust 확률 증가
+            if dealer_hand < 7:
+
+                # 카드 합이 15 이상이면서 카운팅이 -1 이상
+                if self.hand_sum >= 15 and self.get_true_count() >= -1:
+                    self.stand()
+                    if __name__ == '__main__':
+                        print(1)
+                    return False
+                # 카드 합이 15 미만이거나 카운팅이 -1 미만
+                else:
+                    self.hit()
+                    if __name__ == '__main__':
+                        print(2)
+                    return True
+
+            # 딜러의 공개 카드가 7 이상
+            else:
+                # 코드 간결화 필요
+                if self.hand_sum >= 18 and self.get_true_count() >= -4:
+                    self.stand()
+                    if __name__ == '__main__':
+                        print(11)
+                    return False
+                elif self.hand_sum >= 18 and self.get_true_count() < -4:
+                    self.hit()
+                    if __name__ == '__main__':
+                        print(12)
+
+                elif self.hand_sum >= 14 and self.get_true_count() >= 4:
+                    if __name__ == '__main__':
+                        print(111)
+                    self.stand()
+
+                elif self.hand_sum >= 14 and self.get_true_count() < 4:
+                    self.hit()
+                    if __name__ == '__main__':
+                        print(13)
+                    return True
+
+                elif self.hand_sum < 14 and self.get_true_count() >= 4:
+                    self.stand()
+                    if __name__ == '__main__':
+                        print(14)
+                    return False
+                # elif self.hand_sum < 13 and self.get_true_count() >= 4:
+                #     self.stand()
+                #     if __name__ == '__main__':
+                #         print(15)
+                #     return False
+                else:
+                    self.hit()
+                    if __name__ == '__main__':
+                        print(16)
+                    return True
+
+
+            '''
+            dealer_card[1] == Deck.deck[  ------- 딜러 카드에 해당하는 점수 덱에서 찾기
+            dealer_hand = ------------점수
+            
+            1. 딜러의카드 숫자가 6이하인 경우 ( 딜러가 카드를 더 뽑아서 bust 확률 up)
+                if dealer_hand < 7
+            내 카드가 15 이상이고 카운트가 -1 이상이면 stand
+                if self.handsum >= 15 and self.get_true_count >= -1 : stand
+            - 위에거 not 내 카드가 15 이하이거나 카운트가 -1 이하이면 hit
+                else : hit
+            
+            
+            2. 딜러의 카드 숫자가 7이상인 경우
+                if dealer_hand >= 7 ( 아마 else 처리)
+                
+                <순서 확인>
+            내 카드가 18 이상이고 카운팅 >= -4 :  stand
+                if self.handsum >= 18 aand self.truecount >= -4 : stnad
+            내 카드가 18 이상이고 카운팅 < -4 : hit
+                elif self.handsum >= 18 and slef.truecount < -4 : hit
+            
+            내 카드가 14이상이고 카운팅 < 0: hit
+                elif self.handsum >= 14 and self.truecount < 0 : hit
+            내 카드가 14 이상이코 카운팅 >= 0 : stand
+                elif self.handsum >= 14 and self.truecount >= 0 : stand
+            내 카드 13 이하, 카운팅 > 4 : stand
+                elif self.handsum < 14 and self.truecont > 4 : stand
+                
+            else hit
+            
+            
+            '''
+
             if self.play_status == 'st_hit' and self.hand_sum > 13 and self.get_true_count() <= 0 :
                 # self.play_status = "st_hit"
                 self.hit()
@@ -223,3 +328,59 @@ class CountingPlayer(Gamer):
         self._play_status = new_play_status
 
 
+if __name__ == '__main__':
+
+    HL = CountingPlayer('Hi-Lo')
+    HO = CountingPlayer('KO')
+
+    dealer = Dealer()
+    dealer.deal()
+
+    # dealer.hand.append(['CLV', 'K'])
+    # dealer.hand.append(['DMD', '4'])
+    # dealer.hand_num = 2
+    #
+    # HL.hand.append(['SPD', 'K'])
+    # HL.hand.append(['DMD', '2'])
+    # HL.hand_num =2
+    # HL.hand_sum = 12
+    #
+    # HO.hand.append(['CLV', '2'])
+    # HO.hand.append(['SPD', '10'])
+    # HO.hand_num=2
+    # HO.hand_sum=12
+
+    HL.deal()
+    HO.deal()
+
+    print(dealer.hand)
+    print(HL.hand)
+    print(HO.hand)
+
+    print('---------------------------------------------------------------')
+    while (HL.make_decision(dealer.hand[0])):
+        print('HL hit')
+        print(HL.hand)
+
+    print('\n')
+    print('---------------------------------------------------------------')
+
+    while (HO.make_decision(dealer.hand[0])):
+        print('HO hit')
+        print(HO.hand)
+
+    print('\n\n')
+    print('---------------------------------------------------------------')
+
+    print("dealer hand sum = ", dealer.hand_sum)
+    dealer.open_second_card()
+    while (dealer.make_decision()):
+        print('Dealer hit')
+        print(dealer.hand_sum)
+
+
+    print('\n\n')
+
+    print(dealer.hand)
+    print(HL.hand)
+    print(HO.hand)
