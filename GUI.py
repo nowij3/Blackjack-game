@@ -83,23 +83,23 @@ def chip_pressed(value):
     # print(int(num_entry.get()))
 
 # 유저가 베팅할 칩 선택 (GUI로 인풋받기)
-def user_betting(chip) :
+def user_betting(value) :
 
-    player_list[1].chip_choice = chip
+    player_list[1].chip_choice = value
 
 
 # 모든 플레이어가 베팅한 칩 계산해서 반환
 def calculate_chip() :
 
     while player_list[1].is_playable() :
-        user_chip = int(input("betting chip of User : "))
+        user_chip = int(value)
         if user_chip <= player_list[1].balance :
             user_betting(user_chip)
             break
 
         # 유저의 자산보다 더 큰 금액을 입력한 경우
         else :
-            print("select again")
+            msgbox1()
 
 # 블랙잭인 경우 베팅한 금액의 2.5배, 그 외엔 2배 반환
 def prize_chip(player) :
@@ -558,6 +558,7 @@ def button_deal():
     play_continue()
 
 def button_hit():
+    
 
 def button_stand():
 
@@ -567,6 +568,10 @@ def button_clear():
     a5.config(state="normal")
     a6.config(state="normal")
     a7.config(state="normal")
+
+def msgbox1():
+    
+    tkinter.messagebox.showinfo("select again")
 
 ########
 # Main #
