@@ -1,11 +1,10 @@
 import tkinter
 from tkinter import Image
 import Dealer
-import User
-import CountingPlayer
+from User import User
+from CountingPlayer import CountingPlayer
 import sys
 import os
-import Main
 
 def restart_program():
 	python = sys.executable
@@ -89,15 +88,50 @@ class Blackjack:
                 self.window.mainloop()
 
      
+        def set_level(my_level) :
+                
+                if my_level == "easy" :
+                        make_players("Hi-Lo", "KO")
+                elif my_level == "normal" :
+                        make_players("Hi-Opt2", "Zen")
+                elif my_level == "hard" :
+                        make_players("Halves", "Hi-Opt2")
+
+
+        def make_players(name1, name2) :
+                
+
+    # player_list[0] = 카운팅 플레이어1
+    # player_list[1] = 유저
+    # player_list[2] = 카운팅 플레이어2
+    # 항상 고정
+                player_list.append(CountingPlayer.CountingPlayer(name1))
+                player_list.append(User.User())
+                player_list.append(CountingPlayer.CountingPlayer(name2))
+
+                
+
+        def play_new_game(my_level):
+                Dealer.dealer.HANDLER.reset()
+                self.set_level(my_level)
+
+                dealer.new_game()
+                for i in range(len(player_list)) :
+                        
+                        player_list[i].new_game()
+
+                play_start()
+                
+
 
         def Easy(self):
                 
-                Main.set_level("easy")
+               self.play_new_game("easy")
                 
 
         def Normal(self):
 
-                Main.set_level("normal")
+                self.play_new_game("easy")
 
 
         def Hard(self):
@@ -145,15 +179,15 @@ class Blackjack:
                 #user_balance.grid(row=0, columnspan=1)
                 #user_balance.place(x=70, y=350)
 
-                # deck에 8장 이하만 남으면 덱을 초기화
-
 
                 # deck에 8장 이하만 남으면 덱을 초기화
-                if deck_handler.get_remaining_card() <= 0.5 :
-                        deck_handler.reset()
-        
-            # hit 가능한 상태로 초기화
-                dealer.play_status = "st_hit"
+                if Dealer.Dealer.HANDLER.get_remaining_card() <= 0.5 :
+                        
+                        
+                        dealer.HANDLER.reset()        
+
+            #hit 가능한 상태로 초기화
+                Dealer.Dealer.play_status = "st_hit"
                 
                         
                 for i in range(len(player_list)) :
@@ -170,7 +204,7 @@ class Blackjack:
                             player_list[i].deal()
 
             # dealer.open_deal_card()
-                a = give_my_card_info(3, dealer.hand[0])
+                a = self.give_my_card_info(3,dealer.hand[0])
                 dealer_cards=tkinter.PhotoImage(file=Blackjack.image_directory+"card{}.gif".format(Chage_to_image(a)))
                 lb_d_c=tkinter.Label(window, image=deale_cards)
                 lb_d_c.place(x=200, y=50)
@@ -238,6 +272,9 @@ class Blackjack:
                 self.a7.config(state="normal")
                 
 
+dealer = Dealer.Dealer()
+player_list = []
+winner_list = []
                 
                 
 
