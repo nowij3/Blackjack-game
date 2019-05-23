@@ -2,6 +2,8 @@
 import Dealer
 import CountingPlayer
 
+
+
 # 블랙잭인 경우 베팅한 금액의 2.5배, 그 외엔 2배 반환
 def prize_chip(player) :
 
@@ -243,41 +245,26 @@ def play_round_end() :
     # 상금 받기
     get_prize()
 
-      
-# 메인 게임 종료
-def play_game_end(test_case) :
-
-    print("\n***GAME END***")
-    print("total round : ", test_case)
-    print("num of winning and winning rate and balance")
-    for i in range(5) :
-        print(player_list[i].name,":",player_list[i].num_of_winning,",", int((player_list[i].num_of_winning/test_case) * 100), "%,",player_list[i].balance)
-    print(" ")
-    
-# 메인 테스트 함수
-def final_information() :
-    
-    print(dealer.name, " : ", dealer.hand ,", hand_sum : ", dealer.hand_sum, ", play_status : ", dealer.play_status)
-    for i in range(len(player_list)) :
-        print(player_list[i].name," : ",player_list[i].hand, ", hand_sum : ", player_list[i].hand_sum, ", play_status : ", player_list[i].play_status)
 
 # 테스트 케이스 만큼 반복 실행하는 함수
 def routine(test_case) :
+
+    # *** 테스트할 때 본인 파일 경로로 바꾸세요 ***    
+    f = open("C:/Users/JIWON01/Desktop/Result.txt",'a')
+
     play_new_game()
     
     for i in range(test_case) :
-        if not check_all_money_status() :
-            print ("round ends at", i+1)
-            play_game_end(i+1)
-            return
-        
-        else :
-            play_new_hand()
+        play_new_hand()
 
 
     # 실행 횟수를 채우면
-    play_game_end(test_case)
+    for i in range(5) :
+        result = player_list[i].name+" : "+str(player_list[i].num_of_winning)+", "+str(int((player_list[i].num_of_winning/test_case) * 100))+"%, "+str(player_list[i].balance)+"\n"
+        f.write(result)
+    f.write("\n\n")
     
+    f.close()
 
 
 ########
@@ -290,4 +277,4 @@ blackjack_winner_list = []
 winner_list = []
 draw_list = []
 
-routine(10000)
+routine(1000)

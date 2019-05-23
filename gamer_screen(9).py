@@ -5,7 +5,6 @@ import User
 import CountingPlayer
 import sys
 import os
-import Main
 
 def restart_program():
 	python = sys.executable
@@ -89,20 +88,58 @@ class Blackjack:
                 self.window.mainloop()
 
      
+        def set_level(my_level) :
+                
+                if my_level == "easy" :
+                        make_players("Hi-Lo", "KO")
+                elif my_level == "normal" :
+                        make_players("Hi-Opt2", "Zen")
+                elif my_level == "hard" :
+                        make_players("Halves", "Hi-Opt2")
+
+
+        def make_players(name1, name2) :
+
+                # 플레이어 리스트 초기화
+                del player_list[:]                
+
+                # player_list[0] = 카운팅 플레이어1
+                # player_list[1] = 유저
+                # player_list[2] = 카운팅 플레이어2
+                # 항상 고정
+                player_list.append(CountingPlayer.CountingPlayer(name1))
+                player_list.append(User.User())
+                player_list.append(CountingPlayer.CountingPlayer(name2))
+
+                
+
+        def play_new_game(my_level):
+                dealer.HANDLER.reset()
+                self.set_level(my_level)
+
+                dealer.new_game()
+                for i in range(len(player_list)) :
+                        
+                        player_list[i].new_game()
+
+                play_start()
+                
+
 
         def Easy(self):
                 
-                Main.set_level("easy")
+               self.play_new_game("easy")
                 
 
         def Normal(self):
 
-                Main.set_level("normal")
+                self.play_new_game("normal")
 
 
         def Hard(self):
 
-                Main.set_level("hard")
+                self.play_new_game("hard")
+
 
 
         def give_my_card_info(num, card) :
@@ -114,10 +151,6 @@ class Blackjack:
                     player_list[i].others_card(card)
 
             return card       
-
-        def Playing(self):
-                
-                Main.play_start()
 
 
         def Change_to_image(card):
@@ -145,32 +178,29 @@ class Blackjack:
                 #user_balance.grid(row=0, columnspan=1)
                 #user_balance.place(x=70, y=350)
 
-                # deck에 8장 이하만 남으면 덱을 초기화
-
 
                 # deck에 8장 이하만 남으면 덱을 초기화
-                if deck_handler.get_remaining_card() <= 0.5 :
-                        deck_handler.reset()
-        
-            # hit 가능한 상태로 초기화
+                # 카운팅 플레이어의 카운팅 초기화
+                if dealer.HANDLER.get_remaining_card() <= 0.5 :
+                        dealer.HANDLER.reset()
+                for i in range(len(player_list)) :
+                        if i != 1 :
+                                player_list[i].counting = 0       
+
+                # hit 가능한 상태로 초기화
                 dealer.play_status = "st_hit"
-                
-                        
                 for i in range(len(player_list)) :
                         if player_list[i].has_money() :
-                                
-                                
-                                 player_list[i].play_status = "st_hit"
+                                player_list[i].play_status = "st_hit"
 
-            # deal
+                # deal
                 dealer.deal()
                 for i in range (len(player_list)) :
-                        
                         if player_list[i].is_playable() :
                             player_list[i].deal()
 
-            # dealer.open_deal_card()
-                a = give_my_card_info(3, dealer.hand[0])
+                # dealer.open_deal_card()
+                a = self.give_my_card_info(len(player_list)+1,dealer.hand[0])
                 dealer_cards=tkinter.PhotoImage(file=Blackjack.image_directory+"card{}.gif".format(Chage_to_image(a)))
                 lb_d_c=tkinter.Label(window, image=deale_cards)
                 lb_d_c.place(x=200, y=50)
@@ -195,25 +225,22 @@ class Blackjack:
                                                 lb_p2_1=tkinter.Label(window, image=player2_1)
                                                 lb_p2_1.place(x=300, y=250)
 
-                                                e=give_my_card_info(1,Main.player_list[1].hand[1])
+                                                e=give_my_card_info(1, player_list[1].hand[1])
                                                 player2_2=tkinter.PhotoImage(file=Blackjack.image_directory+"card{}.gif".format(Change_to_image(e)))
                                                 lb_p2_2=tkinter.Label(window, image=player2_2)
                                                 lb_p2_2.place(x=330, y=250)
 
-                                                f=give_my_card_info(1,Main.player_list[2].hand[0])
+                                                f=give_my_card_info(1, player_list[2].hand[0])
                                                 player3_1=tkinter.PhotoImage(file=Blackjack.image_directory+"card{}.gif".format(Change_to_image(f)))
                                                 lb_p3_1=tkinter.Label(window, image=player3_1)
                                                 lb_p3_1.place(x=450, y=100)
 
-                                                g=give_my_card_info(1,Main.player_list[2].hand[1])
+                                                g=give_my_card_info(1, player_list[2].hand[1])
                                                 player3_2=tkinter.PhotoImage(file=Blackjack.image_directory+"card{}.gif".format(Change_to_image(g)))
                                                 lb_p3_2=tkinter.Label(window, image=player3_2)
                                                 lb_p3_2.place(x=480, y=100)
 
                                                 
-                                
-                
-                current_information()
                 play_continue()
 
 
@@ -223,8 +250,6 @@ class Blackjack:
                 Main.choice="hit"
                 Main.play_hit()
                 
-
-                        
 
         def Stand(self):
 
@@ -238,7 +263,11 @@ class Blackjack:
                 self.a7.config(state="normal")
                 
 
-                
-                
+dealer = Dealer.Dealer()
+player_list = []
+blackjack_winner_list = []
+winner_list = []
+draw_list = []
+                               
 
 Blackjack()
