@@ -233,7 +233,7 @@ def play_hit() :
   
     while hit_anyone() :
         for i in range(len(player_list)) :
-            if player_list[i].is_playable() and player_list[i].make_decision() :
+            if player_list[i].is_playable() and player_list[i].make_decision(dealer.hand[0]) :
                 give_my_card_info(i, player_list[i].hand[-1])
                 
 # 한 라운드 종료
