@@ -37,9 +37,9 @@ def show_panel() :
     p1=tkinter.Label(window, text="Dealer", bg="white")
     p2=tkinter.Label(window, text="Player1", bg="white")
     p3=tkinter.Label(window, text="Player2", bg="white")
-    l1=tkinter.Button(window, text="Easy", command=lambda:button_easy)
-    l2=tkinter.Button(window, text="Normal", command=lambda:button_normal)
-    l3=tkinter.Button(window, text="Hard", command=lambda:button_hard)
+    l1=tkinter.Button(window, text="Easy", command=lambda:button_easy(a1,a2,a3,a4,a5,a6,a7))
+    l2=tkinter.Button(window, text="Normal", command=lambda:button_normal(a1,a2,a3,a4,a5,a6,a7))
+    l3=tkinter.Button(window, text="Hard", command=lambda:button_hard(a1,a2,a3,a4,a5,a6,a7))
     
     a1.place(x=150, y=330, width=90, height=45)
     a2.place(x=300, y=330, width=90, height=45)
@@ -89,7 +89,7 @@ def button_clear(num_entry, a5, a6, a7):
     num_entry.delete(0,'end')
 
 
-def button_easy():
+def button_easy(a1,a2,a3,a4,a5,a6,a7):
     a1.config(state="normal")
     a2.config(state="normal")
     a3.config(state="normal")
@@ -99,7 +99,7 @@ def button_easy():
     a7.config(state="normal")
     play_new_game("easy")
                 
-def button_normal():
+def button_normal(a1,a2,a3,a4,a5,a6,a7):
     a1.config(state="normal")
     a2.config(state="normal")
     a3.config(state="normal")
@@ -109,7 +109,7 @@ def button_normal():
     a7.config(state="normal")
     play_new_game("normal")
     
-def button_hard():
+def button_hard(a1,a2,a3,a4,a5,a6,a7):
     a1.config(state="normal")
     a2.config(state="normal")
     a3.config(state="normal")
@@ -361,7 +361,7 @@ def give_my_card_info(num, card) :
             player_list[i].others_card(card)
 
 # 게임 시작, 모두 초기화
-def play_new_game() :
+def play_new_game(choice) :
 
     print("\n***NEW GAME START***")
 
