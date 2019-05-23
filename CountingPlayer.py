@@ -130,7 +130,11 @@ class CountingPlayer(Gamer):
                 self.counting += self.count_list[i][1]
 
     def get_true_count(self):
-        true_count = round(self.counting / self.HANDLER.get_remaining_card(), 2)
+        if self.HANDLER.get_remaining_card() != 0:
+            true_count = round(self.counting / self.HANDLER.get_remaining_card(), 2)
+        else:
+            true_count = round(self.counting / 0.2, 2)
+
         return true_count
 
     # 카운팅 값 기반으로 Hit/Stand 여부 결정, Hit한 경우에만 return True
@@ -190,43 +194,43 @@ class CountingPlayer(Gamer):
 
             # 딜러의 공개 카드가 7 이상
             else:
-                # 코드 간결화 필요
-                if self.hand_sum >= 18 and self.get_true_count() >= -4:
-                    self.stand()
-                    if __name__ == '__main__':
-                        print(11)
-                    return False
-                elif self.hand_sum >= 18 and self.get_true_count() < -4:
-                    self.hit()
-                    if __name__ == '__main__':
-                        print(12)
 
-                elif self.hand_sum >= 14 and self.get_true_count() >= 4:
-                    if __name__ == '__main__':
-                        print(111)
-                    self.stand()
+                # 카드 합이 18 이상인 경우
+                if self.hand_sum >= 18:
+                    if self.get_true_count() >= -4:
+                        self.stand()
+                        if __name__ == '__main__':
+                            print(11)
+                        return False
+                    else:
+                        self.hit()
+                        if __name__ == '__main__':
+                            print(12)
 
-                elif self.hand_sum >= 14 and self.get_true_count() < 4:
-                    self.hit()
-                    if __name__ == '__main__':
-                        print(13)
-                    return True
+                # 카드 합이 14 이상인 경우
+                elif self.hand_sum >= 14:
+                    if self.get_true_count() >= 4:
+                        if __name__ == '__main__':
+                            print(111)
+                        self.stand()
+                    else:
+                        self.hit()
+                        if __name__ == '__main__':
+                            print(13)
+                        return True
 
-                elif self.hand_sum < 14 and self.get_true_count() >= 4:
-                    self.stand()
-                    if __name__ == '__main__':
-                        print(14)
-                    return False
-                # elif self.hand_sum < 13 and self.get_true_count() >= 4:
-                #     self.stand()
-                #     if __name__ == '__main__':
-                #         print(15)
-                #     return False
+                # 카드 합이 13 미만인 경우우
                 else:
-                    self.hit()
-                    if __name__ == '__main__':
-                        print(16)
-                    return True
+                    if self.get_true_count() >= 4:
+                        self.stand()
+                        if __name__ == '__main__':
+                            print(14)
+                        return False
+                    else:
+                        self.hit()
+                        if __name__ == '__main__':
+                            print(16)
+                        return True
 
 
             '''

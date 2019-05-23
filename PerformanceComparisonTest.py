@@ -277,4 +277,5 @@ blackjack_winner_list = []
 winner_list = []
 draw_list = []
 
-routine(1000)
+
+routine(10000)
