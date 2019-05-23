@@ -309,7 +309,7 @@ def play_hit() :
 
         if player_list[0].is_playable() :
             # hit 한 경우에만 카드 정보 나눠주기
-            if player_list[0].make_decision() :
+            if player_list[0].make_decision(dealer.hand[0]) :
                 give_my_card_info(0, player_list[0].hand[-1])
 
         if player_list[1].is_playable() :
@@ -317,7 +317,7 @@ def play_hit() :
             give_my_card_info(1, player_list[1].hand[-1])
 
         if player_list[2].is_playable() :
-            if player_list[2].make_decision() :
+            if player_list[2].make_decision(dealer.hand[0]) :
                 give_my_card_info(2, player_list[2].hand[-1])
 
         current_information()
