@@ -180,7 +180,7 @@ class CountingPlayer(Gamer):
             if dealer_hand < 7:
 
                 # 카드 합이 15 이상이면서 카운팅이 -1 이상
-                if self.hand_sum >= 15 and self.get_true_count() >= -1:
+                if self.hand_sum >= 15 and self.get_true_count() >= -4:
                     self.stand()
                     if __name__ == '__main__':
                         print(1)
@@ -207,8 +207,8 @@ class CountingPlayer(Gamer):
                         if __name__ == '__main__':
                             print(12)
 
-                # 카드 합이 14 이상인 경우
-                elif self.hand_sum >= 14:
+                # 카드 합이 15 이상인 경우
+                elif self.hand_sum >= 15:
                     if self.get_true_count() >= 4:
                         if __name__ == '__main__':
                             print(111)
@@ -219,7 +219,7 @@ class CountingPlayer(Gamer):
                             print(13)
                         return True
 
-                # 카드 합이 14 미만인 경우
+                # 카드 합이 15 미만인 경우
                 else:
                     if self.get_true_count() >= 4:
                         self.stand()
