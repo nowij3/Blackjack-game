@@ -260,7 +260,7 @@ def routine(test_case) :
 
     # 실행 횟수를 채우면
     for i in range(5) :
-        result = player_list[i].name+" : "+str(player_list[i].num_of_winning)+", "+str(int((player_list[i].num_of_winning/test_case) * 100))+"%, "+str(player_list[i].balance)+"\n"
+        result = player_list[i].name+" : "+str(player_list[i].num_of_winning)+", "+str(round((player_list[i].num_of_winning / test_case) * 100, 2)) +"%, "+str(player_list[i].balance)+"\n"
         f.write(result)
     f.write("\n\n")
     
@@ -276,6 +276,5 @@ player_list = []
 blackjack_winner_list = []
 winner_list = []
 draw_list = []
-
 
 routine(10000)
