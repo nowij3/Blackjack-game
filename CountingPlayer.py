@@ -179,13 +179,13 @@ class CountingPlayer(Gamer):
             # 딜러의 공개 카드가 7 미만 -> 딜러가 카드를 더 뽑아 bust 확률 증가
             if dealer_hand < 7:
 
-                # 카드 합이 15 이상이면서 카운팅이 -1 이상
+                # 카드 합이 15 이상이면서 카운팅이 -4 이상
                 if self.hand_sum >= 15 and self.get_true_count() >= -4:
                     self.stand()
                     if __name__ == '__main__':
                         print(1)
                     return False
-                # 카드 합이 15 미만이거나 카운팅이 -1 미만
+                # 카드 합이 15 미만이거나 카운팅이 -4 미만
                 else:
                     self.hit()
                     if __name__ == '__main__':
