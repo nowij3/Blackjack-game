@@ -2,7 +2,7 @@
 import Dealer
 import CountingPlayer
 
-
+from BasicPlayer import BasicPlayer
 
 # 블랙잭인 경우 베팅한 금액의 2.5배, 그 외엔 2배 반환
 def prize_chip(player) :
@@ -76,6 +76,8 @@ def make_players() :
     player_list.append(CountingPlayer.CountingPlayer("Zen"))
     player_list.append(CountingPlayer.CountingPlayer("Halves"))
 
+    player_list.append(BasicPlayer())
+
 
 # 플레이어 중 블랙잭이 있는지 확인
 def check_blackjack() :
@@ -128,10 +130,9 @@ def find_winner() :
     
 # 다른 플레이어에게 내 카드 정보 주기
 def give_my_card_info(num, card) :
-
     for i in range(len(player_list)) :
         # 자기 자신은 포함하지 않기 위해 사용하는 if문
-        if i != num :
+        if i != num and player_list[i].name != 'Basic':
             player_list[i].others_card(card)
     
 # 게임 시작, 모두 초기화
@@ -172,7 +173,7 @@ def play_start() :
 
     for i in range(len(player_list)) : 
         player_list[i].decide_betting()
-        
+
     play_deal()
 
 
@@ -183,7 +184,7 @@ def play_deal() :
     # 카운팅 플레이어의 카운팅 초기화
     if dealer.HANDLER.get_remaining_card() <= 0.5 :
         dealer.HANDLER.reset()
-    for i in range(len(player_list)) :
+    for i in range(len(player_list)-1) :
             player_list[i].counting = 0
             
     # hit 가능한 상태로 초기화
@@ -191,7 +192,7 @@ def play_deal() :
     for i in range(len(player_list)) :
         if player_list[i].has_money() :
             player_list[i].play_status = "st_hit"
-  
+
     # deal
     dealer.deal()
     for i in range (len(player_list)) :
@@ -211,15 +212,15 @@ def play_deal() :
 
 # 딜 이후 게임 진행
 def play_continue() :
-    
+
     if hit_anyone() :
         play_hit()
-        
+
     # 모두의 hit가 끝나면
     # 딜러의 딜에서 받은 뒤집히지 않은 카드 오픈
     dealer.open_second_card()
     give_my_card_info(len(player_list)+1, dealer.hand[1])
-    
+
     # 딜러가 카드를 hit 할 때 마다 다른 플레이어들에게 카드 정보 주기
     while dealer.make_decision() :
         give_my_card_info(5, dealer.hand[-1])
@@ -235,10 +236,15 @@ def play_hit() :
         for i in range(len(player_list)) :
             if player_list[i].is_playable() and player_list[i].make_decision(dealer.hand[0]) :
                 give_my_card_info(i, player_list[i].hand[-1])
-                
+
 # 한 라운드 종료
 def play_round_end() :
-          
+    print("Dealer == ", dealer.hand, "< dealer hand = ", dealer.hand_sum, ">")
+    for i in range(len(player_list)):
+        print(player_list[i].name, " == ", player_list[i].hand, "< hand sum = ", player_list[i].hand_sum, ">")
+
+    print("---------------------------------")
+
     # 우승자 찾기
     find_winner()
 
@@ -250,16 +256,16 @@ def play_round_end() :
 def routine(test_case) :
 
     # *** 테스트할 때 본인 파일 경로로 바꾸세요 ***    
-    f = open("C:/Users/JIWON01/Desktop/Result.txt",'a')
+    f = open("C:/Users/궁램/Desktop/test/test01.txt",'a')
 
     play_new_game()
-    
+
     for i in range(test_case) :
         play_new_hand()
 
 
     # 실행 횟수를 채우면
-    for i in range(5) :
+    for i in range(6) :
         result = player_list[i].name+" : "+str(player_list[i].num_of_winning)+", "+str(round((player_list[i].num_of_winning / test_case) * 100, 2)) +"%, "+str(player_list[i].balance)+"\n"
         f.write(result)
     f.write("\n\n")
@@ -277,4 +283,4 @@ blackjack_winner_list = []
 winner_list = []
 draw_list = []
 
-routine(10000)
+routine(50000)
