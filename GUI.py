@@ -108,7 +108,7 @@ def button_normal(a2, a3, a4,a5,a6,a7):
     a7.config(state="normal")
     play_new_game("normal",a2, a3, a4, a5, a6, a7)
     
-def button_hard(a4,a5,a6,a7):
+def button_hard(a2, a3, a4,a5,a6,a7):
     a4.config(state="normal")
     a5.config(state="normal")
     a6.config(state="normal")
@@ -378,6 +378,15 @@ def find_winner() :
                     # 비긴 경우
                     elif player_list[i].hand_sum == dealer.hand_sum :
                         draw_list.append(player_list[i])
+
+    w = ""
+    for i in range(len(blackjack_winner_list)) :
+        w += blackjack_winner_list[i].name + " "
+
+    for i in range(len(winner_list)) :
+        w += winner_list[i].name + " "
+
+    return w
                 
 # 다른 플레이어에게 내 카드 정보 주기, CountingPlayer들만 적용됨
 def give_my_card_info(num, card) :
@@ -536,16 +545,7 @@ def play_round_end(a2, a3, a4, a5, a6, a7) :
     print("\n***ROUND END***\n")
 
     ### 우승자 찾기
-    find_winner()
-
-    w = ""
-    if not blackjack_winner_list :
-        for i in range(len(blackjack_winner_list)) :
-            w = w + blackjack_winner_list[i].name + " "
-    
-    if not winner_list :
-        for i in range(len(winner_list)) :
-            w = w + winner_list[i].name + " "
+    w = find_winner()
 
     messagebox.showinfo("Winner", w)
 
