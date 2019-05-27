@@ -92,7 +92,7 @@ def chip_pressed(num_entry, value, a1):
         print(value,"pressed")
         return value
 
-def calcuate_chip(num_enrty, value, a1):
+def calcuate_chip(num_entry, value, a1):
     bal_chip=1000000
     get_chip=chip_pressed(num_entry, value, a1)
     bal_chip-=get_chip
@@ -176,6 +176,8 @@ def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, window):
     lb_d_c=tkinter.Label(window, image=card)
     lb_d_c.place(x=220, y=40)
 
+    card_labels.append(lb_d_c) #@
+
     for i in range (len(player_list)) :
         if player_list[i].hand :
             give_my_card_info(i, player_list[0].hand[0])
@@ -183,30 +185,42 @@ def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, window):
             lb_p1_1=tkinter.Label(window, image=player1_1)
             lb_p1_1.place(x=100, y=150)
 
+            card_labels.append(lb_p1_1) #@
+
             give_my_card_info(i, player_list[0].hand[1])
             player1_2=tkinter.PhotoImage(file=change_to_image(player_list[0].hand[1]))
             lb_p1_2=tkinter.Label(window, image=player1_2)
             lb_p1_2.place(x=130, y=150)
+
+            card_labels.append(lb_p1_2) #@
 
             give_my_card_info(i, player_list[1].hand[0])
             player2_1=tkinter.PhotoImage(file=change_to_image(player_list[1].hand[0]))
             lb_p2_1=tkinter.Label(window, image=player2_1)
             lb_p2_1.place(x=240, y=220)
 
+            card_labels.append(lb_p2_1) #@
+
             give_my_card_info(i, player_list[1].hand[1])
             player2_2=tkinter.PhotoImage(file=change_to_image(player_list[1].hand[1]))
             lb_p2_2=tkinter.Label(window, image=player2_2)
             lb_p2_2.place(x=270, y=220)
+
+            card_labels.append(lb_p2_2) #@
 
             give_my_card_info(i, player_list[2].hand[0])
             player3_1=tkinter.PhotoImage(file=change_to_image(player_list[2].hand[0]))
             lb_p3_1=tkinter.Label(window, image=player3_1)
             lb_p3_1.place(x=420, y=150)
 
+            card_labels.append(lb_p3_1) #@
+
             give_my_card_info(i, player_list[2].hand[1])
             player3_2=tkinter.PhotoImage(file=change_to_image(player_list[2].hand[1]))
             lb_p3_2=tkinter.Label(window, image=player3_2)
             lb_p3_2.place(x=450, y=150)
+
+            card_labels.append(lb_p3_2) #@
 
     if player_list[1].hand_sum == 21 :
         a2.config(state='disabled')
@@ -225,6 +239,8 @@ def button_hit(a2):
         uc=tkinter.PhotoImage(file=change_to_image(player_list[1].hand[-1]))
         uc_1=tkinter.Label(window, image=uc)
         uc_1.place(x=300, y=220)
+
+        card_labels.append(uc_1) #@
 
         if (player_list[1].hand_sum > 21) :
             player_list[1].play_status = "st_bust"
@@ -435,6 +451,9 @@ def play_new_hand(a2, a3, a4, a5, a6, a7) :
             player_list[i].new_hand()
 
     ### 라벨 지우기 tkinter.Label.destroy()?
+    remove_card()
+
+
     play_start(a2, a3, a4, a5, a6, a7)
 
 # 라운드 시작
@@ -612,6 +631,10 @@ def final_information() :
         else :
             print(player_list[i].name," : stop")
 
+def remove_card():
+    for label in card_labels:
+        label.destroy()
+
 
 ########
 # Main #
@@ -622,6 +645,8 @@ player_list = []
 blackjack_winner_list = []
 winner_list = []
 draw_list = []
+
+card_labels = []
 
 window=tkinter.Tk()
 show_panel(window)
