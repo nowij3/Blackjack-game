@@ -248,19 +248,21 @@ def prize_chip(player) :
 
     # 딜러와 비긴 경우
     if player.hand_sum == dealer.hand_sum :
-        print(player.name, "recieves ", player.chip_choice)
+        ##print(player.name, "recieves ", player.chip_choice)
         return player.chip_choice
 
     if player.is_blackjack() :
-        print(player.name, "recieves ", int(2.5 * player.chip_choice))
+        ##print(player.name, "recieves ", int(2.5 * player.chip_choice))
         return int(2.5 * player.chip_choice)
     else :
-        print(player.name, "recieves ", 2 * player.chip_choice)
+        ##print(player.name, "recieves ", 2 * player.chip_choice)
         return 2 * player.chip_choice
 
 
 # 재산에 상금 반영하기
 def get_prize() :
+
+    info = ""
 
     for i in range(len(player_list)) :
         # 게임에 참여한 경우에만
@@ -273,6 +275,7 @@ def get_prize() :
             break
         else :
             blackjack_winner_list[i].balance += prize_chip(blackjack_winner_list[i])
+            info += blackjack_winner_list[i].name + "recives " + str(prize_chip(blackjack_winner_list[i])) + "\n"
 
     # 블랙잭이 아닌 우승자
     for i in range(len(winner_list)) :
@@ -280,10 +283,17 @@ def get_prize() :
             continue
         else :
             winner_list[i].balance += prize_chip(winner_list[i])
+            info += winner_list[i].name + "recives " + str(prize_chip(winner_list[i])) + "\n"
 
     # 비긴 플레이어
     for i in range(len(draw_list)) :
         draw_list[i].balance += prize_chip(draw_list[i])
+        info += draw_list[i].name + "recives " + str(prize_chip(draw_list[i])) + "\n"
+
+    if info == "" :
+        info += "Round end!"
+
+    messagebox.showinfo("Info", info)
 
 # hit 상태인 플레이어가 남아있는지 확인
 def hit_anyone() :
@@ -378,15 +388,6 @@ def find_winner() :
                     # 비긴 경우
                     elif player_list[i].hand_sum == dealer.hand_sum :
                         draw_list.append(player_list[i])
-
-    w = ""
-    for i in range(len(blackjack_winner_list)) :
-        w += blackjack_winner_list[i].name + " "
-
-    for i in range(len(winner_list)) :
-        w += winner_list[i].name + " "
-
-    return w
                 
 # 다른 플레이어에게 내 카드 정보 주기, CountingPlayer들만 적용됨
 def give_my_card_info(num, card) :
@@ -545,9 +546,7 @@ def play_round_end(a2, a3, a4, a5, a6, a7) :
     print("\n***ROUND END***\n")
 
     ### 우승자 찾기
-    w = find_winner()
-
-    messagebox.showinfo("Winner", w)
+    find_winner()
 
     ### 상금 받기
     get_prize()
