@@ -25,21 +25,19 @@ def show_panel(window) :
     num_entry.grid(row=0, columnspan=1)
     num_entry.place(x=20, y=290)
 
-    result_chip=tkinter.Entry(window, textvariable=entry_value, width=8)
-    result_chip.grid(row=0, columnspan=1)
-    result_chip.place(x=80, y=325)
 
     a5=tkinter.Button(window, text="1000", command=lambda:chip_pressed(num_entry,'1000', a1))
     a6=tkinter.Button(window, text="500", command=lambda:chip_pressed(num_entry,'500', a1))
     a7=tkinter.Button(window, text="200", command=lambda:chip_pressed(num_entry,'200', a1))
     a4=tkinter.Button(window, text="Clear", command=lambda:button_clear(num_entry, a1, a5, a6, a7))
 
+    a8=tkinter.Label(window, text="Balance : 1000000") ###Balance 창에 표시
     
-    a1=tkinter.Button(window, text="Deal", command=lambda:button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, window))
+    a1=tkinter.Button(window, text="Deal", command=lambda:button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, window))
     a2=tkinter.Button(window, text="Hit", command=lambda:button_hit(a2))
     a3=tkinter.Button(window, text="Stand", command=lambda:button_stand(a2, a3, a4, a5, a6, a7))
         
-    a8=tkinter.Label(window, text="Balance :") ###Balance 창에 표시
+
     
     a9=tkinter.Label(window, text="New Game :")
     p1=tkinter.Label(window, text="Dealer", bg="white")
@@ -56,7 +54,7 @@ def show_panel(window) :
     a5.place(x=20, y=90, width=50, height=50)
     a6.place(x=20, y=150, width=50, height=50)
     a7.place(x=20, y=210, width=50, height=50)
-    a8.place(x=20, y=320, width=50, height=30)
+    a8.place(x=20, y=320, width=100, height=30)
     a9.place(x=300, y=10, width=70, height=30)
     p1.place(x=300, y=150, width=70, height=30)
     p2.place(x=120, y=270, width=70, height=30)
@@ -90,15 +88,9 @@ def chip_pressed(num_entry, value, a1):
         num_entry.insert("end", value)
 
         print(value,"pressed")
+        player_list[1].chip_choice+=int(value)
         return value
 
-def calcuate_chip(num_entry, value, a1):
-    bal_chip=1000000
-    get_chip=chip_pressed(num_entry, value, a1)
-    bal_chip-=get_chip
-    result_chip=int(bal_chip)
-
-    print(result_chip)
     
 def button_clear(num_entry, a1, a5, a6, a7):
 
@@ -135,7 +127,7 @@ def change_to_image(card):
             file_name = "./cardimages/card" + str(_id) + ".gif"
             return file_name
         
-def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, window):
+def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, window):
 
     
     # 베팅칩 못누르게
@@ -146,6 +138,10 @@ def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, window):
     a6.config(state="disabled")
     a7.config(state="disabled")
 
+
+    tmp = "Balance : " + str(player_list[1].balance - player_list[1].chip_choice)
+    a8.config(text = tmp)
+    
     # 유저 chip_choice 변수에 베팅칩 반영
     #player_list[1].chip_choice = num_entry
 
