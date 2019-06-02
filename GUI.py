@@ -31,11 +31,12 @@ def show_panel(window) :
     a7=tkinter.Button(window, text="200", command=lambda:chip_pressed(num_entry,'200', a1))
     a4=tkinter.Button(window, text="Clear", command=lambda:button_clear(num_entry, a1, a5, a6, a7))
 
+
     a8=tkinter.Label(window, text="Balance : 1000000") ###Balance 창에 표시
     
     a1=tkinter.Button(window, text="Deal", command=lambda:button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, window))
     a2=tkinter.Button(window, text="Hit", command=lambda:button_hit(a2))
-    a3=tkinter.Button(window, text="Stand", command=lambda:button_stand(a2, a3, a4, a5, a6, a7))
+    a3=tkinter.Button(window, text="Stand", command=lambda:button_stand(a2, a3, a4, a5, a6, a7, num_entry))
         
 
     
@@ -54,7 +55,7 @@ def show_panel(window) :
     a5.place(x=20, y=90, width=50, height=50)
     a6.place(x=20, y=150, width=50, height=50)
     a7.place(x=20, y=210, width=50, height=50)
-    a8.place(x=20, y=320, width=100, height=30)
+    a8.place(x=18, y=320, width=110, height=30)
     a9.place(x=300, y=10, width=70, height=30)
     p1.place(x=300, y=150, width=70, height=30)
     p2.place(x=120, y=270, width=70, height=30)
@@ -87,9 +88,11 @@ def chip_pressed(num_entry, value, a1):
     else:
         num_entry.insert("end", value)
 
-        print(value,"pressed")
-        player_list[1].chip_choice+=int(value)
-        return value
+    print(value,"pressed")
+    player_list[1].chip_choice+=int(value)
+    return value
+
+    
 
     
 def button_clear(num_entry, a1, a5, a6, a7):
@@ -137,6 +140,8 @@ def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, window):
     a5.config(state="disabled")
     a6.config(state="disabled")
     a7.config(state="disabled")
+
+    num_entry.config(state='readonly')
 
 
     tmp = "Balance : " + str(player_list[1].balance - player_list[1].chip_choice)
@@ -247,12 +252,12 @@ def button_hit(a2):
         #### disable hit button
     window.mainloop()
 
-def button_stand(a2, a3, a4, a5, a6, a7):
+def button_stand(a2, a3, a4, a5, a6, a7, num_entry):
 
     a3.config(state='disabled')
     if player_list[1].is_playable() :
         player_list[1].play_status = "st_stand"
-    play_hit(a2, a3, a4, a5, a6, a7)
+    play_hit(a2, a3, a4, a5, a6, a7, num_entry)
    
 
 
@@ -436,7 +441,7 @@ def play_new_game(choice, a2, a3, a4, a5, a6, a7) :
     play_start(a2, a3, a4, a5, a6, a7)
 
 # 게임 시작, 베팅칩만 초기화
-def play_new_hand(a2, a3, a4, a5, a6, a7) :
+def play_new_hand(a2, a3, a4, a5, a6, a7, num_entry) :
 
     print("\n***NEW HAND START***")
 
@@ -447,7 +452,9 @@ def play_new_hand(a2, a3, a4, a5, a6, a7) :
             player_list[i].new_hand()
 
     ### 라벨 지우기 tkinter.Label.destroy()?
+    num_entry.delete(0,'end')
     remove_card()
+    
 
 
     play_start(a2, a3, a4, a5, a6, a7)
@@ -518,7 +525,7 @@ def play_deal() :
     window.mainloop()
 
 # 히트 이후 게임 진행
-def play_continue(a2, a3, a4, a5, a6, a7) :
+def play_continue(a2, a3, a4, a5, a6, a7, num_entry) :
 
     # 모두의 hit가 끝나면
     # 딜러의 딜에서 받은 뒤집히지 않은 카드 오픈
@@ -538,11 +545,11 @@ def play_continue(a2, a3, a4, a5, a6, a7) :
         ### 카드 이미지
 
     final_information()
-    play_round_end(a2, a3, a4, a5, a6, a7)
+    play_round_end(a2, a3, a4, a5, a6, a7, num_entry)
 
 
 # 히트
-def play_hit(a2, a3, a4, a5, a6, a7) :
+def play_hit(a2, a3, a4, a5, a6, a7, num_entry) :
 
     while(hit_anyone()) :      
         if player_list[0].is_playable() :
@@ -563,11 +570,11 @@ def play_hit(a2, a3, a4, a5, a6, a7) :
                 ### GUI 카드 이미지
 
         current_information()
-    play_continue(a2, a3, a4, a5, a6, a7)
+    play_continue(a2, a3, a4, a5, a6, a7, num_entry)
 
 
 # 한 라운드 종료
-def play_round_end(a2, a3, a4, a5, a6, a7) :
+def play_round_end(a2, a3, a4, a5, a6, a7, num_entry) :
 
     print("\n***ROUND END***\n")
 
@@ -582,7 +589,7 @@ def play_round_end(a2, a3, a4, a5, a6, a7) :
         ###라벨지우기
         play_game_end()
     else :
-        play_new_hand(a2, a3, a4, a5, a6, a7)
+        play_new_hand(a2, a3, a4, a5, a6, a7, num_entry)
 
 
 # 메인 게임 종료
