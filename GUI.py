@@ -452,7 +452,8 @@ def play_new_hand(a2, a3, a4, a5, a6, a7, num_entry) :
             player_list[i].new_hand()
 
     ### 라벨 지우기 tkinter.Label.destroy()?
-    num_entry.delete(0,'end')
+    num_entry.config(state='normal')
+    num_entry.delete(first=0, last=100)
     remove_card()
     
 
