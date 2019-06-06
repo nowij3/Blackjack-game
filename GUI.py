@@ -18,7 +18,6 @@ def show_panel(window) :
     window.title("BlackJack Game")
     window.geometry("640x500+100+100")
     window.resizable(True, True)
-    num_of_hit = 0
 
     entry_value=tkinter.StringVar(window, value='')
 
@@ -37,8 +36,8 @@ def show_panel(window) :
     b1=tkinter.Label(window, text="Balance : 1000000")
     b2=tkinter.Label(window, text="Balance : 1000000")###Balance 창에 표시
     
-    a1=tkinter.Button(window, text="Deal", command=lambda:button_deal(num_of_hit, num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1, b2, window))
-    a2=tkinter.Button(window, text="Hit", command=lambda:button_hit(a2, num_of_hit))
+    a1=tkinter.Button(window, text="Deal", command=lambda:button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1, b2, window))
+    a2=tkinter.Button(window, text="Hit", command=lambda:button_hit(a2))
     a3=tkinter.Button(window, text="Stand", command=lambda:button_stand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2))
         
 
@@ -147,8 +146,9 @@ def change_to_image(card):
             file_name = "./cardimages/card" + str(_id) + ".gif"
             return file_name
         
-def button_deal(num_of_hit, num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,window):
+def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,window):
 
+    global num_of_hit
     num_of_hit = 0
     
     # 베팅칩 못누르게
@@ -254,7 +254,9 @@ def button_deal(num_of_hit, num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,win
     window.mainloop()
 
     
-def button_hit(a2, num_of_hit):
+def button_hit(a2):
+    
+    global num_of_hit
     
     if player_list[1].hand_sum == 21 :
         a2.config(state='disabled')
@@ -266,7 +268,7 @@ def button_hit(a2, num_of_hit):
         uc=tkinter.PhotoImage(file=change_to_image(player_list[1].hand[-1]))
         uc_1=tkinter.Label(window, image=uc)
         uc_1.place(x=300+(num_of_hit*30), y=320)
-        num_hit(a2, num_of_hit)
+        #num_hit(a2, num_of_hit)
         card_labels.append(uc_1)#@
         print(num_of_hit)
 
@@ -295,12 +297,13 @@ def button_hit(a2, num_of_hit):
         player_list[1].play_status = "st_bust"
         a2.config(state='disabled')
 
+    num_of_hit += 1
             
     window.mainloop()
 
-def num_hit(a2, num_of_hit):
+#def num_hit(a2, num_of_hit):
 
-    num_of_hit += 1
+    #num_of_hit += 1
 
     #return num_of_hit
 
@@ -717,6 +720,8 @@ draw_list = []
 
 d_cards = []
 card_labels = []
+
+num_of_hit = 0
 
 window=tkinter.Tk()
 show_panel(window)
