@@ -40,7 +40,7 @@ def show_panel(window) :
     a1=tkinter.Button(window, text="Deal", command=lambda:button_deal(num_of_hit, num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1, b2, window))
     a2=tkinter.Button(window, text="Hit", command=lambda:button_hit(a2, num_of_hit))
     a3=tkinter.Button(window, text="Stand", command=lambda:button_stand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2))
-        
+    h1=tkinter.Button(window, text="Help", command=lambda:msghelp())   
 
     
     a9=tkinter.Label(window, text="New Game :")
@@ -68,6 +68,7 @@ def show_panel(window) :
     l1.place(x=380, y=10, width=70, height=30)
     l2.place(x=460, y=10, width=70, height=30)
     l3.place(x=540, y=10, width=70, height=30)
+    h1.place(x=110, y=10, width=80, height=30)
 
     a1.config(state='disabled')
     a2.config(state='disabled')
@@ -97,7 +98,8 @@ def chip_pressed(num_entry, value, a1):
     player_list[1].chip_choice+=int(value)
     return value
 
-    
+def msghelp():
+    tkinter.messagebox.showinfo("How to play game", "블랙잭 게임은 카드를 뽑아 숫자의 합이 21을 넘지 않으면서 21에 가까운 사람이 승리합니다.\n21을 초과하는 것을 Bust라고 하며 게임에서 패배를 의미합니다.\nA는 1 또는 11, J, Q, K는 각 10으로 계산합니다.\n게임을 시작하려면 우측 상단의 난이도를 선택해야합니다.\n각 난이도에 참여하는 플레이어는 다음과 같습니다.\nEasy - Hi-Opt2, Zen  |  Normal - Halves, Hi-Lo  |  Hard - Hi-Lo, KO\n각 칩 버튼을 눌러 베팅 금액을 조절할 수 있습니다.\nClear 버튼을 눌러서 베팅 금액을 초기화할 수 있습니다.\n베팅 금액을 결정했다면 Deal을 눌러야 게임이 시작됩니다.\nDeal은 게임을 처음 시작할 때 2장의 카드를 받는 것을 말합니다.\n이때 카드 2장으로 21을 만드는 경우를 블랙잭이라고 하며, 베팅 금액의 2.5배를 받게 됩니다.\n플레이어가 받은 카드는 모두 공개하며, 딜러는 처음 받은 카드 두 장 중에서 한 장만 공개합니다.\nDeal 이후 플레이어는 Hit을 할지, Stand를 할지 선택합니다.\nHit은 카드를 한 장 더 받는 것을 말합니다.\nBust가 되기 전까지 횟수 제한은 없습니다.\nStand는 카드를 더 이상 받지 않는 것을 말합니다.\n블랙잭이 아니면서 Bust가 되지 않은 플레이어는 딜러보다 카드 합이 클 때만 배팅 금액의 2배를 받게 됩니다.\nBust가 되지 않으면서 딜러와 비긴 경우 베팅 금액을 돌려받습니다.")    
 
     
 def button_clear(num_entry, a1, a5, a6, a7):
