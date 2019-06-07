@@ -172,12 +172,12 @@ def change_to_image(card):
 
     
 def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,b1_chip,b2_chip,window):
-
+    
     global num_of_hit
     num_of_hit = 0
 
     # 베팅칩 못누르게
-    a1.config(state="disabled")
+
     a2.config(state="normal")
     a3.config(state="normal")
     a4.config(state="disabled")
@@ -186,6 +186,8 @@ def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,b1_chip,b2_chip
     a7.config(state="disabled")
 
     num_entry.config(state='readonly')
+
+    a1.config(state="disabled")
 
 
 
@@ -208,84 +210,9 @@ def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,b1_chip,b2_chip
 
     # deck에 8장 이하만 남으면 덱을 초기화
     # 카운팅 플레이어의 카운팅 초기화
-    if dealer.HANDLER.get_remaining_card() <= 0.5 :
-            dealer.HANDLER.reset()
 
-    for i in range(len(player_list)) :
-        if i != 1 :
-            player_list[i].counting = 0       
 
-    # hit 가능한 상태로 초기화
-    dealer.play_status = "st_hit"
-    for i in range(len(player_list)) :
-        if player_list[i].has_money() :
-             player_list[i].play_status = "st_hit"
-
-    # deal
-    dealer.deal()
-    for i in range (len(player_list)) :
-        if player_list[i].is_playable() :
-            player_list[i].deal()
-
-    # 딜러 카드 공개
-    give_my_card_info(len(player_list)+1,dealer.hand[0])
-    card=tkinter.PhotoImage(file=change_to_image(dealer.hand[0]))
-
-    lb_d_c=tkinter.Label(window, image=card)
-    lb_d_c.place(x=220, y=40)
     
-    d_cards.append(lb_d_c)
-    card_labels.append(lb_d_c) #@
-
-    # 플레이어1 카드 공개
-    if player_list[0].hand :
-        give_my_card_info(i, player_list[0].hand[0])
-        player1_1=tkinter.PhotoImage(file=change_to_image(player_list[0].hand[0]))
-        lb_p1_1=tkinter.Label(window, image=player1_1)
-        lb_p1_1.place(x=100, y=150)
-
-        card_labels.append(lb_p1_1) #@
-
-        give_my_card_info(i, player_list[0].hand[1])
-        player1_2=tkinter.PhotoImage(file=change_to_image(player_list[0].hand[1]))
-        lb_p1_2=tkinter.Label(window, image=player1_2)
-        lb_p1_2.place(x=130, y=150)
-
-        card_labels.append(lb_p1_2) #@
-
-    # 유저 카드 공개
-    if player_list[1].hand :
-        give_my_card_info(i, player_list[1].hand[0])
-        player2_1=tkinter.PhotoImage(file=change_to_image(player_list[1].hand[0]))
-        lb_p2_1=tkinter.Label(window, image=player2_1)
-        lb_p2_1.place(x=240, y=320)
-
-        card_labels.append(lb_p2_1) #@
-
-        give_my_card_info(i, player_list[1].hand[1])
-        player2_2=tkinter.PhotoImage(file=change_to_image(player_list[1].hand[1]))
-        lb_p2_2=tkinter.Label(window, image=player2_2)
-        lb_p2_2.place(x=270, y=320)
-
-        card_labels.append(lb_p2_2) #@
-
-    # 플레이어2 카드 공개
-    if player_list[2].hand :
-        give_my_card_info(i, player_list[2].hand[0])
-        player3_1=tkinter.PhotoImage(file=change_to_image(player_list[2].hand[0]))
-        lb_p3_1=tkinter.Label(window, image=player3_1)
-        lb_p3_1.place(x=420, y=150)
-
-        card_labels.append(lb_p3_1) #@
-
-        give_my_card_info(i, player_list[2].hand[1])
-        player3_2=tkinter.PhotoImage(file=change_to_image(player_list[2].hand[1]))
-        lb_p3_2=tkinter.Label(window, image=player3_2)
-        lb_p3_2.place(x=450, y=150)
-
-        card_labels.append(lb_p3_2) #@
-
-
     if player_list[1].chip_choice > player_list[1].balance:
         msgnomoney()
         reset_betting()
@@ -310,16 +237,96 @@ def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,b1_chip,b2_chip
         a7.config(state="normal")
         a4.config(state="normal")
         a1.config(state='normal')
-
-    if player_list[1].balance==0:
-        a1.config(state='disabled')
+    else:
         
+            
+        if dealer.HANDLER.get_remaining_card() <= 0.5 :
+                dealer.HANDLER.reset()
 
-    if player_list[1].hand_sum == 21 :
-        a2.config(state='disabled')
-        ### disable hit button
-    #a1.config(state="disabled")
-    window.mainloop()
+        for i in range(len(player_list)) :
+            if i != 1 :
+                player_list[i].counting = 0       
+
+        # hit 가능한 상태로 초기화
+        dealer.play_status = "st_hit"
+        for i in range(len(player_list)) :
+            if player_list[i].has_money() :
+                 player_list[i].play_status = "st_hit"
+
+        # deal
+        dealer.deal()
+        for i in range (len(player_list)) :
+            if player_list[i].is_playable() :
+                player_list[i].deal()
+
+        # 딜러 카드 공개
+        give_my_card_info(len(player_list)+1,dealer.hand[0])
+        card=tkinter.PhotoImage(file=change_to_image(dealer.hand[0]))
+
+        lb_d_c=tkinter.Label(window, image=card)
+        lb_d_c.place(x=220, y=40)
+        
+        d_cards.append(lb_d_c)
+        card_labels.append(lb_d_c) #@
+
+        # 플레이어1 카드 공개
+        if player_list[0].hand :
+            give_my_card_info(i, player_list[0].hand[0])
+            player1_1=tkinter.PhotoImage(file=change_to_image(player_list[0].hand[0]))
+            lb_p1_1=tkinter.Label(window, image=player1_1)
+            lb_p1_1.place(x=100, y=150)
+
+            card_labels.append(lb_p1_1) #@
+
+            give_my_card_info(i, player_list[0].hand[1])
+            player1_2=tkinter.PhotoImage(file=change_to_image(player_list[0].hand[1]))
+            lb_p1_2=tkinter.Label(window, image=player1_2)
+            lb_p1_2.place(x=130, y=150)
+
+            card_labels.append(lb_p1_2) #@
+
+        # 유저 카드 공개
+        if player_list[1].hand :
+            give_my_card_info(i, player_list[1].hand[0])
+            player2_1=tkinter.PhotoImage(file=change_to_image(player_list[1].hand[0]))
+            lb_p2_1=tkinter.Label(window, image=player2_1)
+            lb_p2_1.place(x=240, y=320)
+
+            card_labels.append(lb_p2_1) #@
+
+            give_my_card_info(i, player_list[1].hand[1])
+            player2_2=tkinter.PhotoImage(file=change_to_image(player_list[1].hand[1]))
+            lb_p2_2=tkinter.Label(window, image=player2_2)
+            lb_p2_2.place(x=270, y=320)
+
+            card_labels.append(lb_p2_2) #@
+
+        # 플레이어2 카드 공개
+        if player_list[2].hand :
+            give_my_card_info(i, player_list[2].hand[0])
+            player3_1=tkinter.PhotoImage(file=change_to_image(player_list[2].hand[0]))
+            lb_p3_1=tkinter.Label(window, image=player3_1)
+            lb_p3_1.place(x=420, y=150)
+
+            card_labels.append(lb_p3_1) #@
+
+            give_my_card_info(i, player_list[2].hand[1])
+            player3_2=tkinter.PhotoImage(file=change_to_image(player_list[2].hand[1]))
+            lb_p3_2=tkinter.Label(window, image=player3_2)
+            lb_p3_2.place(x=450, y=150)
+
+            card_labels.append(lb_p3_2) #@
+
+
+        if player_list[1].balance==0:
+            a1.config(state='disabled')
+            
+
+        if player_list[1].hand_sum == 21 :
+            a2.config(state='disabled')
+            ### disable hit button
+        #a1.config(state="disabled")
+        window.mainloop()
 
     
 def button_hit(a2):
