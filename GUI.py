@@ -26,7 +26,7 @@ def show_panel(window) :
     num_entry.place(x=20, y=340)
 
 
-    a5=tkinter.Button(window, text="1000", command=lambda:chip_pressed(num_entry,'100000', a1))
+    a5=tkinter.Button(window, text="1000", command=lambda:chip_pressed(num_entry,'1000', a1))
     a6=tkinter.Button(window, text="500", command=lambda:chip_pressed(num_entry,'500', a1))
     a7=tkinter.Button(window, text="200", command=lambda:chip_pressed(num_entry,'200', a1))
     a4=tkinter.Button(window, text="Clear", command=lambda:button_clear(num_entry, a1, a5, a6, a7))
