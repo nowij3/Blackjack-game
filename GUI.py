@@ -17,7 +17,7 @@ def show_panel(window) :
 
     window.title("BlackJack Game")
     window.geometry("650x500+100+100")
-    window.resizable(True, True)
+    window.resizable(False, False)
 
     entry_value=tkinter.StringVar(window, value='')
 
@@ -60,7 +60,7 @@ def show_panel(window) :
     a5.place(x=20, y=140, width=50, height=50)
     a6.place(x=20, y=200, width=50, height=50)
     a7.place(x=20, y=260, width=50, height=50)
-    a8.place(x=14, y=370, width=110, height=30)
+    a8.place(x=14, y=370)
     b1.place(x=120, y=320)
     b2.place(x=450, y=320)
     b1_chip.place(x=120, y=300)
@@ -127,6 +127,7 @@ def button_easy(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip):
     num_entry.delete(first=0, last=100)
     remove_card()
     play_new_game("easy",a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip)
+
                 
 def button_normal(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip):
     a4.config(state="normal")
@@ -140,6 +141,8 @@ def button_normal(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip):
     num_entry.config(state='normal')
     num_entry.delete(first=0, last=100)
     remove_card()
+
+    
     play_new_game("normal",a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip)
     
 def button_hard(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip):
@@ -289,6 +292,9 @@ def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,b1_chip,b2_chip
         b1.config(text = tmp_1)
         tmp_2 = "Balance : " + str(player_list[2].balance)
         b2.config(text = tmp_2)
+
+    if player_list[1].balance==0:
+        a1.config(state='disabled')
         
 
     if player_list[1].hand_sum == 21 :
@@ -398,57 +404,33 @@ def get_prize() :
             player_list[i].balance -= player_list[i].chip_choice
 
     # 블랙잭 우승자
-    print("len(blackjack_winner_list)", len(blackjack_winner_list))
-    if blackjack_winner_list and not (len(blackjack_winner_list)==1 and blackjack_winner_list[0].name == 'Dealer'):
-        info += "*** BLACKJACK ***\n"
-        
-        for i in range(len(blackjack_winner_list)) :
-            if blackjack_winner_list[i].name == 'Dealer' :
-                continue
-            else :
-                blackjack_winner_list[i].balance += prize_chip(blackjack_winner_list[i])
-                info += blackjack_winner_list[i].name + " (+" + str(prize_chip(blackjack_winner_list[i])) + ")\n"
-
+    for i in range(len(blackjack_winner_list)) :
+        if blackjack_winner_list[i].name == 'Dealer' :
+            break
+        else :
+            blackjack_winner_list[i].balance += prize_chip(blackjack_winner_list[i])
+            info += blackjack_winner_list[i].name + " recives " + str(prize_chip(blackjack_winner_list[i])) + "\n"
 
     # 블랙잭이 아닌 우승자
-    print("len(winner_list)", len(winner_list))
-    if winner_list and not (len(winner_list)==1 and winner_list[0].name == 'Dealer') :
-        if info =="" :
-            info +="--- WIN ---\n"
-        else :
-            info += "\n--- WIN ---\n"
-        
     for i in range(len(winner_list)) :
         if winner_list[i].name == 'Dealer' :
             continue
         elif dealer.is_bust() :
             winner_list[i].balance += prize_chip(winner_list[i])
-            info += winner_list[i].name + " (+" + str(prize_chip(winner_list[i])) + ")\n"
+            info += winner_list[i].name + " recives " + str(prize_chip(winner_list[i])) + "\n"
             
         else :
             winner_list[i].balance += prize_chip(winner_list[i])
-            info += winner_list[i].name + " (+" + str(prize_chip(winner_list[i])) + ")\n"
+            info += winner_list[i].name + " recives " + str(prize_chip(winner_list[i])) + "\n"
 
     # 비긴 플레이어
-    print("len(draw_list)", len(draw_list))
-    if draw_list and not (len(draw_list)==1 and draw_list[0].name == 'Dealer') :
-        if info =="" :
-            info +="--- Draw ---\n"
-        else :
-            info += "\n--- Draw ---\n"
-        
     for i in range(len(draw_list)) :
         draw_list[i].balance += prize_chip(draw_list[i])
-        info += draw_list[i].name + " (+" + str(prize_chip(draw_list[i])) + ")\n"
-
-
+        info += draw_list[i].name + " recives " + str(prize_chip(draw_list[i])) + "\n"
 
     if info == "" :
-        # 딜러만 이긴 경우
         if not dealer.is_bust() :
-            info += "Dealer"
-
-        # 모두가 진 경우
+            info += "Dealer wins!"
         else :
             info += "Round end!"
             
@@ -594,8 +576,6 @@ def play_new_hand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip) :
     b1_chip.config(text = tmp_1_chip)
     b2_chip.config(text = tmp_1_chip)
     
-    
-
 
     play_start(a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip)
 
@@ -744,9 +724,14 @@ def play_round_end(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip) :
     # 모두가 파산이면
     if not check_all_money_status() :
         ###라벨지우기
+        remove_card()
         play_game_end()
     else :
         play_new_hand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip)
+        if player_list[1].balance==0:
+            a5.config(state='disabled')
+            a6.config(state='disabled')
+            a7.config(state='disabled')
 
 
 # 메인 게임 종료
