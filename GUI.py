@@ -16,7 +16,7 @@ import time
 def show_panel(window) :
 
     window.title("BlackJack Game")
-    window.geometry("640x500+100+100")
+    window.geometry("650x500+100+100")
     window.resizable(True, True)
 
     entry_value=tkinter.StringVar(window, value='')
@@ -83,8 +83,6 @@ def show_panel(window) :
 
 def chip_pressed(num_entry, value, a1):
     a1.config(state='normal')
-    
-    reset_betting()
     
     if not num_entry.get() == '':
         v = int(value)
@@ -525,6 +523,7 @@ def play_new_hand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2) :
     num_entry.config(state='normal')
     num_entry.delete(first=0, last=100)
     remove_card()
+    reset_betting()
     
 
 
