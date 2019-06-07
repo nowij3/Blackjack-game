@@ -398,33 +398,57 @@ def get_prize() :
             player_list[i].balance -= player_list[i].chip_choice
 
     # 블랙잭 우승자
-    for i in range(len(blackjack_winner_list)) :
-        if blackjack_winner_list[i].name == 'Dealer' :
-            break
-        else :
-            blackjack_winner_list[i].balance += prize_chip(blackjack_winner_list[i])
-            info += blackjack_winner_list[i].name + " recives " + str(prize_chip(blackjack_winner_list[i])) + "\n"
+    print("len(blackjack_winner_list)", len(blackjack_winner_list))
+    if blackjack_winner_list and not (len(blackjack_winner_list)==1 and blackjack_winner_list[0].name == 'Dealer'):
+        info += "*** BLACKJACK ***\n"
+        
+        for i in range(len(blackjack_winner_list)) :
+            if blackjack_winner_list[i].name == 'Dealer' :
+                continue
+            else :
+                blackjack_winner_list[i].balance += prize_chip(blackjack_winner_list[i])
+                info += blackjack_winner_list[i].name + " (+" + str(prize_chip(blackjack_winner_list[i])) + ")\n"
+
 
     # 블랙잭이 아닌 우승자
+    print("len(winner_list)", len(winner_list))
+    if winner_list and not (len(winner_list)==1 and winner_list[0].name == 'Dealer') :
+        if info =="" :
+            info +="--- WIN ---\n"
+        else :
+            info += "\n--- WIN ---\n"
+        
     for i in range(len(winner_list)) :
         if winner_list[i].name == 'Dealer' :
             continue
         elif dealer.is_bust() :
             winner_list[i].balance += prize_chip(winner_list[i])
-            info += winner_list[i].name + " recives " + str(prize_chip(winner_list[i])) + "\n"
+            info += winner_list[i].name + " (+" + str(prize_chip(winner_list[i])) + ")\n"
             
         else :
             winner_list[i].balance += prize_chip(winner_list[i])
-            info += winner_list[i].name + " recives " + str(prize_chip(winner_list[i])) + "\n"
+            info += winner_list[i].name + " (+" + str(prize_chip(winner_list[i])) + ")\n"
 
     # 비긴 플레이어
+    print("len(draw_list)", len(draw_list))
+    if draw_list and not (len(draw_list)==1 and draw_list[0].name == 'Dealer') :
+        if info =="" :
+            info +="--- Draw ---\n"
+        else :
+            info += "\n--- Draw ---\n"
+        
     for i in range(len(draw_list)) :
         draw_list[i].balance += prize_chip(draw_list[i])
-        info += draw_list[i].name + " recives " + str(prize_chip(draw_list[i])) + "\n"
+        info += draw_list[i].name + " (+" + str(prize_chip(draw_list[i])) + ")\n"
+
+
 
     if info == "" :
+        # 딜러만 이긴 경우
         if not dealer.is_bust() :
-            info += "Dealer wins!"
+            info += "Dealer"
+
+        # 모두가 진 경우
         else :
             info += "Round end!"
             
