@@ -18,6 +18,7 @@ def show_panel(window) :
     window.title("BlackJack Game")
     window.geometry("650x500+100+100")
     window.resizable(False, False)
+    window.configure(background="lavender blush")
 
     entry_value=tkinter.StringVar(window, value='')
 
@@ -25,14 +26,14 @@ def show_panel(window) :
     num_entry.grid(row=0, columnspan=1)
     num_entry.place(x=20, y=340)
 
-
+    
     a5=tkinter.Button(window, text="1000", command=lambda:chip_pressed(num_entry,'1000', a1))
     a6=tkinter.Button(window, text="500", command=lambda:chip_pressed(num_entry,'500', a1))
-    a7=tkinter.Button(window, text="200", command=lambda:chip_pressed(num_entry,'200', a1))
+    a7=tkinter.Button(window, text="100", command=lambda:chip_pressed(num_entry,'100', a1))
     a4=tkinter.Button(window, text="Clear", command=lambda:button_clear(num_entry, a1, a5, a6, a7))
     h1=tkinter.Button(window, text="Help", command=lambda:msghelp())
 
-
+    a0=tkinter.Label(window, text="Betting Chip")
     a8=tkinter.Label(window, text="Balance : 10000")
     b1_chip=tkinter.Label(window, text="Betting : 0")
     b2_chip=tkinter.Label(window, text="Betting : 0")
@@ -53,6 +54,7 @@ def show_panel(window) :
     l2=tkinter.Button(window, text="Normal", command=lambda:button_normal(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip))
     l3=tkinter.Button(window, text="Hard", command=lambda:button_hard(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip))
     
+    a0.place(x=11, y=110)
     a1.place(x=150, y=430, width=90, height=45)
     a2.place(x=300, y=430, width=90, height=45)
     a3.place(x=450, y=430, width=90, height=45)
@@ -111,6 +113,7 @@ def msgnomoney():
 def button_clear(num_entry, a1, a5, a6, a7):
 
     num_entry.delete(0,'end')
+    reset_betting()
     a1.config(state='disabled')
 
 
@@ -281,8 +284,11 @@ def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,b1_chip,b2_chip
         msgnomoney()
         reset_betting()
         remove_card()
+        a1.config(state='normal')
         num_entry.config(state='normal')
         num_entry.delete(first=0, last=100)
+        num_entry.insert("end", str(player_list[1].balance))
+        player_list[1].chip_choice=player_list[1].balance
         tmp = "Balance : " + str(player_list[1].balance)
         a8.config(text = tmp)
         tmp_1_chip = "Betting : 0"
@@ -292,6 +298,12 @@ def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,b1_chip,b2_chip
         b1.config(text = tmp_1)
         tmp_2 = "Balance : " + str(player_list[2].balance)
         b2.config(text = tmp_2)
+        a2.config(state="disabled")
+        a3.config(state="disabled")
+        a5.config(state="normal")
+        a6.config(state="normal")
+        a7.config(state="normal")
+        a4.config(state="normal")
 
     if player_list[1].balance==0:
         a1.config(state='disabled')
