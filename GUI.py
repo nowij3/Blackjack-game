@@ -119,6 +119,7 @@ def button_easy(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry):
     p3.config(text=easy_p3)
     num_entry.config(state='normal')
     num_entry.delete(first=0, last=100)
+    remove_card()
     play_new_game("easy",a2, a3, a4, a5, a6, a7,a8,b1,b2)
                 
 def button_normal(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry):
@@ -132,6 +133,7 @@ def button_normal(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry):
     p3.config(text=easy_p3)
     num_entry.config(state='normal')
     num_entry.delete(first=0, last=100)
+    remove_card()
     play_new_game("normal",a2, a3, a4, a5, a6, a7,a8,b1,b2)
     
 def button_hard(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry):
@@ -145,6 +147,7 @@ def button_hard(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry):
     p3.config(text=easy_p3)
     num_entry.config(state='normal')
     num_entry.delete(first=0, last=100)
+    remove_card()
     play_new_game("hard",a2, a3, a4, a5, a6, a7,a8,b1,b2)
 
 def change_to_image(card):
