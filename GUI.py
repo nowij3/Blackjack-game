@@ -103,7 +103,7 @@ def chip_pressed(num_entry, value, a1):
     return value
 
 def msghelp():
-    tkinter.messagebox.showinfo("How To Play Game", "블랙잭 게임은 카드를 뽑아 숫자의 합이 21을 넘지 않으면서 21에 가까운 사람이 승리합니다.\n21을 초과하는 것을 Bust라고 하며 게임에서 패배를 의미합니다.\nA는 1 또는 11, J, Q, K는 각 10으로 계산합니다.\n게임을 시작하려면 우측 상단의 난이도를 선택해야합니다.\n각 난이도에 참여하는 플레이어는 다음과 같습니다.\nEasy - Hi-Opt2, Zen  |  Normal - Halves, Hi-Lo  |  Hard - Hi-Lo, KO\n각 칩 버튼을 눌러 베팅 금액을 조절할 수 있습니다.\nClear 버튼을 눌러서 베팅 금액을 초기화할 수 있습니다.\n베팅 금액을 결정했다면 Deal을 눌러야 게임이 시작됩니다.\nDeal은 게임을 처음 시작할 때 2장의 카드를 받는 것을 말합니다.\n이때 카드 2장으로 21을 만드는 경우를 블랙잭이라고 하며, 베팅 금액의 2.5배를 받게 됩니다.\n플레이어가 받은 카드는 모두 공개하며, 딜러는 처음 받은 카드 두 장 중에서 한 장만 공개합니다.\nDeal 이후 플레이어는 Hit을 할지, Stand를 할지 선택합니다.\nHit은 카드를 한 장 더 받는 것을 말합니다.\nBust가 되기 전까지 횟수 제한은 없습니다.\nStand는 카드를 더 이상 받지 않는 것을 말합니다.\n블랙잭이 아니면서 Bust가 되지 않은 플레이어는 딜러보다 카드 합이 클 때만 배팅 금액의 2배를 받게 됩니다.\nBust가 되지 않으면서 딜러와 비긴 경우 베팅 금액을 돌려받습니다.")       
+    tkinter.messagebox.showinfo("How To Play Game", "블랙잭 게임은 카드를 뽑아 숫자의 합이 21을 넘지 않으면서 21에 가까운 사람이 승리합니다.\n21을 초과하는 것을 Bust라고 하며 게임에서 패배를 의미합니다.\nA는 1 또는 11로,  J/Q/K는 각 10으로 계산합니다.\n\n게임을 시작하려면 우측 상단의 난이도를 선택해야합니다.\n각 난이도에 참여하는 플레이어는 다음과 같습니다.\nEasy - Hi-Opt2, Zen  |  Normal - Halves |  Hard - Hi-Lo, KO\n\n각 칩 버튼을 눌러 베팅 금액을 조절할 수 있습니다.\nClear 버튼을 눌러서 베팅 금액을 초기화할 수 있습니다.\n\n베팅 금액을 결정했다면 Deal을 눌러야 게임이 시작됩니다.\nDeal은 게임을 처음 시작할 때 2장의 카드를 받는 것을 말합니다.\n이때 카드 2장으로 21을 만드는 경우를 블랙잭이라고 하며, 베팅 금액의 2.5배를 받게 됩니다.\n플레이어가 받은 카드는 모두 공개하며, 딜러는 처음 받은 카드 두 장 중에서 한 장만 공개합니다.\n\nDeal 이후 플레이어는 Hit을 할지, Stand를 할지 선택합니다.\nHit은 카드를 한 장 더 받는 것을 말합니다.\nBust가 되기 전까지 횟수 제한은 없습니다.\nStand는 카드를 더 이상 받지 않는 것을 말합니다.\n\n블랙잭이 아니면서 Bust가 되지 않은 플레이어는 딜러보다 카드 합이 클 때만 배팅 금액의 2배를 받게 됩니다.\nBust가 되지 않으면서 딜러와 비긴 경우 베팅 금액을 돌려받습니다.")       
 
 def msgnomoney():
     tkinter.messagebox.showinfo("Warning", "Sorry, but you don't have enough money to play game")
@@ -378,14 +378,13 @@ def reset_betting():
     player_list[1].chip_choice = 0
 
 # 블랙잭인 경우 베팅한 금액의 2.5배, 그 외엔 2배 반환
-def prize_chip(player) :
+def prize_chip(player, result) :
 
     # 딜러와 비긴 경우
-    if player.hand_sum == dealer.hand_sum :
-        ##print(player.name, "recieves ", player.chip_choice)
+    if result == "draw" :
         return player.chip_choice
 
-    if player.is_blackjack() :
+    if result == "blackjack" :
         ##print(player.name, "recieves ", int(2.5 * player.chip_choice))
         return int(2.5 * player.chip_choice)
     else :
@@ -411,8 +410,8 @@ def get_prize() :
             if blackjack_winner_list[i].name == 'Dealer' :
                 continue
             else :
-                blackjack_winner_list[i].balance += prize_chip(blackjack_winner_list[i])
-                info += blackjack_winner_list[i].name + " (+" + str(prize_chip(blackjack_winner_list[i])) + ")\n"
+                blackjack_winner_list[i].balance += prize_chip(blackjack_winner_list[i], "blackjack")
+                info += blackjack_winner_list[i].name + " (+" + str(prize_chip(blackjack_winner_list[i], "blackjack")) + ")\n"
         info += "********************* \n"
 
 
@@ -427,12 +426,12 @@ def get_prize() :
         if winner_list[i].name == 'Dealer' :
             continue
         elif dealer.is_bust() :
-            winner_list[i].balance += prize_chip(winner_list[i])
-            info += winner_list[i].name + " (+" + str(prize_chip(winner_list[i])) + ")\n"
+            winner_list[i].balance += prize_chip(winner_list[i], "win")
+            info += winner_list[i].name + " (+" + str(prize_chip(winner_list[i], "win")) + ")\n"
             
         else :
-            winner_list[i].balance += prize_chip(winner_list[i])
-            info += winner_list[i].name + " (+" + str(prize_chip(winner_list[i])) + ")\n"
+            winner_list[i].balance += prize_chip(winner_list[i], "win")
+            info += winner_list[i].name + " (+" + str(prize_chip(winner_list[i], "win")) + ")\n"
 
     # 비긴 플레이어
     if draw_list:
@@ -442,8 +441,8 @@ def get_prize() :
             info += "\n--- Draw ---\n"
         
     for i in range(len(draw_list)) :
-        draw_list[i].balance += prize_chip(draw_list[i])
-        info += draw_list[i].name + " (+" + str(prize_chip(draw_list[i])) + ")\n"
+        draw_list[i].balance += prize_chip(draw_list[i], "draw")
+        info += draw_list[i].name + " (+" + str(prize_chip(draw_list[i], "draw")) + ")\n"
 
 
 
