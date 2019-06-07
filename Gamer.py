@@ -15,7 +15,7 @@ from DeckHandler import DeckHandler
 
 
 class Gamer:
-    INIT_MONEY = 1000000  # 시작금
+    INIT_MONEY = 10000  # 시작금
     HANDLER = DeckHandler()
 
     def __init__(self):

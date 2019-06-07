@@ -36,7 +36,9 @@ class CountingPlayer(Gamer):
             return c_list_instance.get_Hi_Opt2()
         elif name == 'Zen':
             return c_list_instance.get_Zen()
-        elif name == 'Halves':
+        elif name == 'Halves_1':
+            return c_list_instance.get_Halves()
+        elif name == 'Halves_2':
             return c_list_instance.get_Halves()
 
         else:
