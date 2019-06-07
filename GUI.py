@@ -469,10 +469,14 @@ def find_winner() :
             if not player_list[i].is_blackjack() :
 
                 # 플레이어가 파산이면 딜러 우승
-                if player_list[i].is_bust() and not dealer.is_bust() :
-                    winner_list.append(dealer)
+                if player_list[i].is_bust() :
+                    if not dealer.is_bust() :
+                        winner_list.append(dealer)
+                    # 둘 다 파산인 경우
+                    else :
+                        continue                        
 
-                # 딜러가 파산인 경우
+                # 딜러만 파산인 경우
                 elif dealer.is_bust() :
                     winner_list.append(player_list[i])
                                        
