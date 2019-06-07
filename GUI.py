@@ -134,9 +134,9 @@ def button_normal(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip):
     a5.config(state="normal")
     a6.config(state="normal")
     a7.config(state="normal")
-    easy_p2="Halves"
+    easy_p2="Halves_1"
     p2.config(text=easy_p2)
-    easy_p3="Halves"
+    easy_p3="Halves_2"
     p3.config(text=easy_p3)
     num_entry.config(state='normal')
     num_entry.delete(first=0, last=100)
@@ -404,37 +404,60 @@ def get_prize() :
             player_list[i].balance -= player_list[i].chip_choice
 
     # 블랙잭 우승자
-    for i in range(len(blackjack_winner_list)) :
-        if blackjack_winner_list[i].name == 'Dealer' :
-            break
-        else :
-            blackjack_winner_list[i].balance += prize_chip(blackjack_winner_list[i])
-            info += blackjack_winner_list[i].name + " recives " + str(prize_chip(blackjack_winner_list[i])) + "\n"
+    if blackjack_winner_list:
+        info += "**** BLACKJACK **** \n"
+        
+        for i in range(len(blackjack_winner_list)) :
+            if blackjack_winner_list[i].name == 'Dealer' :
+                continue
+            else :
+                blackjack_winner_list[i].balance += prize_chip(blackjack_winner_list[i])
+                info += blackjack_winner_list[i].name + " (+" + str(prize_chip(blackjack_winner_list[i])) + ")\n"
+        info += "********************* \n"
+
 
     # 블랙잭이 아닌 우승자
+    if winner_list:
+        if info =="" :
+            info +="--- WIN ---\n"
+        else :
+            info += "\n--- WIN ---\n"
+        
     for i in range(len(winner_list)) :
         if winner_list[i].name == 'Dealer' :
             continue
         elif dealer.is_bust() :
             winner_list[i].balance += prize_chip(winner_list[i])
-            info += winner_list[i].name + " recives " + str(prize_chip(winner_list[i])) + "\n"
+            info += winner_list[i].name + " (+" + str(prize_chip(winner_list[i])) + ")\n"
             
         else :
             winner_list[i].balance += prize_chip(winner_list[i])
-            info += winner_list[i].name + " recives " + str(prize_chip(winner_list[i])) + "\n"
+            info += winner_list[i].name + " (+" + str(prize_chip(winner_list[i])) + ")\n"
 
     # 비긴 플레이어
+    if draw_list:
+        if info =="" :
+            info +="--- Draw ---\n"
+        else :
+            info += "\n--- Draw ---\n"
+        
     for i in range(len(draw_list)) :
         draw_list[i].balance += prize_chip(draw_list[i])
-        info += draw_list[i].name + " recives " + str(prize_chip(draw_list[i])) + "\n"
+        info += draw_list[i].name + " (+" + str(prize_chip(draw_list[i])) + ")\n"
+
+
 
     if info == "" :
+        # 딜러만 이긴 경우
         if not dealer.is_bust() :
-            info += "Dealer wins!"
+            info += "--- WIN ---\nDealer"
+
+        # 모두가 진 경우
         else :
             info += "Round end!"
             
     messagebox.showinfo("Info", info)
+
 
 
 # hit 상태인 플레이어가 남아있는지 확인
@@ -464,7 +487,7 @@ def set_level(my_level) :
     if my_level == "easy" :
         make_players("Hi-Opt2", "Zen")
     elif my_level == "normal" :
-        make_players("Halves", "Halves")
+        make_players("Halves_1", "Halves_2")
     elif my_level == "hard" :
         make_players("KO", "Hi-Lo")
 
@@ -491,10 +514,6 @@ def check_blackjack() :
         if player_list[i].is_blackjack() :
             blackjack_winner_list.append(player_list[i])
 
-    # 블랙잭인 플레이어가 없을 때 딜러가 블랙잭인지 확인
-    if not blackjack_winner_list and dealer.is_blackjack() :
-        blackjack_winner_list.append(dealer)
-
 
 # 아무도 블랙잭이 아닌 경우 21에 가장 가까운 플레이어(우승자) 찾기
 def find_winner() :
@@ -507,30 +526,18 @@ def find_winner() :
         if player_list[i].has_money() :
 
             # 블랙잭이 아닌 플레이어만 확인
-            if not player_list[i].is_blackjack() :
+            if not player_list[i].is_blackjack() :                     
 
-                # 플레이어가 파산이면 딜러 우승
-                if player_list[i].is_bust() :
-                    if not dealer.is_bust() :
-                        winner_list.append(dealer)
-                    # 둘 다 파산인 경우
-                    else :
-                        continue                        
-
-                # 딜러만 파산인 경우
-                elif dealer.is_bust() :
-                    winner_list.append(player_list[i])
-                                       
-                # 딜러와 플레이어 둘 다 파산이 아닐 때
-                else :
-
-                    # 플레이어의 카드 값이 딜러보다 높은 경우
-                    if player_list[i].hand_sum > dealer.hand_sum :
+                if not player_list[i].is_bust() :
+                    
+                    # 플레이어의 카드 값이 딜러보다 높거나, 딜러만 파산한 경우
+                    if player_list[i].hand_sum > dealer.hand_sum or dealer.is_bust() :
                         winner_list.append(player_list[i])
 
                     # 비긴 경우
                     elif player_list[i].hand_sum == dealer.hand_sum :
                         draw_list.append(player_list[i])
+
 
                 
 # 다른 플레이어에게 내 카드 정보 주기, CountingPlayer들만 적용됨
