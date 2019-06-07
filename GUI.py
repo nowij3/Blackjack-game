@@ -177,6 +177,7 @@ def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,b1_chip,b2_chip
     num_of_hit = 0
 
     # 베팅칩 못누르게
+    a1.config(state="disabled")
     a2.config(state="normal")
     a3.config(state="normal")
     a4.config(state="disabled")
@@ -289,7 +290,6 @@ def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,b1_chip,b2_chip
         msgnomoney()
         reset_betting()
         remove_card()
-        a1.config(state='normal')
         num_entry.config(state='normal')
         num_entry.delete(first=0, last=100)
         num_entry.insert("end", str(player_list[1].balance))
@@ -309,6 +309,7 @@ def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,b1_chip,b2_chip
         a6.config(state="normal")
         a7.config(state="normal")
         a4.config(state="normal")
+        a1.config(state='normal')
 
     if player_list[1].balance==0:
         a1.config(state='disabled')
@@ -317,7 +318,7 @@ def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,b1_chip,b2_chip
     if player_list[1].hand_sum == 21 :
         a2.config(state='disabled')
         ### disable hit button
-    a1.config(state="disabled")
+    #a1.config(state="disabled")
     window.mainloop()
 
     
