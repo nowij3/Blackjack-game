@@ -34,12 +34,14 @@ def show_panel(window) :
 
 
     a8=tkinter.Label(window, text="Balance : 1000000")
+    b1_chip=tkinter.Label(window, text="Betting : 0")
+    b2_chip=tkinter.Label(window, text="Betting : 0")
     b1=tkinter.Label(window, text="Balance : 1000000")
     b2=tkinter.Label(window, text="Balance : 1000000")###Balance 창에 표시
     
-    a1=tkinter.Button(window, text="Deal", command=lambda:button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1, b2, window))
+    a1=tkinter.Button(window, text="Deal", command=lambda:button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1, b2, b1_chip, b2_chip, window))
     a2=tkinter.Button(window, text="Hit", command=lambda:button_hit(a2))
-    a3=tkinter.Button(window, text="Stand", command=lambda:button_stand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2))
+    a3=tkinter.Button(window, text="Stand", command=lambda:button_stand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip))
         
 
     
@@ -47,9 +49,9 @@ def show_panel(window) :
     p1=tkinter.Label(window, text="Dealer", bg="white")
     p2=tkinter.Label(window, text="Player1", bg="white")
     p3=tkinter.Label(window, text="Player2", bg="white")
-    l1=tkinter.Button(window, text="Easy", command=lambda:button_easy(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry))
-    l2=tkinter.Button(window, text="Normal", command=lambda:button_normal(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry))
-    l3=tkinter.Button(window, text="Hard", command=lambda:button_hard(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry))
+    l1=tkinter.Button(window, text="Easy", command=lambda:button_easy(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip))
+    l2=tkinter.Button(window, text="Normal", command=lambda:button_normal(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip))
+    l3=tkinter.Button(window, text="Hard", command=lambda:button_hard(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip))
     
     a1.place(x=150, y=430, width=90, height=45)
     a2.place(x=300, y=430, width=90, height=45)
@@ -59,8 +61,10 @@ def show_panel(window) :
     a6.place(x=20, y=200, width=50, height=50)
     a7.place(x=20, y=260, width=50, height=50)
     a8.place(x=14, y=370, width=110, height=30)
-    b1.place(x=120, y=300, width=110, height=30)
-    b2.place(x=500, y=300, width=110, height=30)
+    b1.place(x=120, y=320, width=103, height=20)
+    b2.place(x=500, y=320, width=103, height=20)
+    b1_chip.place(x=120, y=300, width=70, height=20)
+    b2_chip.place(x=500, y=300, width=70, height=20)
     a9.place(x=300, y=10, width=70, height=30)
     p1.place(x=300, y=150, width=70, height=30)
     p2.place(x=120, y=270, width=70, height=30)
@@ -108,7 +112,7 @@ def button_clear(num_entry, a1, a5, a6, a7):
     a1.config(state='disabled')
 
 
-def button_easy(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry):
+def button_easy(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip):
     a4.config(state="normal")
     a5.config(state="normal")
     a6.config(state="normal")
@@ -120,9 +124,9 @@ def button_easy(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry):
     num_entry.config(state='normal')
     num_entry.delete(first=0, last=100)
     remove_card()
-    play_new_game("easy",a2, a3, a4, a5, a6, a7,a8,b1,b2)
+    play_new_game("easy",a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip)
                 
-def button_normal(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry):
+def button_normal(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip):
     a4.config(state="normal")
     a5.config(state="normal")
     a6.config(state="normal")
@@ -134,9 +138,9 @@ def button_normal(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry):
     num_entry.config(state='normal')
     num_entry.delete(first=0, last=100)
     remove_card()
-    play_new_game("normal",a2, a3, a4, a5, a6, a7,a8,b1,b2)
+    play_new_game("normal",a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip)
     
-def button_hard(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry):
+def button_hard(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip):
     a4.config(state="normal")
     a5.config(state="normal")
     a6.config(state="normal")
@@ -148,7 +152,7 @@ def button_hard(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry):
     num_entry.config(state='normal')
     num_entry.delete(first=0, last=100)
     remove_card()
-    play_new_game("hard",a2, a3, a4, a5, a6, a7,a8,b1,b2)
+    play_new_game("hard",a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip)
 
 def change_to_image(card):
     for i in range(52):
@@ -158,7 +162,7 @@ def change_to_image(card):
             file_name = "./cardimages/card" + str(_id) + ".gif"
             return file_name
         
-def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,window):
+def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,b1_chip,b2_chip,window):
 
     global num_of_hit
     num_of_hit = 0
@@ -172,7 +176,12 @@ def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,window):
     a7.config(state="disabled")
 
     num_entry.config(state='readonly')
+
+    tmp_1_chip = "Betting : " + str(player_list[0].chip_choice)
+    b1_chip.config(text = tmp_1_chip)
     
+    tmp_2_chip = "Betting : " + str(player_list[2].chip_choice)
+    b2_chip.config(text = tmp_2_chip)
 
     tmp = "Balance : " + str(player_list[1].balance - player_list[1].chip_choice)
     a8.config(text = tmp)
@@ -313,12 +322,12 @@ def button_hit(a2):
     window.mainloop()
 
 
-def button_stand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2):
+def button_stand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip):
 
     a3.config(state='disabled')
     if player_list[1].is_playable() :
         player_list[1].play_status = "st_stand"
-    play_hit(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2)
+    play_hit(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip)
    
 
     window.mainloop()
@@ -502,7 +511,7 @@ def give_my_card_info(num, card) :
             player_list[i].others_card(card)
 
 # 게임 시작, 모두 초기화
-def play_new_game(choice, a2, a3, a4, a5, a6, a7,a8,b1,b2) :
+def play_new_game(choice, a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip) :
 
     dealer.HANDLER.reset()
 
@@ -513,10 +522,10 @@ def play_new_game(choice, a2, a3, a4, a5, a6, a7,a8,b1,b2) :
     for i in range(len(player_list)) :
         player_list[i].new_game()
 
-    play_start(a2, a3, a4, a5, a6, a7,a8,b1,b2)
+    play_start(a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip)
 
 # 게임 시작, 베팅칩만 초기화
-def play_new_hand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2) :
+def play_new_hand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip) :
 
     print("\n***NEW HAND START***")
 
@@ -531,13 +540,17 @@ def play_new_hand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2) :
     num_entry.delete(first=0, last=100)
     remove_card()
     reset_betting()
+    tmp_1_chip = "Betting : 0"
+    b1_chip.config(text = tmp_1_chip)
+    b2_chip.config(text = tmp_1_chip)
+    
     
 
 
-    play_start(a2, a3, a4, a5, a6, a7,a8,b1,b2)
+    play_start(a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip)
 
 # 라운드 시작
-def play_start(a2, a3, a4, a5, a6, a7,a8,b1,b2) :
+def play_start(a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip) :
 
     # 우승자 리스트 비우기
     del blackjack_winner_list[:]
@@ -609,7 +622,7 @@ def play_deal() :
     window.mainloop()
 
 # 히트 이후 게임 진행
-def play_continue(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2) :
+def play_continue(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip) :
 
     # 모두의 hit가 끝나면
     # 딜러의 딜에서 받은 뒤집히지 않은 카드 오픈
@@ -633,11 +646,11 @@ def play_continue(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2) :
         ### 카드 이미지
 
     final_information()
-    play_round_end(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2)
+    play_round_end(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip)
 
 
 # 히트
-def play_hit(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2) :
+def play_hit(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip) :
 
     i=0
     while player_list[0].is_playable() :
@@ -664,11 +677,11 @@ def play_hit(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2) :
             card_labels.append(p3_3)
             ### GUI 카드 이미지
 
-    play_continue(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2)
+    play_continue(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip)
 
 
 # 한 라운드 종료
-def play_round_end(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2) :
+def play_round_end(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip) :
 
     print("\n***ROUND END***\n")
 
@@ -683,7 +696,7 @@ def play_round_end(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2) :
         ###라벨지우기
         play_game_end()
     else :
-        play_new_hand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2)
+        play_new_hand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip)
 
 
 # 메인 게임 종료
