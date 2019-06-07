@@ -18,7 +18,7 @@ def show_panel(window) :
     window.title("BlackJack Game")
     window.geometry("650x500+100+100")
     window.resizable(False, False)
-    window.configure(background="lavender blush")
+    window.configure(background="LavenderBlush")
 
     entry_value=tkinter.StringVar(window, value='')
 
@@ -226,6 +226,7 @@ def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,b1_chip,b2_chip
         if player_list[i].is_playable() :
             player_list[i].deal()
 
+    # 딜러 카드 공개
     give_my_card_info(len(player_list)+1,dealer.hand[0])
     card=tkinter.PhotoImage(file=change_to_image(dealer.hand[0]))
 
@@ -235,49 +236,53 @@ def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,b1_chip,b2_chip
     d_cards.append(lb_d_c)
     card_labels.append(lb_d_c) #@
 
-    for i in range (len(player_list)) :
-        if player_list[i].hand :
-            give_my_card_info(i, player_list[0].hand[0])
-            player1_1=tkinter.PhotoImage(file=change_to_image(player_list[0].hand[0]))
-            lb_p1_1=tkinter.Label(window, image=player1_1)
-            lb_p1_1.place(x=100, y=150)
+    # 플레이어1 카드 공개
+    if player_list[0].hand :
+        give_my_card_info(i, player_list[0].hand[0])
+        player1_1=tkinter.PhotoImage(file=change_to_image(player_list[0].hand[0]))
+        lb_p1_1=tkinter.Label(window, image=player1_1)
+        lb_p1_1.place(x=100, y=150)
 
-            card_labels.append(lb_p1_1) #@
+        card_labels.append(lb_p1_1) #@
 
-            give_my_card_info(i, player_list[0].hand[1])
-            player1_2=tkinter.PhotoImage(file=change_to_image(player_list[0].hand[1]))
-            lb_p1_2=tkinter.Label(window, image=player1_2)
-            lb_p1_2.place(x=130, y=150)
+        give_my_card_info(i, player_list[0].hand[1])
+        player1_2=tkinter.PhotoImage(file=change_to_image(player_list[0].hand[1]))
+        lb_p1_2=tkinter.Label(window, image=player1_2)
+        lb_p1_2.place(x=130, y=150)
 
-            card_labels.append(lb_p1_2) #@
+        card_labels.append(lb_p1_2) #@
 
-            give_my_card_info(i, player_list[1].hand[0])
-            player2_1=tkinter.PhotoImage(file=change_to_image(player_list[1].hand[0]))
-            lb_p2_1=tkinter.Label(window, image=player2_1)
-            lb_p2_1.place(x=240, y=320)
+    # 유저 카드 공개
+    if player_list[1].hand :
+        give_my_card_info(i, player_list[1].hand[0])
+        player2_1=tkinter.PhotoImage(file=change_to_image(player_list[1].hand[0]))
+        lb_p2_1=tkinter.Label(window, image=player2_1)
+        lb_p2_1.place(x=240, y=320)
 
-            card_labels.append(lb_p2_1) #@
+        card_labels.append(lb_p2_1) #@
 
-            give_my_card_info(i, player_list[1].hand[1])
-            player2_2=tkinter.PhotoImage(file=change_to_image(player_list[1].hand[1]))
-            lb_p2_2=tkinter.Label(window, image=player2_2)
-            lb_p2_2.place(x=270, y=320)
+        give_my_card_info(i, player_list[1].hand[1])
+        player2_2=tkinter.PhotoImage(file=change_to_image(player_list[1].hand[1]))
+        lb_p2_2=tkinter.Label(window, image=player2_2)
+        lb_p2_2.place(x=270, y=320)
 
-            card_labels.append(lb_p2_2) #@
+        card_labels.append(lb_p2_2) #@
 
-            give_my_card_info(i, player_list[2].hand[0])
-            player3_1=tkinter.PhotoImage(file=change_to_image(player_list[2].hand[0]))
-            lb_p3_1=tkinter.Label(window, image=player3_1)
-            lb_p3_1.place(x=420, y=150)
+    # 플레이어2 카드 공개
+    if player_list[2].hand :
+        give_my_card_info(i, player_list[2].hand[0])
+        player3_1=tkinter.PhotoImage(file=change_to_image(player_list[2].hand[0]))
+        lb_p3_1=tkinter.Label(window, image=player3_1)
+        lb_p3_1.place(x=420, y=150)
 
-            card_labels.append(lb_p3_1) #@
+        card_labels.append(lb_p3_1) #@
 
-            give_my_card_info(i, player_list[2].hand[1])
-            player3_2=tkinter.PhotoImage(file=change_to_image(player_list[2].hand[1]))
-            lb_p3_2=tkinter.Label(window, image=player3_2)
-            lb_p3_2.place(x=450, y=150)
+        give_my_card_info(i, player_list[2].hand[1])
+        player3_2=tkinter.PhotoImage(file=change_to_image(player_list[2].hand[1]))
+        lb_p3_2=tkinter.Label(window, image=player3_2)
+        lb_p3_2.place(x=450, y=150)
 
-            card_labels.append(lb_p3_2) #@
+        card_labels.append(lb_p3_2) #@
 
 
     if player_list[1].chip_choice > player_list[1].balance:
