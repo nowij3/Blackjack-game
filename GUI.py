@@ -237,9 +237,7 @@ def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,b1_chip,b2_chip
         a7.config(state="normal")
         a4.config(state="normal")
         a1.config(state='normal')
-    else:
-        
-            
+    else:    
         if dealer.HANDLER.get_remaining_card() <= 0.5 :
                 dealer.HANDLER.reset()
 
