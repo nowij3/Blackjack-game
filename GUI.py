@@ -33,11 +33,11 @@ def show_panel(window) :
     h1=tkinter.Button(window, text="Help", command=lambda:msghelp())
 
 
-    a8=tkinter.Label(window, text="Balance : 1000000")
+    a8=tkinter.Label(window, text="Balance : 10000")
     b1_chip=tkinter.Label(window, text="Betting : 0")
     b2_chip=tkinter.Label(window, text="Betting : 0")
-    b1=tkinter.Label(window, text="Balance : 1000000")
-    b2=tkinter.Label(window, text="Balance : 1000000")###Balance 창에 표시
+    b1=tkinter.Label(window, text="Balance : 10000")
+    b2=tkinter.Label(window, text="Balance : 10000")###Balance 창에 표시
     
     a1=tkinter.Button(window, text="Deal", command=lambda:button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1, b2, b1_chip, b2_chip, window))
     a2=tkinter.Button(window, text="Hit", command=lambda:button_hit(a2))
@@ -423,8 +423,11 @@ def get_prize() :
         info += draw_list[i].name + " recives " + str(prize_chip(draw_list[i])) + "\n"
 
     if info == "" :
-        info += "Round end!"
-
+        if not dealer.is_bust() :
+            info += "Dealer wins!"
+        else :
+            info += "Round end!"
+            
     messagebox.showinfo("Info", info)
 
 
