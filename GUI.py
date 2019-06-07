@@ -26,7 +26,7 @@ def show_panel(window) :
     num_entry.place(x=20, y=340)
 
 
-    a5=tkinter.Button(window, text="1000", command=lambda:chip_pressed(num_entry,'1000', a1))
+    a5=tkinter.Button(window, text="1000", command=lambda:chip_pressed(num_entry,'100000', a1))
     a6=tkinter.Button(window, text="500", command=lambda:chip_pressed(num_entry,'500', a1))
     a7=tkinter.Button(window, text="200", command=lambda:chip_pressed(num_entry,'200', a1))
     a4=tkinter.Button(window, text="Clear", command=lambda:button_clear(num_entry, a1, a5, a6, a7))
@@ -282,6 +282,13 @@ def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,b1_chip,b2_chip
         num_entry.delete(first=0, last=100)
         tmp = "Balance : " + str(player_list[1].balance)
         a8.config(text = tmp)
+        tmp_1_chip = "Betting : 0"
+        b1_chip.config(text = tmp_1_chip)
+        b2_chip.config(text = tmp_1_chip)
+        tmp_1 = "Balance : " + str(player_list[0].balance)
+        b1.config(text = tmp_1)
+        tmp_2 = "Balance : " + str(player_list[2].balance)
+        b2.config(text = tmp_2)
         
 
     if player_list[1].hand_sum == 21 :
