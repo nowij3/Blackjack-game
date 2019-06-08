@@ -27,32 +27,32 @@ def show_panel(window) :
     num_entry.place(x=20, y=340)
 
     
-    a5=tkinter.Button(window, text="1000", command=lambda:chip_pressed(num_entry,'1000', a1))
-    a6=tkinter.Button(window, text="500", command=lambda:chip_pressed(num_entry,'500', a1))
-    a7=tkinter.Button(window, text="100", command=lambda:chip_pressed(num_entry,'100', a1))
-    a4=tkinter.Button(window, text="Clear", command=lambda:button_clear(num_entry, a1, a5, a6, a7))
-    h1=tkinter.Button(window, text="Help", command=lambda:msghelp())
+    a5=tkinter.Button(window, text="1000", command=lambda:chip_pressed(num_entry,'1000', a1), bg="white")
+    a6=tkinter.Button(window, text="500", command=lambda:chip_pressed(num_entry,'500', a1), bg='white')
+    a7=tkinter.Button(window, text="100", command=lambda:chip_pressed(num_entry,'100', a1), bg='white')
+    a4=tkinter.Button(window, text="Clear", command=lambda:button_clear(num_entry, a1, a5, a6, a7), bg='white')
+    h1=tkinter.Button(window, text="Help", command=lambda:msghelp(), bg='white')
 
-    a0=tkinter.Label(window, text="Betting Chip")
-    a8=tkinter.Label(window, text="Balance : 10000")
-    b1_chip=tkinter.Label(window, text="Betting : 0")
-    b2_chip=tkinter.Label(window, text="Betting : 0")
-    b1=tkinter.Label(window, text="Balance : 10000")
-    b2=tkinter.Label(window, text="Balance : 10000")###Balance 창에 표시
+    a0=tkinter.Label(window, text="Betting Chip", background="LavenderBlush")
+    a8=tkinter.Label(window, text="Balance : 10000", background="LavenderBlush")
+    b1_chip=tkinter.Label(window, text="Betting : 0", background="LavenderBlush")
+    b2_chip=tkinter.Label(window, text="Betting : 0", background="LavenderBlush")
+    b1=tkinter.Label(window, text="Balance : 10000", background="LavenderBlush")
+    b2=tkinter.Label(window, text="Balance : 10000", background="LavenderBlush")###Balance 창에 표시
     
-    a1=tkinter.Button(window, text="Deal", command=lambda:button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1, b2, b1_chip, b2_chip, window))
-    a2=tkinter.Button(window, text="Hit", command=lambda:button_hit(a2))
-    a3=tkinter.Button(window, text="Stand", command=lambda:button_stand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip))
+    a1=tkinter.Button(window, text="Deal", command=lambda:button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1, b2, b1_chip, b2_chip, window), bg='white')
+    a2=tkinter.Button(window, text="Hit", command=lambda:button_hit(a2), bg='white')
+    a3=tkinter.Button(window, text="Stand", command=lambda:button_stand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,window), bg='white')
         
 
     
-    a9=tkinter.Label(window, text="New Game :")
+    a9=tkinter.Label(window, text="New Game :", background="LavenderBlush")
     p1=tkinter.Label(window, text="Dealer", bg="white")
     p2=tkinter.Label(window, text="Player1", bg="white")
     p3=tkinter.Label(window, text="Player2", bg="white")
-    l1=tkinter.Button(window, text="Easy", command=lambda:button_easy(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip))
-    l2=tkinter.Button(window, text="Normal", command=lambda:button_normal(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip))
-    l3=tkinter.Button(window, text="Hard", command=lambda:button_hard(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip))
+    l1=tkinter.Button(window, text="Easy", command=lambda:button_easy(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip,window), bg='white')
+    l2=tkinter.Button(window, text="Normal", command=lambda:button_normal(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip,window), bg='white')
+    l3=tkinter.Button(window, text="Hard", command=lambda:button_hard(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip,window), bg='white')
     
     a0.place(x=11, y=110)
     a1.place(x=150, y=430, width=90, height=45)
@@ -108,7 +108,10 @@ def msghelp():
     tkinter.messagebox.showinfo("How To Play Game", "블랙잭 게임은 카드를 뽑아 숫자의 합이 21을 넘지 않으면서 21에 가까운 사람이 승리합니다.\n21을 초과하는 것을 Bust라고 하며 게임에서 패배를 의미합니다.\nA는 1 또는 11로,  J/Q/K는 각 10으로 계산합니다.\n\n게임을 시작하려면 우측 상단의 난이도를 선택해야합니다.\n각 난이도에 참여하는 플레이어는 다음과 같습니다.\nEasy - Hi-Opt2, Zen  |  Normal - Halves |  Hard - Hi-Lo, KO\n\n각 칩 버튼을 눌러 베팅 금액을 조절할 수 있습니다.\nClear 버튼을 눌러서 베팅 금액을 초기화할 수 있습니다.\n\n베팅 금액을 결정했다면 Deal을 눌러야 게임이 시작됩니다.\nDeal은 게임을 처음 시작할 때 2장의 카드를 받는 것을 말합니다.\n이때 카드 2장으로 21을 만드는 경우를 블랙잭이라고 하며, 베팅 금액의 2.5배를 받게 됩니다.\n플레이어가 받은 카드는 모두 공개하며, 딜러는 처음 받은 카드 두 장 중에서 한 장만 공개합니다.\n\nDeal 이후 플레이어는 Hit을 할지, Stand를 할지 선택합니다.\nHit은 카드를 한 장 더 받는 것을 말합니다.\nBust가 되기 전까지 횟수 제한은 없습니다.\nStand는 카드를 더 이상 받지 않는 것을 말합니다.\n\n블랙잭이 아니면서 Bust가 되지 않은 플레이어는 딜러보다 카드 합이 클 때만 배팅 금액의 2배를 받게 됩니다.\nBust가 되지 않으면서 딜러와 비긴 경우 베팅 금액을 돌려받습니다.")       
 
 def msgnomoney():
-    tkinter.messagebox.showinfo("Warning", "Sorry, but you don't have enough money to play game")
+    tkinter.messagebox.showinfo("Warning", "Sorry, but you don't have enough money to play game!")
+
+def msgnomoney_2():
+    tkinter.messagebox.showinfo("Warning", "Sorry, but you spent all balance!")
     
 def button_clear(num_entry, a1, a5, a6, a7):
 
@@ -117,7 +120,7 @@ def button_clear(num_entry, a1, a5, a6, a7):
     a1.config(state='disabled')
 
 
-def button_easy(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip):
+def button_easy(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip,window):
     a4.config(state="normal")
     a5.config(state="normal")
     a6.config(state="normal")
@@ -129,10 +132,10 @@ def button_easy(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip):
     num_entry.config(state='normal')
     num_entry.delete(first=0, last=100)
     remove_card()
-    play_new_game("easy",a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip)
+    play_new_game("easy",a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip,window)
 
                 
-def button_normal(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip):
+def button_normal(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip,window):
     a4.config(state="normal")
     a5.config(state="normal")
     a6.config(state="normal")
@@ -146,9 +149,9 @@ def button_normal(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip):
     remove_card()
 
     
-    play_new_game("normal",a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip)
+    play_new_game("normal",a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip,window)
     
-def button_hard(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip):
+def button_hard(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip,window):
     a4.config(state="normal")
     a5.config(state="normal")
     a6.config(state="normal")
@@ -160,7 +163,7 @@ def button_hard(a2, a3, a4,a5,a6,a7,p2,p3,a8,b1,b2,num_entry,b1_chip,b2_chip):
     num_entry.config(state='normal')
     num_entry.delete(first=0, last=100)
     remove_card()
-    play_new_game("hard",a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip)
+    play_new_game("hard",a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip,window)
 
 def change_to_image(card):
     for i in range(52):
@@ -374,12 +377,12 @@ def button_hit(a2):
     window.mainloop()
 
 
-def button_stand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip):
+def button_stand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,window):
 
     a3.config(state='disabled')
     if player_list[1].is_playable() :
         player_list[1].play_status = "st_stand"
-    play_hit(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip)
+    play_hit(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,window)
    
 
     window.mainloop()
@@ -572,7 +575,7 @@ def give_my_card_info(num, card) :
             player_list[i].others_card(card)
 
 # 게임 시작, 모두 초기화
-def play_new_game(choice, a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip) :
+def play_new_game(choice, a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip,window) :
 
     dealer.HANDLER.reset()
 
@@ -583,10 +586,10 @@ def play_new_game(choice, a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip) :
     for i in range(len(player_list)) :
         player_list[i].new_game()
 
-    play_start(a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip)
+    play_start(a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip,window)
 
 # 게임 시작, 베팅칩만 초기화
-def play_new_hand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip) :
+def play_new_hand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,window) :
 
     print("\n***NEW HAND START***")
 
@@ -600,16 +603,20 @@ def play_new_hand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip) :
     num_entry.config(state='normal')
     num_entry.delete(first=0, last=100)
     remove_card()
+    window.configure(background="LavenderBlush")
     reset_betting()
     tmp_1_chip = "Betting : 0"
     b1_chip.config(text = tmp_1_chip)
     b2_chip.config(text = tmp_1_chip)
+
+    if player_list[1].balance==0:
+        msgnomoney_2()
+    
+    play_start(a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip,window)
     
 
-    play_start(a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip)
-
 # 라운드 시작
-def play_start(a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip) :
+def play_start(a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip,window) :
 
     # 우승자 리스트 비우기
     del blackjack_winner_list[:]
@@ -681,7 +688,7 @@ def play_deal() :
     window.mainloop()
 
 # 히트 이후 게임 진행
-def play_continue(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip) :
+def play_continue(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,window) :
 
     # 모두의 hit가 끝나면
     # 딜러의 딜에서 받은 뒤집히지 않은 카드 오픈
@@ -705,11 +712,11 @@ def play_continue(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip) :
         ### 카드 이미지
 
     final_information()
-    play_round_end(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip)
+    play_round_end(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,window)
 
 
 # 히트
-def play_hit(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip) :
+def play_hit(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,window) :
 
     i=0
     while player_list[0].is_playable() :
@@ -736,11 +743,11 @@ def play_hit(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip) :
             card_labels.append(p3_3)
             ### GUI 카드 이미지
 
-    play_continue(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip)
+    play_continue(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,window)
 
 
 # 한 라운드 종료
-def play_round_end(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip) :
+def play_round_end(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,window) :
 
     print("\n***ROUND END***\n")
 
@@ -756,7 +763,7 @@ def play_round_end(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip) :
         remove_card()
         play_game_end()
     else :
-        play_new_hand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip)
+        play_new_hand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,window)
         if player_list[1].balance==0:
             a5.config(state='disabled')
             a6.config(state='disabled')
