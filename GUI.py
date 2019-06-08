@@ -268,7 +268,8 @@ def button_deal(num_entry, a1, a2, a3, a4, a5, a6, a7, a8, b1,b2,b1_chip,b2_chip
         lb_d_c.place(x=220, y=40)
         
         d_cards.append(lb_d_c)
-        card_labels.append(lb_d_c) #@
+        card_labels.append(lb_d_c)#@
+
 
         # 플레이어1 카드 공개
         if player_list[0].hand :
@@ -697,6 +698,7 @@ def play_continue(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,win
     card_2=tkinter.PhotoImage(file=change_to_image(dealer.hand[1]))
     lb_d_c2=tkinter.Label(window, image=card_2)
     lb_d_c2.place(x=250, y=40)
+    card_labels.append(lb_d_c2)
     ### 카드 이미지 !변경!
 
     # 딜러가 카드를 hit 할 때 마다 다른 플레이어들에게 카드 정보 주기
