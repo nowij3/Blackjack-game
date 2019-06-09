@@ -612,6 +612,7 @@ def play_new_hand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,win
 
     if player_list[1].balance==0:
         msgnomoney_2()
+        a4.config(state='disabled')
     
     play_start(a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip,window)
     
@@ -767,6 +768,7 @@ def play_round_end(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,wi
     else :
         play_new_hand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,window)
         if player_list[1].balance==0:
+            a4.config(state='disabled')
             a5.config(state='disabled')
             a6.config(state='disabled')
             a7.config(state='disabled')
