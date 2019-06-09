@@ -100,7 +100,7 @@ def chip_pressed(num_entry, value, a1):
     else:
         num_entry.insert("end", value)
 
-    print(value,"pressed")
+    ##print(value,"pressed")
     player_list[1].chip_choice+=int(value)
     return value
 
@@ -346,7 +346,6 @@ def button_hit(a2):
         uc_1=tkinter.Label(window, image=uc)
         uc_1.place(x=300+(num_of_hit*30), y=320)
         card_labels.append(uc_1)#@
-        print(num_of_hit)
 
 
     #if num_of_hit==1:
@@ -368,7 +367,7 @@ def button_hit(a2):
             #card_labels.append(uc_3)#@
             
 
-    if (player_list[1].hand_sum > 21) :
+    if player_list[1].hand_sum >= 21 :
         
         player_list[1].play_status = "st_bust"
         a2.config(state='disabled')
@@ -445,20 +444,21 @@ def get_prize() :
     # 블랙잭이 아닌 우승자
     if winner_list:
         if info =="" :
-            info +="--- WIN ---\n"
+            info +="--- Win ---\n"
         else :
-            info += "\n--- WIN ---\n"
+            info += "\n--- Win ---\n"
         
-    for i in range(len(winner_list)) :
-        if winner_list[i].name == 'Dealer' :
-            continue
-        elif dealer.is_bust() :
-            winner_list[i].balance += prize_chip(winner_list[i], "win")
-            info += winner_list[i].name + " (+" + str(prize_chip(winner_list[i], "win")) + ")\n"
-            
-        else :
-            winner_list[i].balance += prize_chip(winner_list[i], "win")
-            info += winner_list[i].name + " (+" + str(prize_chip(winner_list[i], "win")) + ")\n"
+        for i in range(len(winner_list)) :
+            if winner_list[i].name == 'Dealer' :
+                continue
+            elif dealer.is_bust() :
+                winner_list[i].balance += prize_chip(winner_list[i], "win")
+                info += winner_list[i].name + " (+" + str(prize_chip(winner_list[i], "win")) + ")\n"
+                
+            else :
+                winner_list[i].balance += prize_chip(winner_list[i], "win")
+                info += winner_list[i].name + " (+" + str(prize_chip(winner_list[i], "win")) + ")\n"
+
 
     # 비긴 플레이어
     if draw_list:
@@ -467,16 +467,15 @@ def get_prize() :
         else :
             info += "\n--- Draw ---\n"
         
-    for i in range(len(draw_list)) :
-        draw_list[i].balance += prize_chip(draw_list[i], "draw")
-        info += draw_list[i].name + " (+" + str(prize_chip(draw_list[i], "draw")) + ")\n"
-
+        for i in range(len(draw_list)) :
+            draw_list[i].balance += prize_chip(draw_list[i], "draw")
+            info += draw_list[i].name + " (+" + str(prize_chip(draw_list[i], "draw")) + ")\n"
 
 
     if info == "" :
         # 딜러만 이긴 경우
         if not dealer.is_bust() :
-            info += "--- WIN ---\nDealer"
+            info += "--- Win ---\nDealer"
 
         # 모두가 진 경우
         else :
@@ -592,7 +591,7 @@ def play_new_game(choice, a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip,window
 # 게임 시작, 베팅칩만 초기화
 def play_new_hand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,window) :
 
-    print("\n***NEW HAND START***")
+    ##print("\n***NEW HAND START***")
 
     dealer.new_hand()
 
@@ -612,6 +611,7 @@ def play_new_hand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,win
 
     if player_list[1].balance==0:
         msgnomoney_2()
+        a4.config(state='disabled')
     
     play_start(a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip,window)
     
@@ -627,10 +627,10 @@ def play_start(a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip,window) :
     a2.config(state="disabled")
     a3.config(state="disabled")
 
-    print(" ")
+    ##print(" ")
     # 각자의 재산 출력
-    for i in range(len(player_list)) :
-        print("current balance of ",player_list[i].name, ": ", player_list[i].balance)
+    ##for i in range(len(player_list)) :
+        ##print("current balance of ",player_list[i].name, ": ", player_list[i].balance)
 
     tmp = "Balance : " + str(player_list[1].balance)
     a8.config(text = tmp)
@@ -639,12 +639,12 @@ def play_start(a2, a3, a4, a5, a6, a7,a8,b1,b2,b1_chip,b2_chip,window) :
     tmp_2 = "Balance : " + str(player_list[2].balance)
     b2.config(text = tmp_2)
 
-    print(" ")
+    ##print(" ")
     for i in range(len(player_list)) :
         #유저 제외한 플레이어들에게 베팅칩 입력받기
         if i != 1 :
             player_list[i].decide_betting()
-            print("betting chip of ",player_list[i].name," : ", player_list[i].chip_choice)
+            ##print("betting chip of ",player_list[i].name," : ", player_list[i].chip_choice)
 
     a4.config(state="normal")
     a5.config(state="normal")
@@ -713,7 +713,7 @@ def play_continue(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,win
         card_labels.append(lb_d_c3)
         ### 카드 이미지
 
-    final_information()
+    ##final_information()
     play_round_end(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,window)
 
 
@@ -751,7 +751,7 @@ def play_hit(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,window) 
 # 한 라운드 종료
 def play_round_end(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,window) :
 
-    print("\n***ROUND END***\n")
+    ##print("\n***ROUND END***\n")
 
     ### 우승자 찾기
     find_winner()
@@ -767,6 +767,7 @@ def play_round_end(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,wi
     else :
         play_new_hand(a2, a3, a4, a5, a6, a7, num_entry,a8,b1,b2,b1_chip,b2_chip,window)
         if player_list[1].balance==0:
+            a4.config(state='disabled')
             a5.config(state='disabled')
             a6.config(state='disabled')
             a7.config(state='disabled')
